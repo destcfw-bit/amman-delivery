@@ -158,3 +158,16 @@ body.amman-captain.am-v2 .ad-dropcode-credit strong{color:#fff;font-weight:900}
 body.amman-captain.am-v2 .ad-dropcode-credit a{color:#f87f7f!important;text-decoration:none!important;padding:2px 9px;border:1px solid #e50d0d5e;border-radius:999px;background:#f3303011;font-size:11px}
 body.amman-captain.am-v2 .ad-dropcode-credit a:hover{background:#f2222240;color:#fff!important}
 @media(max-width:700px){body.amman-captain.am-v2 .am-workspace>.ad-dropcode-credit{margin-bottom:30px}}
+
+
+/* Final login palette: true red, no rose/pink or purple highlights */
+body.amman-captain.am-v2 #login.ad-login{background:radial-gradient(circle at 95% 5%,rgba(216,0,0,.14),transparent 40%),linear-gradient(145deg,#54565e,#3c3e46)!important}
+body.amman-captain.am-v2 #login .ad-login-chip{background:#551d1d!important;color:#fff!important;border:1px solid #c52222!important}
+body.amman-captain.am-v2 #login .ad-auth-head h1 em{color:#ff3030!important}
+body.amman-captain.am-v2 #login .ad-brandmark span{color:#f02626!important}
+body.amman-captain.am-v2 #login .login-card.ad-login-card{background:linear-gradient(145deg,#292b32,#1e2027 75%,#272329)!important;border:1px solid #555964!important}
+body.amman-captain.am-v2 #login .ad-card-glow{background:rgba(195,0,0,.12)!important}
+body.amman-captain.am-v2 #login .login-btn{background:linear-gradient(115deg,#fa3434,#d00000)!important;border:1px solid #ff5151!important;box-shadow:0 10px 24px rgba(185,0,0,.36)!important}
+body.amman-captain.am-v2 #login :is(#phone,#password):focus{border-color:#f03030!important;box-shadow:0 0 0 3px #e1212133!important}
+body.amman-captain.am-v2 #login .am-field-label .ad-login-field-icon{width:21px;height:21px;display:block;color:#ff3636;stroke:#ff3636}
+body.amman-captain.am-v2 #login .ad-dropcode-credit a{color:#ff6262!important;border-color:#c22b2b!important;background:#491d1d!important}
