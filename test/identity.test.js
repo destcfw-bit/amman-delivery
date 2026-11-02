@@ -8,7 +8,7 @@ const pages=['index.html','admin.html','captain.html','register.html'];
 for(const page of pages){
   test(page+' uses AMMAN independent identity and loads the shared stylesheet',()=>{
     const html=fs.readFileSync(path.join(root,'public',page),'utf8');
-    const css='/assets/amman-standalone.css?v=1';
+    const css='/assets/amman-standalone.css?v=2';
     const theme=html.indexOf('/assets/amman-theme.css'),brand=html.indexOf(css);
     assert.ok(theme!==-1&&brand>theme,'AMMAN design must override legacy style declarations');
     assert.ok(html.includes('class="amman-footer"'));
