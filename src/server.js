@@ -1384,7 +1384,7 @@ app.post('/api/admin/weekly/floor',auth,async(req,res)=>{
   try{
     await c.query('BEGIN'); const w=await getOpenWeek(c);
     if(w.floor_applied_at){await c.query('ROLLBACK');return res.status(409).json({ok:false,error:'FLOOR_ALREADY_APPLIED'});}
-    const amount=Number(req.body?.amount??0.75);
+    const amount=Number(req.body?.amount??0.50);
     if(!Number.isFinite(amount)||amount<=0){await c.query('ROLLBACK');return res.status(400).json({ok:false,error:'INVALID_FLOOR'});}
     const ins=await c.query(`INSERT INTO weekly_charges(week_id,captain_phone,charge_type,amount,note)
       SELECT $1,cp.phone,'floor',$2,'أرضية أسبوعية' FROM captains cp WHERE cp.active=true AND NOT EXISTS (SELECT 1 FROM captain_charge_exemptions ex WHERE ex.captain_phone=cp.phone AND ex.floor_exempt=true)
@@ -1403,7 +1403,7 @@ app.post('/api/admin/weekly/floor/complete',auth,async(req,res)=>{
   try{
     await c.query('BEGIN');
     const w=await getOpenWeek(c);
-    const amount=Number(w.floor_amount||0.75);
+    const amount=w.floor_applied_at?Number(w.floor_amount||0.50):0.50;
     if(!Number.isFinite(amount)||amount<=0){await c.query('ROLLBACK');return res.status(400).json({ok:false,error:'INVALID_FLOOR'});}
     const eligible=await c.query(`SELECT COUNT(*)::int n FROM captains cp WHERE cp.active=true AND NOT EXISTS (SELECT 1 FROM captain_charge_exemptions ex WHERE ex.captain_phone=cp.phone AND ex.floor_exempt=true)`);
     const already=await c.query(`SELECT COUNT(*)::int n FROM weekly_charges WHERE week_id=$1 AND charge_type='floor'`,[w.id]);
