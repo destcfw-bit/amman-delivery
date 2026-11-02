@@ -11,7 +11,6 @@ const place=home.querySelector('.am-metrics');if(place)place.after(panel);else h
 const profile=$('#s-profile');if(profile&&!$('#adPremiumWA')){const a=document.createElement('a');a.id='adPremiumWA';a.className='ad-premium-whatsapp';a.href='https://wa.me/962791579870';a.target='_blank';a.rel='noopener noreferrer';a.textContent='◉ تواصل مع DropCode عبر واتساب';profile.append(a)}
 };
 const chart=()=>{const p=safeNum('prod'),c=safeNum('cons'),m=Math.max(p,c,1);const a=$('#adProdBar'),b=$('#adConsBar');if(a)a.style.height=Math.max(5,p/m*100)+'%';if(b)b.style.height=Math.max(5,c/m*100)+'%';if($('#adProdSum'))$('#adProdSum').textContent=p.toFixed(2)+' د.أ';if($('#adConsSum'))$('#adConsSum').textContent=c.toFixed(2)+' د.أ'};
-let latestBalance=null;const animateBalance=()=>{const el=$('#balanceText');if(!el)return;const str=el.textContent||'';const target=parseFloat(str.replace(/[^\d.,-]/g,'').replace(/,/g,''));if(!Number.isFinite(target)||target===latestBalance)return;latestBalance=target;if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const fmt=new Intl.NumberFormat('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});const suffix=str.replace(/[\d.,\s-]/g,'').trim()||'د.أ';const started=performance.now();function step(now){if(latestBalance!==target)return;const t=Math.min(1,(now-started)/700),ease=1-Math.pow(1-t,3);el.textContent=fmt.format(target*ease)+' '+suffix;if(t<1)requestAnimationFrame(step);else el.textContent=str}requestAnimationFrame(step)};
 let busy=false;const update=()=>{if(busy)return;busy=true;requestAnimationFrame(()=>{busy=false;afterApp();chart()})};
 document.addEventListener('DOMContentLoaded',()=>{
 afterApp();chart();
@@ -19,12 +18,9 @@ const existing=window.loadAll;
 if(typeof existing==='function'&&!window.__ammanPremiumWrapped){
  window.__ammanPremiumWrapped=true;
  window.loadAll=async function(...args){
-  const first=!document.body.classList.contains('captain-app-ready');
-  let overlay=$('#adPremiumLoading');
-  if(!overlay){overlay=document.createElement('div');overlay.id='adPremiumLoading';overlay.className='ad-premium-loading';overlay.setAttribute('role','status');overlay.setAttribute('aria-label','جار تحميل حسابك');overlay.innerHTML='<div class="ad-skeleton"><span></span><span></span><span></span><span></span></div>';document.body.append(overlay)}
-  if(first)overlay.classList.add('show');
-  try{const result=await existing.apply(this,args);afterApp();chart();if(result){animateBalance()}return result}
-  finally{overlay.classList.remove('show')}
+  const result=await existing.apply(this,args);
+  afterApp();chart();
+  return result;
  };
 }
 
