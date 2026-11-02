@@ -1,0 +1,1 @@
+Reference lock: user supplied AMMAN DELIVERY artwork and approved dashboard concept. Charcoal surfaces, red primary actions, silver text, original full logo on login; compact logo inside accounting screens. Preserve existing responsive form/table hierarchy. Semantic green for positive amounts; red for debts. Refero live research unavailable; color craft reference used.

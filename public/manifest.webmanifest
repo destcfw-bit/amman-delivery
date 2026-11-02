@@ -1,0 +1,16 @@
+{
+  "name": "AMMAN DELIVERY",
+  "short_name": "AMMAN",
+  "start_url": "/captain",
+  "display": "standalone",
+  "background_color": "#101013",
+  "theme_color": "#101013",
+  "description": "AMMAN DELIVERY Captain Portal",
+  "icons": [
+    {
+      "src": "/assets/amman-logo.jpeg",
+      "sizes": "640x640",
+      "type": "image/jpeg"
+    }
+  ]
+}

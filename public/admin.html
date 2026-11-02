@@ -1,0 +1,953 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080a0e">
+<title>AMMAN DELIVERY — الإدارة</title>
+<link rel="icon" type="image/x-icon" href="/assets/amman-logo.jpeg">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/amman-logo.jpeg">
+<link rel="icon" type="image/png" sizes="48x48" href="/assets/amman-logo.jpeg">
+<link rel="apple-touch-icon" sizes="180x180" href="/assets/amman-logo.jpeg">
+
+<style>
+:root{--bg:#07090c;--panel:#10151c;--panel2:#0c1117;--line:#222c37;--text:#f6f7f9;--muted:#8e9aa8;--orange:#ff7518;--orange2:#ff9a33;--green:#39d98a;--red:#ff6666;--yellow:#f1c84b}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 20% -10%,rgba(255,117,24,.15),transparent 26%),#07090c;color:var(--text);font-family:Tahoma,Arial,sans-serif;min-height:100vh}button,input,select{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}
+.login{min-height:100vh;display:grid;place-items:center;padding:20px}.login-card{width:min(440px,100%);padding:28px;text-align:center;background:linear-gradient(145deg,#11171e,#090c10);border:1px solid #33261d;border-radius:24px;box-shadow:0 30px 90px #0008}.logo{width:150px;max-width:70%;filter:drop-shadow(0 12px 30px #ff751833)}.login h1{margin:4px 0}.muted{color:var(--muted)}.input,.select{width:100%;height:44px;border:1px solid var(--line);background:#0b1016;color:#fff;border-radius:11px;padding:0 12px;outline:none}.input:focus,.select:focus{border-color:#74451f}.btn{border:1px solid #2b3540;background:#131a22;color:#eaf0f5;border-radius:11px;padding:10px 13px;font-weight:800}.btn:hover{border-color:#704220}.btn-primary{background:linear-gradient(135deg,var(--orange),var(--orange2));border:0;color:#111}.btn-danger{background:#2a1517;border-color:#5d272a;color:#ffaaaa}.btn-green{background:#10271e;border-color:#1f6042;color:#78e8ad}
+.app{display:none}.top{position:sticky;top:0;z-index:20;height:72px;background:#080b0edb;backdrop-filter:blur(16px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:0 20px}.brand{display:flex;align-items:center;gap:10px;font-weight:950}.brand img{width:50px;height:50px;object-fit:contain}.brand b{color:var(--orange)}.top-actions{margin-right:auto;display:flex;gap:8px}
+.wrap{display:grid;grid-template-columns:235px minmax(0,1fr);min-height:calc(100vh - 72px)}.side{border-left:1px solid var(--line);padding:16px 12px;background:#080b0e}.nav{display:flex;flex-direction:column;gap:7px;position:sticky;top:88px}.nav button{display:flex;gap:9px;align-items:center;border:1px solid transparent;background:transparent;color:#b9c2cd;padding:11px 12px;border-radius:11px;text-align:right}.nav button.active{background:linear-gradient(135deg,var(--orange),#ff9127);color:#111;font-weight:950}.nav button:hover:not(.active){background:#111821;border-color:#202a35}
+.main{padding:20px;min-width:0}.hero{padding:22px;border:1px solid #33251c;border-radius:20px;background:linear-gradient(115deg,#111820,#0c1015);display:flex;justify-content:space-between;gap:15px;align-items:center;margin-bottom:14px}.hero h1{margin:0 0 6px;font-size:27px}.hero h1 span{color:var(--orange)}.hero .week{font-size:12px;color:#aab5c0}.hero-actions{display:flex;gap:8px;flex-wrap:wrap}
+.section{display:none}.section.active{display:block}.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:12px 0}.stat{background:linear-gradient(145deg,#111820,#0d1218);border:1px solid var(--line);border-radius:15px;padding:14px}.stat span{font-size:11px;color:var(--muted)}.stat b{display:block;font-size:25px;margin-top:6px}.stat .small{font-size:10px;margin-top:5px;color:#768392}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.panel{background:linear-gradient(145deg,#10161d,#0d1218);border:1px solid var(--line);border-radius:17px;overflow:hidden}.ph{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 15px;border-bottom:1px solid var(--line)}.ph h3{margin:0;font-size:15px}.ph small{display:block;color:var(--muted);margin-top:3px}.pb{padding:14px 15px}.filters{display:flex;gap:8px;flex-wrap:wrap}.filters .input,.filters .select{width:auto;min-width:160px}
+.table{overflow:auto}table{width:100%;border-collapse:collapse}th,td{text-align:right;padding:10px 9px;border-bottom:1px solid #1c2630;font-size:12px;white-space:nowrap}th{color:#82909e;background:#0c1117;position:sticky;top:0}tr:hover td{background:#ffffff03}.badge{display:inline-block;border-radius:999px;padding:5px 8px;font-size:10px;font-weight:900}.ok{background:#123023;color:#73e9ad;border:1px solid #245d42}.off{background:#2b1718;color:#ff9d9d;border:1px solid #603034}.wait{background:#2e2814;color:#f4d96c;border:1px solid #675823}.info{background:#142534;color:#94cfff;border:1px solid #254c69}.money.plus{color:#73e9ad}.money.minus{color:#ff9696}.money.floor{color:#f4d96c}.empty{text-align:center;color:var(--muted);padding:28px}
+.card{border:1px solid #202a35;background:#0c1117;border-radius:13px;padding:13px}.card h4{margin:0 0 7px}.row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid #1b242e}.row:last-child{border:0}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.form-grid .wide{grid-column:1/-1}
+.callout{border:1px solid #59391f;background:#21170f;border-radius:13px;padding:12px;color:#ffd0a7;font-size:12px;line-height:1.8}.dangerbox{border-color:#5d2929;background:#211113;color:#ffb1b1}.modal{display:none;position:fixed;inset:0;background:#000b;backdrop-filter:blur(6px);z-index:100;align-items:center;justify-content:center;padding:18px}.modal.show{display:flex}.modal-card{width:min(1050px,100%);max-height:88vh;overflow:auto;background:#0d1218;border:1px solid #2b3540;border-radius:18px}.modal-head{display:flex;justify-content:space-between;align-items:center;padding:15px;border-bottom:1px solid var(--line)}.modal-body{padding:15px}.close{width:38px;height:38px;border-radius:10px}
+.toast{display:none;position:fixed;left:18px;bottom:18px;z-index:300;background:#151c24;border:1px solid #2b3743;border-radius:12px;padding:12px 14px;box-shadow:0 18px 50px #0008;max-width:420px}.spinner{display:inline-block;width:14px;height:14px;border:2px solid #555;border-top-color:var(--orange);border-radius:50%;animation:sp .8s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
+@media(max-width:1100px){.stats{grid-template-columns:repeat(3,1fr)}.grid3{grid-template-columns:1fr 1fr}}
+@media(max-width:800px){.wrap{display:block}.side{display:none}.main{padding:12px}.top{padding:0 12px}.brand span{display:none}.hero{align-items:flex-start;flex-direction:column}.stats{grid-template-columns:1fr 1fr}.grid2,.grid3{grid-template-columns:1fr}.filters .input,.filters .select{width:100%}.form-grid{grid-template-columns:1fr}.form-grid .wide{grid-column:auto}}
+
+/* V3.3.3 — Add Captain mobile modal sizing fix */
+.add-captain-form{align-items:stretch}
+.add-captain-form .input,.add-captain-form .select{min-width:0;width:100%}
+.add-captain-form .addcap-save{min-height:50px;font-size:15px;font-weight:950;display:flex;align-items:center;justify-content:center;white-space:nowrap;color:#111!important}
+@media(max-width:600px){
+  .modal{padding:8px!important;align-items:center!important}
+  .modal-card{width:calc(100vw - 16px)!important;max-height:86dvh!important;border-radius:18px!important;border-bottom:1px solid #2b3540!important;overflow:hidden!important}
+  .modal-head{padding:11px 12px!important;min-height:52px!important}
+  .modal-head b{font-size:16px!important}
+  .modal-body{padding:10px 10px max(12px,env(safe-area-inset-bottom))!important;overflow-y:auto!important;-webkit-overflow-scrolling:touch!important;max-height:calc(86dvh - 52px)!important}
+  .add-captain-form{display:grid!important;grid-template-columns:1fr!important;gap:9px!important}
+  .add-captain-form .input,.add-captain-form .select{height:46px!important;min-height:46px!important;font-size:16px!important;padding:0 11px!important}
+  .add-captain-form .callout{font-size:11px!important;line-height:1.6!important;padding:9px 10px!important;margin:0!important}
+  .add-captain-form .wide{grid-column:1!important}
+  .add-captain-form .addcap-save{position:sticky!important;bottom:0!important;z-index:5!important;width:100%!important;min-height:52px!important;padding:12px!important;font-size:16px!important;border-radius:12px!important;box-shadow:0 -8px 24px rgba(7,9,12,.45)!important;margin-top:1px!important}
+}
+@media(max-width:380px){
+  .modal{padding:5px!important}
+  .modal-card{width:calc(100vw - 10px)!important;max-height:89dvh!important}
+  .modal-body{max-height:calc(89dvh - 50px)!important;padding:8px 8px max(10px,env(safe-area-inset-bottom))!important}
+  .add-captain-form{gap:7px!important}
+  .add-captain-form .input,.add-captain-form .select{height:43px!important;min-height:43px!important}
+  .add-captain-form .addcap-save{min-height:49px!important;font-size:15px!important}
+}
+
+
+/* V3.4.8 — Captain registration review cards */
+.reg-docs{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.reg-doc{width:74px}.reg-doc img{width:74px;height:56px;object-fit:cover;border-radius:9px;border:1px solid #33404c;background:#080d12;display:block;cursor:pointer}.reg-doc button{width:100%;font-size:9px;padding:6px 4px;margin-top:4px}.reg-edit-note{font-size:10px;color:#ffbd85;margin-top:4px}.reg-actions{display:flex;gap:6px;flex-wrap:wrap}.reg-actions .btn{padding:8px 10px}.reg-form-docs{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:12px 0}.reg-form-docs .card{text-align:center}.reg-form-docs img{width:100%;height:150px;object-fit:contain;background:#080c11;border-radius:10px;border:1px solid #26323d;margin-top:8px;cursor:pointer}
+@media(max-width:700px){.reg-form-docs{grid-template-columns:1fr}.reg-form-docs img{height:210px}.reg-doc{width:64px}.reg-doc img{width:64px;height:50px}}
+
+.wide{min-width:0}
+</style>
+<style>.v324fab{position:fixed;left:16px;bottom:18px;z-index:99;background:#ff7a00;color:#111;border:0;border-radius:999px;padding:12px 16px;font-weight:900;box-shadow:0 8px 30px #000}.v324box{position:fixed;inset:8%;z-index:120;background:#090909;border:1px solid #66380d;border-radius:18px;padding:18px;overflow:auto;display:none}.v324box input,.v324box textarea,.v324box select{width:100%;box-sizing:border-box;margin:5px 0;padding:10px;background:#111;color:#fff;border:1px solid #333;border-radius:10px}</style>
+<style id="mobile-admin-hotfix-v326">
+/* AMMAN DELIVERY V3.2.6 — Admin mobile-first layout */
+@media(max-width:800px){
+  body{overflow-x:hidden;padding-bottom:84px}
+  .app{padding-bottom:84px}
+  .top{height:58px;padding:0 10px;gap:8px;position:sticky;top:0}
+  .brand img{width:38px;height:38px}.brand span{display:block;font-size:12px;white-space:nowrap}.brand span{max-width:108px;overflow:hidden;text-overflow:ellipsis}
+  .top-actions{gap:5px;margin-right:auto}.top-actions .btn{padding:8px 9px;font-size:11px;border-radius:9px}.top-actions a[href="/"]{display:none}
+  .wrap{display:block;min-height:calc(100vh - 58px)}
+  .side{display:block;position:fixed;left:0;right:0;bottom:0;z-index:250;border:0;border-top:1px solid #2d3540;background:#070a0df2;backdrop-filter:blur(18px);padding:7px 8px calc(7px + env(safe-area-inset-bottom));box-shadow:0 -10px 35px #0009}
+  .nav{position:static;display:flex;flex-direction:row;gap:6px;overflow-x:auto;overscroll-behavior-inline:contain;scrollbar-width:none;padding-bottom:1px}.nav::-webkit-scrollbar{display:none}
+  .nav button{flex:0 0 108px;min-height:52px;justify-content:center;text-align:center;flex-direction:column;gap:2px;padding:7px 5px;border-radius:12px;font-size:10px;line-height:1.15;white-space:nowrap}
+  .nav button.active{box-shadow:0 6px 18px #ff75182e}
+  .main{padding:10px 10px 18px}
+  .hero{padding:14px;border-radius:16px;gap:10px;margin-bottom:10px}.hero h1{font-size:20px}.hero .week{font-size:10px;line-height:1.55}.hero-actions{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:7px}.hero-actions .btn{width:100%;font-size:11px;padding:9px 7px}
+  .stats{grid-template-columns:1fr 1fr;gap:8px;margin:8px 0}.stat{padding:11px;border-radius:13px}.stat b{font-size:20px}.stat span{font-size:10px}.stat .small{font-size:9px}
+  .grid2,.grid3{grid-template-columns:1fr;gap:9px}.panel{border-radius:14px}.ph{align-items:flex-start;flex-direction:column;padding:11px 12px;gap:8px}.ph h3{font-size:14px}.ph small{font-size:10px}.pb{padding:11px 12px}
+  .filters{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:7px}.filters .input,.filters .select,.filters .btn{width:100%;min-width:0;font-size:11px;padding:9px 8px;height:auto}.filters .input,.filters .select{height:40px}.filters > :only-child{grid-column:1/-1}
+  .table{width:calc(100% + 24px);margin-left:-12px;margin-right:-12px;padding:0 12px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+  table{min-width:760px}th,td{font-size:10.5px;padding:9px 8px}th{top:0;z-index:2}
+  th:first-child,td:first-child{position:sticky;right:0;z-index:3;background:#0d1319;box-shadow:-8px 0 16px #0005}th:first-child{z-index:4;background:#0b1016}
+  .row{align-items:flex-start}.form-grid{grid-template-columns:1fr}.form-grid .wide{grid-column:auto}
+  .modal{padding:0;align-items:flex-end}.modal-card{width:100%;max-height:92dvh;border-radius:20px 20px 0 0;border-bottom:0}.modal-head{padding:12px;position:sticky;top:0;background:#0d1218;z-index:3}.modal-body{padding:12px}
+  .callout{font-size:11px;padding:10px}.btn{touch-action:manipulation}.input,.select{font-size:16px}
+  .v324fab{left:10px;bottom:92px;padding:10px 12px;font-size:11px}.v324box{inset:58px 8px 92px;border-radius:16px;padding:12px}.v324box h2{font-size:16px}
+  .toast{left:10px;right:10px;bottom:94px;max-width:none;font-size:11px}
+  .login{padding:14px}.login-card{padding:20px 16px;border-radius:20px}.login .logo{width:125px}.login h1{font-size:25px}.login .input{height:48px}.login .btn{height:48px;font-size:15px}
+}
+@media(max-width:390px){
+  .brand span{display:none}.top-actions .btn{padding:8px 7px}.hero-actions{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.nav button{flex-basis:96px}
+}
+</style>
+
+<style id="v331-admin-mobile">
+@media(max-width:800px){.top{height:auto!important;min-height:64px!important;padding:8px 10px!important;flex-wrap:wrap!important}.brand{min-width:0!important}.top-actions{width:100%!important;margin:0!important;display:grid!important;grid-template-columns:1fr 1fr 1fr!important}.top-actions .btn{padding:9px 6px!important;font-size:11px!important}.main{width:100%!important;max-width:100vw!important;overflow-x:hidden!important}.hero{padding:16px!important}.hero h1{font-size:23px!important}.hero-actions{display:grid!important;grid-template-columns:1fr!important;width:100%!important}.stats{grid-template-columns:1fr 1fr!important}.stat{min-width:0!important}.ph{align-items:flex-start!important;flex-wrap:wrap!important}.filters{width:100%!important}.filters>*{width:100%!important}.table{max-width:100%;overflow:auto;-webkit-overflow-scrolling:touch}.modal-card{width:100%!important}.v324fab{bottom:76px!important}}
+</style>
+
+<style id="dropcode-promo-style">
+.dropcode-promo{width:min(760px,calc(100% - 24px));margin:28px auto 96px;padding:15px 17px;border:1px solid rgba(255,92,0,.32);border-radius:20px;background:radial-gradient(circle at 92% 0,rgba(255,92,0,.13),transparent 34%),linear-gradient(145deg,rgba(13,16,20,.98),rgba(6,8,11,.98));box-shadow:0 20px 60px rgba(0,0,0,.34),0 0 0 1px rgba(255,255,255,.015) inset;display:flex;align-items:center;justify-content:center;gap:15px;direction:rtl;position:relative;overflow:hidden}
+.dropcode-promo:before{content:"";position:absolute;left:-50px;bottom:-95px;width:220px;height:220px;border-radius:50%;background:rgba(255,92,0,.08);filter:blur(12px);pointer-events:none}
+.dropcode-logo-link{display:block;flex:0 0 auto;border-radius:18px;transition:.2s ease;position:relative;z-index:1}
+.dropcode-logo-link:hover{transform:translateY(-2px) scale(1.025);filter:brightness(1.08)}
+.dropcode-logo{display:block;width:76px;height:76px;object-fit:cover;border-radius:18px;border:1px solid rgba(255,105,32,.36);box-shadow:0 10px 30px rgba(0,0,0,.4),0 0 24px rgba(255,92,0,.08)}
+.dropcode-copy{min-width:0;line-height:1.55;position:relative;z-index:1}
+.dropcode-copy strong{display:block;color:#fff;font-size:15px;font-weight:950;letter-spacing:.2px}
+.dropcode-copy .dropcode-name{color:#ff6a1a}
+.dropcode-copy small{display:block;color:#98a2ad;font-size:11px;margin-top:2px}
+.dropcode-phone{display:inline-flex;align-items:center;gap:7px;margin-top:8px;padding:7px 11px;border-radius:999px;border:1px solid rgba(255,105,32,.34);background:rgba(255,92,0,.08);color:#ffb07b!important;font-weight:950;font-size:12px;text-decoration:none!important;direction:ltr;transition:.18s ease}
+.dropcode-phone:hover{transform:translateY(-1px);border-color:rgba(255,105,32,.62);background:rgba(255,92,0,.14);color:#fff!important}
+@media(max-width:640px){.dropcode-promo{width:calc(100% - 20px);margin:20px auto 110px;padding:12px;justify-content:flex-start;gap:11px}.dropcode-logo{width:62px;height:62px;border-radius:15px}.dropcode-copy strong{font-size:13px}.dropcode-copy small{font-size:10px}.dropcode-phone{font-size:11px;padding:6px 9px}}
+</style>
+
+<link rel="stylesheet" href="/assets/amman-admin.css?v=643">
+<link rel="stylesheet" href="/assets/amman-admin-v6.css?v=643">
+<link rel="stylesheet" href="/assets/amman-theme.css"><meta name="color-scheme" content="dark"></head>
+<body>
+<div id="login" class="login">
+ <div class="login-card"><img class="logo" src="/assets/amman-logo.jpeg"><div style="color:var(--orange);font-size:11px;font-weight:900;letter-spacing:2px">ADMIN CENTER</div><h1>AMMAN DELIVERY</h1><p class="muted">لوحة الإدارة والمحاسبة الأسبوعية</p><input id="lu" class="input" value="admin" placeholder="اسم المستخدم"><input id="lp" class="input" type="password" placeholder="كلمة السر" style="margin-top:8px"><button class="btn btn-primary" style="width:100%;margin-top:8px" onclick="loginAdmin()">دخول</button><div id="lerr" style="color:#ff9999;font-size:12px;margin-top:8px"></div></div>
+</div>
+
+<div id="app" class="app">
+<header class="top"><div class="brand"><img src="/assets/amman-logo.jpeg"><span>Click <b>Plus</b> — ADMIN</span></div><div class="top-actions"><a href="/" class="btn">🏠 الرئيسية</a><button class="btn" onclick="loadAll()">↻ تحديث</button><button class="btn btn-danger" onclick="logout()">خروج</button></div></header>
+<div class="wrap">
+<aside class="side"><div class="nav">
+<button class="active" onclick="go('overview',this)">⌂ نظرة عامة</button>
+<button onclick="go('daily',this)">📥 جرد اليوم</button>
+<button onclick="go('weekly',this)">📆 التسكير الأسبوعي</button>
+<button onclick="go('registrations',this)">🆕 كابتن جديد <span id="registrationBadge" class="badge wait" style="margin-right:auto">0</span></button>
+<button onclick="go('captains',this)">👥 الكباتن الفعالين</button>
+<button onclick="go('stopped',this)">⛔ الكباتن الموقوفين</button>
+<button onclick="go('archive',this)">📚 أرشيف الأسابيع</button>
+<button onclick="go('groups',this)">◎ القروبات والفحص</button>
+<button onclick="go('negative-remove',this)">🧹 إزالة الرصيد السالب</button>
+<button onclick="go('unregistered',this)">⚠️ الأرقام غير المسجلة <span id="unknownBadge" class="badge off" style="margin-right:auto">0</span></button>
+<button onclick="go('authorized',this)">🚫 الأرقام المخولة</button>
+<button onclick="go('system-transfer',this)">💸 التحويل للنظام</button>
+<button onclick="go('objections',this)">⚠️ اعتراضات الكباتن</button>
+<button onclick="go('audit',this)">📝 السجل الإداري</button>
+</div></aside>
+<main class="main">
+<div class="hero"><div><h1>إدارة <span>AMMAN DELIVERY</span> ✦</h1><div class="week" id="weekLabel">جاري تحميل الأسبوع الحالي...</div></div><div class="hero-actions"><button class="btn btn-primary" onclick="go('weekly')">📆 فتح التسكير الأسبوعي</button><button class="btn" onclick="scanGroups()">🔍 فحص أعضاء القروبات</button></div></div>
+
+<section id="s-overview" class="section active">
+<div class="stats">
+<div class="stat"><span>كباتن فعالين</span><b id="ovActive">0</b><div class="small">ينزل عليهم الأرضية</div></div>
+<div class="stat"><span>كباتن موقوفين</span><b id="ovStopped">0</b><div class="small">لا تنزل عليهم أرضية</div></div>
+<div class="stat"><span>إجمالي الإنتاج</span><b id="ovProd">0.00</b><div class="small">د.أ</div></div>
+<div class="stat"><span>إجمالي الاستهلاك</span><b id="ovCons">0.00</b><div class="small">د.أ</div></div>
+<div class="stat"><span>الأرضيات</span><b id="ovFloor">0.00</b><div class="small">د.أ</div></div>
+</div>
+<div class="grid2">
+<div class="panel"><div class="ph"><div><h3>💰 ملخص التسوية الحالية</h3><small>قبل إغلاق الأسبوع</small></div></div><div class="pb" id="overviewSettlement"></div></div>
+<div class="panel"><div class="ph"><div><h3>⚡ إجراءات سريعة</h3><small>كلها يدوية وتحت سيطرتك</small></div></div><div class="pb grid2"><button class="btn btn-primary" onclick="openAddCaptain()">➕ إضافة كابتن</button><button class="btn" onclick="go('registrations')">🆕 طلبات التسجيل</button><button class="btn" onclick="previewClose()">👁️ معاينة التسكير</button><button class="btn" onclick="applyFloor()">🧾 إضافة أرضية 0.75</button><button class="btn" onclick="completeFloor()">🧾 استكمال الأرضيات</button><button class="btn" onclick="scanGroups()">🔍 فحص القروبات</button><button class="btn" onclick="go('archive')">📚 الأرشيف</button></div></div>
+</div>
+<div class="panel" style="margin-top:12px" id="oldBalancesPanel">
+  <div class="ph">
+    <div><h3>🔄 إجمالي الأرصدة القديمة</h3><small>الأرصدة غير المسددة من جميع الأسابيع السابقة — منفصلة عن حسبة الأسبوع الحالي</small></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><span class="badge wait" id="oldBalanceCountBadge">0 رصيد</span><button class="btn" onclick="loadOldBalances()">↻ تحديث</button></div>
+  </div>
+  <div class="pb">
+    <div class="stats" style="margin-bottom:10px">
+      <div class="stat"><span>إجمالي الأرصدة القديمة</span><b class="money minus" id="oldBalanceGrandTotal">0.00</b><div class="small">د.أ</div></div>
+      <div class="stat"><span>عدد الأرصدة</span><b id="oldBalanceCount">0</b><div class="small">رصيد غير مسدد</div></div>
+      <div class="stat"><span>عدد الكباتن</span><b id="oldBalanceCaptains">0</b><div class="small">من جميع الأسابيع</div></div>
+    </div>
+    <div class="callout">هذه القائمة تجمع <b>الأرصدة القديمة المفتوحة فقط</b> من جميع الأسابيع المغلقة. الأرصدة المسددة أو التي تم ترحيلها ودمجها في رصيد أحدث لا تُحسب مرتين.</div>
+  </div>
+  <div class="table"><table><thead><tr><th>الأسبوع</th><th>الكابتن</th><th>الرقم</th><th>الرصيد القديم</th><th>الحالة</th></tr></thead><tbody id="oldBalancesBody"></tbody></table></div>
+</div>
+</section>
+
+
+<section id="s-daily" class="section">
+<div class="panel">
+  <div class="ph">
+    <div><h3>📥 جرد اليوم</h3><small>الحركات التي انطبقت فعلياً اليوم داخل AMMAN DELIVERY حسب توقيت الأردن</small></div>
+    <div class="filters"><button class="btn" onclick="loadDailyLedger()">↻ تحديث جرد اليوم</button></div>
+  </div>
+  <div class="pb">
+    <div class="stats">
+      <div class="stat"><span>الطلبات المحتسبة</span><b id="dailyOrders">0</b><div class="small">طلب</div></div>
+      <div class="stat"><span>إنتاج اليوم</span><b class="money plus" id="dailyProduction">0.00</b><div class="small">د.أ</div></div>
+      <div class="stat"><span>استهلاك اليوم</span><b class="money minus" id="dailyConsumption">0.00</b><div class="small">د.أ</div></div>
+      <div class="stat"><span>بانتظار تسجيل</span><b id="dailyPending">0</b><div class="small">حركة</div></div>
+    </div>
+    <div class="callout" id="dailyLedgerNote">يعرض الحركات المطبقة فعلياً اليوم فقط.</div>
+  </div>
+  <div class="table"><table>
+    <thead><tr><th>الوقت</th><th>المنتج</th><th>المستهلك</th><th>الريأكشن</th><th>الإنتاج</th><th>الاستهلاك</th><th>الحالة</th></tr></thead>
+    <tbody id="dailyLedgerBody"><tr><td colspan="7" class="empty">جاري تحميل جرد اليوم...</td></tr></tbody>
+  </table></div>
+</div>
+<div class="panel" style="margin-top:12px">
+  <div class="ph"><div><h3>⏳ بانتظار تسجيل رقم</h3><small>وصلت اليوم لكنها لم تدخل بالحسبة النهائية</small></div></div>
+  <div class="table"><table>
+    <thead><tr><th>الوقت</th><th>المنتج</th><th>المستهلك</th><th>الريأكشن</th><th>القيمة</th><th>الحالة</th></tr></thead>
+    <tbody id="dailyPendingBody"><tr><td colspan="6" class="empty">لا يوجد</td></tr></tbody>
+  </table></div>
+</div>
+</section>
+
+<section id="s-weekly" class="section">
+<div class="panel"><div class="ph"><div><h3>📆 التسكير الأسبوعي</h3><small>الإنتاج − الاستهلاك − الأرضية − الرصيد القديم = الصافي</small></div><div class="filters"><input id="weeklySearch" class="input" inputmode="numeric" placeholder="🔎 بحث بالاسم أو رقم الكابتن" oninput="renderAll()"><button class="btn" onclick="previewClose()">👁️ معاينة</button><button class="btn btn-primary" onclick="openManualMovement()">➕ إضافة حركة</button><button id="floorBtn" class="btn" onclick="applyFloor()">🧾 أرضية 0.75</button><button class="btn" onclick="completeFloor()">🧾 استكمال الأرضيات</button><button class="btn btn-danger" onclick="closeWeek()">🔒 إغلاق الأسبوع</button></div></div>
+<div class="pb"><div class="callout">الأرضية والتسكير <b>يدويان</b>. زر <b>استكمال الأرضيات</b> يفحص الكباتن الفعالين ويضيف الأرضية فقط للناقصين بدون تكرار. <b>الرصيد القديم</b> هو أي مبلغ غير مسدد من الأسبوع السابق ويُحتسب مرة واحدة ضمن الصافي الجديد.</div></div>
+<div class="table"><table><thead><tr><th>الكابتن</th><th>الحالة</th><th>إله — إنتاج</th><th>عليه — استهلاك</th><th>الأرضية</th><th>رصيد قديم</th><th>مجموع عليه</th><th>الصافي</th><th>النتيجة</th></tr></thead><tbody id="weeklyBody"></tbody></table></div>
+</div>
+<div class="panel" style="margin-top:12px"><div class="ph"><div><h3>✏️ التصحيحات اليدوية</h3><small>تضاف للأسبوع الحالي فقط وتظهر في السجل الإداري</small></div></div><div class="table"><table><thead><tr><th>الكابتن</th><th>النوع</th><th>القيمة</th><th>ملاحظة</th><th>الوقت</th><th></th></tr></thead><tbody id="adjustBody"></tbody></table></div></div><div class="panel" style="margin-top:12px"><div class="ph"><div><h3>➕ إضافة إنتاج / استهلاك</h3><small>اكتب عدد الأوردرات — كل أوردر = 0.25 د.أ</small></div></div><div class="table"><table><thead><tr><th>الكابتن</th><th>النوع</th><th>عدد الأوردرات</th><th>القيمة</th><th>ملاحظة</th><th>الوقت</th><th></th></tr></thead><tbody id="manualMovBody"></tbody></table></div></div><div class="panel" style="margin-top:12px"><div class="ph"><div><h3>🎯 تصحيحات الرصيد النهائي</h3><small>الفرق المعتمد بعد الجرد، مع بقاء الحركات الأصلية كما هي</small></div></div><div class="table"><table><thead><tr><th>الكابتن</th><th>قبل</th><th>بعد</th><th>الفرق</th><th>السبب</th><th>الوقت</th></tr></thead><tbody id="balanceCorrBody"></tbody></table></div></div>
+</div>
+</section>
+
+<section id="s-registrations" class="section">
+<div class="panel"><div class="ph"><div><h3>🆕 طلبات تسجيل الكباتن الجدد</h3><small>الطلب ما يتحول لكابتن إلا لما تضغط قبول</small></div><div class="filters"><button class="btn btn-primary" onclick="copyRegistrationLink()">📋 نسخ رابط التسجيل</button><a class="btn" href="/register" target="_blank">🔗 فتح الرابط</a><button class="btn" onclick="loadRegistrations()">↻ تحديث</button></div></div>
+<div class="pb"><div class="callout">رابط التسجيل: <b id="registrationLinkText" dir="ltr"></b><br>✅ عند القبول ينضاف الكابتن تلقائياً بقائمة الكباتن بكلمة سر أولية 123456، وبعد أول دخول يكمل كلمة السر وطريقة التحويل.</div></div>
+<div class="table"><table><thead><tr><th>#</th><th>الاسم</th><th>الرقم</th><th>المستندات</th><th>ملاحظة</th><th>وقت الطلب</th><th>إجراء</th></tr></thead><tbody id="registrationPendingBody"></tbody></table></div></div>
+<div class="panel" style="margin-top:12px"><div class="ph"><div><h3>📚 آخر طلبات التسجيل</h3><small>المقبولة والمرفوضة تبقى محفوظة كسجل</small></div></div><div class="table"><table><thead><tr><th>الاسم</th><th>الرقم</th><th>الحالة</th><th>ملاحظة الإدارة</th><th>المراجعة</th></tr></thead><tbody id="registrationHistoryBody"></tbody></table></div></div>
+</section>
+
+<section id="s-captains" class="section">
+<div class="panel"><div class="ph"><div><h3>👥 الكباتن الفعالين</h3><small>الموجودون في القروبات المعتمدة حسب آخر فحص</small></div><div class="filters"><input id="capSearch" class="input" inputmode="search" placeholder="🔎 بحث بالاسم أو رقم الكابتن" oninput="renderCaptains()"><button class="btn btn-primary" onclick="openAddCaptain()">➕ إضافة كابتن</button><button class="btn" onclick="scanGroups()">🔍 فحص القروبات</button><button class="btn btn-primary" onclick="importCaptains()">📥 استيراد من الشيت</button></div></div><div class="table"><table><thead><tr><th>الاسم</th><th>الرقم</th><th>الإنتاج</th><th>الاستهلاك</th><th>الأرضية</th><th>الصافي</th><th>الحالة</th><th>إعداد الحساب</th><th>التحويل</th><th>إجراء</th></tr></thead><tbody id="activeCaps"></tbody></table></div></div>
+</section>
+
+<section id="s-stopped" class="section">
+<div class="panel"><div class="ph"><div><h3>⚠️ فحص التكرار</h3><small>أي اسم أو رقم مكرر موجود بالنظام يظهر هنا فوراً</small></div><button class="btn" onclick="loadDuplicates()">🔄 تحديث الفحص</button></div><div id="duplicateSummary" class="callout">جاري فحص التكرارات...</div><div id="duplicateDetails" style="margin-top:10px"></div></div>
+
+<div class="panel"><div class="ph"><div><h3>⛔ الكباتن الموقوفين</h3><small>لا يتم حذفهم ولا تنزل عليهم أرضية</small></div><div class="filters"><input id="stopSearch" class="input" inputmode="search" placeholder="🔎 بحث بالاسم أو رقم الكابتن" oninput="renderCaptains()"><button class="btn" onclick="scanGroups()">🔍 إعادة الفحص</button></div></div><div class="table"><table><thead><tr><th>الاسم</th><th>الرقم</th><th>سبب الإيقاف</th><th>آخر ظهور بالقروبات</th><th>آخر فحص</th><th>إعداد الحساب</th><th>التحويل</th><th>إجراء</th></tr></thead><tbody id="stoppedCaps"></tbody></table></div></div>
+</section>
+
+<section id="s-archive" class="section">
+<div class="panel"><div class="ph"><div><h3>📚 أرشيف الأسابيع</h3><small>كل أسبوع مقفل محفوظ كما هو</small></div><button class="btn" onclick="loadArchive()">↻</button></div><div class="table"><table><thead><tr><th>الأسبوع</th><th>من</th><th>إلى</th><th>الأرضيات</th><th>للكباتن</th><th>على الكباتن</th><th>غير مسدد</th><th></th></tr></thead><tbody id="archiveBody"></tbody></table></div></div><div class="panel"><div class="ph"><h3>سلة محذوفات الأسابيع</h3><button class="btn" onclick="loadTrash()">عرض المحذوفات</button></div><div class="table"><table><thead><tr><th>الأسبوع</th><th>من</th><th>إلى</th><th>تاريخ الحذف</th><th>استرجاع</th></tr></thead><tbody id="trashBody"></tbody></table></div></div>
+</section>
+
+
+<section id="s-negative-remove" class="section">
+<div class="panel">
+  <div class="ph">
+    <div><h3>🧹 إزالة أصحاب الرصيد السالب من القروبات</h3><small>يدوي فقط — للكباتن الذين دخلوا الأسبوع الجديد برصيد قديم وما زال صافيهم سالب</small></div>
+    <div class="filters"><button class="btn" onclick="loadNegativeRemovalSection()">↻ تحديث الكل</button><button class="btn btn-danger" onclick="removeSelectedNegativeCaptains()">إزالة المحددين من القروبات</button></div>
+  </div>
+  <div class="pb">
+    <div class="callout">
+      ⚠️ التنفيذ يدوي وبطيء للحماية: حد أقصى 5 كباتن بالدفعة، ومهلة بين عمليات الإزالة.
+      إذا رجع DROPCODE/WhatsApp Rate Limit أو مشكلة صلاحيات، العملية تتوقف.
+    </div>
+    <div class="row" style="margin-top:10px;gap:8px;flex-wrap:wrap">
+      <span class="badge wait" id="negativeCarryWeek">الأسبوع: —</span>
+      <span class="badge off" id="negativeCarryCount">0 كابتن</span>
+      <button class="btn" onclick="toggleNegativeCarryAll(true)">تحديد أول 5</button>
+      <button class="btn" onclick="toggleNegativeCarryAll(false)">إلغاء التحديد</button>
+    </div>
+  </div>
+  <div class="table"><table>
+    <thead><tr><th>اختيار</th><th>الكابتن</th><th>الرقم</th><th>الرصيد القديم</th><th>الصافي الحالي</th><th>إنتاج الأسبوع</th><th>استهلاك الأسبوع</th><th>الحالة</th></tr></thead>
+    <tbody id="negativeCarryBody"><tr><td colspan="8" class="empty">اضغط تحديث القائمة</td></tr></tbody>
+  </table></div>
+</div>
+
+<div class="panel" style="margin-top:12px">
+  <div class="ph">
+    <div><h3>✅ تم إزالتهم</h3><small>يبقون هنا حتى ترجعهم يدويًا للقروبات</small></div>
+    <div class="filters"><button class="btn" onclick="loadNegativeCarryRemoved()">↻ تحديث</button></div>
+  </div>
+  <div class="pb">
+    <div class="callout">↩️ زر الإرجاع شغال دائماً حتى لو الرصيد لسه سالب، ويعيد الكابتن لنفس القروبات التي انشال منها بشكل تدريجي.</div>
+    <div class="row" style="margin-top:10px;gap:8px;flex-wrap:wrap"><span class="badge info" id="negativeRemovedCount">0 كابتن</span></div>
+  </div>
+  <div class="table"><table>
+    <thead><tr><th>الكابتن</th><th>الرقم</th><th>تاريخ الإزالة</th><th>الصافي الحالي</th><th>القروبات</th><th>الحالة</th><th>إجراء</th></tr></thead>
+    <tbody id="negativeRemovedBody"><tr><td colspan="7" class="empty">جاري تحميل القائمة...</td></tr></tbody>
+  </table></div>
+</div>
+
+<div class="panel" style="margin-top:12px">
+  <div class="ph"><div><h3>📋 نتيجة آخر تنفيذ</h3><small>مين انشال أو رجع ومن أي قروب وأي عملية فشلت</small></div></div>
+  <div class="table"><table>
+    <thead><tr><th>الكابتن</th><th>القروب</th><th>النتيجة</th><th>التفاصيل</th></tr></thead>
+    <tbody id="negativeRemovalResultBody"><tr><td colspan="4" class="empty">لا يوجد تنفيذ بعد</td></tr></tbody>
+  </table></div>
+</div>
+</section>
+
+<section id="s-groups" class="section">
+<div class="grid2">
+<div class="panel"><div class="ph"><div><h3>◎ القروبات المعتمدة</h3><small>القروب المفعّل يدخل بالحساب والفحص، و«مصدر التسجيل» فقط يسمح بإضافة كباتن تلقائياً أو من الشيت</small></div><div class="filters"><button class="btn btn-primary" onclick="openAddGroup()">➕ إضافة قروب</button><button class="btn" onclick="loadGroups()">↻</button></div></div><div class="pb" id="groupsList"></div></div>
+<div class="panel"><div class="ph"><div><h3>🔍 فحص أعضاء القروبات</h3><small>يحدّث الحالة ويضيف تلقائياً فقط من قروب مصدر التسجيل</small></div></div><div class="pb"><div class="callout">زر الفحص يقارن أرقام الكباتن مع القروبات المفعلة. الموجود يصير <b>فعال</b>، وغير الموجود يصير <b>موقوف</b>. إنشاء كابتن جديد مسموح فقط من القروب المحدد كـ <b>مصدر تسجيل</b>.</div><button class="btn btn-primary" style="width:100%;margin-top:10px" onclick="scanGroups()">🔍 ابدأ الفحص الآن</button><div id="scanResult" style="margin-top:12px"></div></div></div>
+</div>
+</section>
+
+
+<section id="s-unregistered" class="section">
+<div class="panel"><div class="ph"><div><h3>⚠️ الأرقام غير المسجلة</h3><small>أي طرف شارك بطلب وهو غير موجود بقائمة الكباتن</small></div><div class="filters"><button class="btn" onclick="loadUnregistered()">↻ تحديث</button><button class="btn btn-danger" onclick="repairLegacyUnknown()">🛡️ تصحيح الحركات القديمة الناقصة</button><button class="btn" onclick="cleanupWaiting()">🧹 حذف طلبات الانتظار +24 ساعة</button></div></div>
+<div class="pb"><div class="callout">من هسا أي طلب طرفه غير مسجل <b>ما بنحسب لطرف واحد</b>؛ يظل معلق لحد ما تسجل الرقم أو تربطه بكابتن. بعد التسجيل تتم المعالجة مرة واحدة فقط.</div><div id="legacyWarning" style="margin-top:8px"></div></div>
+<div class="table"><table><thead><tr><th>الاسم/الرقم</th><th>الرقم</th><th>مرات الظهور</th><th>كمنتج</th><th>كمستهلك</th><th>قيمة مرتبطة</th><th>معلق</th><th>آخر ظهور</th><th>إجراء</th></tr></thead><tbody id="unknownBody"></tbody></table></div></div>
+</section>
+
+<section id="s-authorized" class="section">
+<div class="grid2">
+<div class="panel"><div class="ph"><div><h3>🚫 الأرقام المخولة</h3><small>المسموح لهم باستخدام إلغاء العمولة</small></div></div><div class="pb" id="authList"></div></div>
+<div class="panel"><div class="ph"><div><h3>إضافة رقم</h3></div></div><div class="pb form-grid"><input id="aname" class="input" placeholder="الاسم"><input id="aphone" class="input" placeholder="رقم الهاتف"><button class="btn btn-primary wide" onclick="addAuthorized()">إضافة / تحديث</button></div></div>
+</div>
+</section>
+
+
+<section id="s-system-transfer" class="section">
+<div class="grid2">
+  <div class="panel"><div class="ph"><div><h3>💸 بيانات التحويل للنظام</h3><small>هذه البيانات تظهر لكل الكباتن عند التحويل للنظام</small></div><button class="btn" onclick="loadSystemTransferSettings()">↻ تحديث</button></div>
+    <div class="pb form-grid">
+      <div><div class="muted" style="font-size:11px;margin-bottom:5px">طريقة التحويل</div><input id="stMethod" class="input" placeholder="مثال: " oninput="renderSystemTransferPreview()"></div>
+      <div><div class="muted" style="font-size:11px;margin-bottom:5px">اسم صاحب الحساب</div><input id="stName" class="input" placeholder="اسم المستفيد" oninput="renderSystemTransferPreview()"></div>
+      <div class="wide"><div class="muted" style="font-size:11px;margin-bottom:5px">الرقم / الحساب</div><input id="stNumber" class="input" dir="ltr" placeholder="رقم المحفظة أو الحساب" oninput="renderSystemTransferPreview()"></div>
+      <div class="wide"><div class="muted" style="font-size:11px;margin-bottom:5px">ملاحظة للكباتن (اختياري)</div><input id="stNote" class="input" placeholder="مثال: اكتب اسمك في وصف الحوالة" oninput="renderSystemTransferPreview()"></div>
+      <div class="callout wide">🔁 أي تعديل تحفظه هنا يتغير مباشرة عند <b>كل الكباتن</b> في بطاقة «التحويل للنظام» وفي تعليمات التسوية. ما عاد تحتاج تدخل على الكود.</div>
+      <button class="btn btn-primary wide" onclick="saveSystemTransferSettings()">💾 حفظ بيانات التحويل للنظام</button>
+    </div>
+  </div>
+  <div class="panel"><div class="ph"><div><h3>👁️ المعاينة عند الكابتن</h3><small>نفس البطاقة التي ستظهر في حسابه</small></div></div><div class="pb"><div id="systemTransferPreview" class="callout"></div><div id="systemTransferUpdated" class="muted" style="font-size:10px;margin-top:8px"></div></div></div>
+</div>
+</section>
+
+<section id="s-objections" class="section">
+<div class="panel"><div class="ph"><div><h3>⚠️ اعتراضات الكباتن</h3><small>الاعتراض لا يغيّر الرصيد تلقائياً — راجعه ثم حدث الحالة</small></div><button class="btn" onclick="loadObjections()">↻</button></div><div class="table"><table><thead><tr><th>#</th><th>الكابتن</th><th>المشكلة</th><th>الحالة</th><th>الوقت</th><th>إجراء</th></tr></thead><tbody id="objectionsBody"></tbody></table></div></div>
+</section>
+
+<section id="s-audit" class="section">
+<div class="panel"><div class="ph"><div><h3>📝 السجل الإداري</h3><small>الأرضية، التسكير، التصحيحات، الفحص والتسويات</small></div><button class="btn" onclick="loadAudit()">↻</button></div><div class="table"><table><thead><tr><th>الوقت</th><th>العملية</th><th>التفاصيل</th></tr></thead><tbody id="auditBody"></tbody></table></div></div>
+</section>
+
+</main></div></div>
+
+<div id="modal" class="modal"><div class="modal-card"><div class="modal-head"><b id="modalTitle">تفاصيل</b><button class="btn close" onclick="hideModal()">×</button></div><div id="modalBody" class="modal-body"></div></div></div>
+<div id="toast" class="toast"></div>
+
+<script>
+let token=localStorage.amman_token||'', state={week:null,rows:[],totals:{},captains:[],archive:[],groups:[],authorized:[],adjustments:[],manualMovements:[],balanceCorrections:[],audit:[],objections:[],registrations:[],unregistered:[],legacyUnknown:0,duplicates:{phone_duplicates:[],name_duplicates:[],total:0},systemTransfer:null,oldBalances:{rows:[],total:0,count:0,captains:0},dailyLedger:{rows:[],pending:[],summary:{orders:0,production:0,consumption:0,pending_registration:0},date:""}};
+const $=id=>document.getElementById(id);
+function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function money(v){return Number(v||0).toFixed(2)}
+function dt(v){if(!v)return '—';try{return new Date(v).toLocaleString('ar-JO',{timeZone:'Asia/Amman'})}catch(e){return String(v)}}
+function tell(t){toast.textContent=t;toast.style.display='block';clearTimeout(toast._t);toast._t=setTimeout(()=>toast.style.display='none',3200)}
+async function api(url,opt={}){
+ opt.headers={...(opt.headers||{}),authorization:'Bearer '+token};
+ if(opt.body && !(opt.body instanceof FormData) && !opt.headers['content-type'])opt.headers['content-type']='application/json';
+ opt.cache='no-store';const r=await fetch(url,opt);let j={};try{j=await r.json()}catch(e){}
+ if(r.status===401){
+   localStorage.removeItem('amman_token');
+   token='';
+   if(window.app)app.style.display='none';
+   if(window.login)login.style.display='grid';
+   if(window.lerr)lerr.textContent='انتهت الجلسة — سجل دخولك من جديد';
+   return {ok:false,error:'UNAUTHORIZED'};
+ }
+ if(!r.ok)j.httpStatus=r.status;return j;
+}
+async function loginAdmin(){lerr.textContent='';const r=await fetch('/api/admin/login',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({username:lu.value.trim(),password:lp.value})});const j=await r.json();if(j.ok){token=j.token;localStorage.amman_token=token;show()}else lerr.textContent='بيانات الدخول غير صحيحة'}
+function logout(){localStorage.removeItem('amman_token');token='';app.style.display='none';login.style.display='grid';lerr.textContent=''}
+function show(){login.style.display='none';app.style.display='block';loadAll()}
+function go(n,b){const next=$('s-'+n),cur=document.querySelector('.section.active');if(!next)return;if(cur===next)return;if(cur)cur.classList.add('cp-leave');document.body.classList.add('cp-switching');setTimeout(()=>{document.querySelectorAll('.section').forEach(x=>x.classList.remove('active','cp-enter','cp-leave'));next.classList.add('active','cp-enter');document.querySelectorAll('.nav button').forEach(x=>x.classList.remove('active'));if(b)b.classList.add('active');if(n==='archive')loadArchive();if(n==='daily')loadDailyLedger();if(n==='negative-remove')loadNegativeRemovalSection();if(n==='audit')loadAudit();if(n==='registrations')loadRegistrations();if(n==='unregistered')loadUnregistered();if(n==='system-transfer')loadSystemTransferSettings();window.scrollTo({top:0,behavior:'smooth'});setTimeout(()=>{next.classList.remove('cp-enter');document.body.classList.remove('cp-switching')},480)},90)}
+function showModal(title,html){modalTitle.textContent=title;modalBody.innerHTML=html;modal.classList.add('show')}function hideModal(){modal.classList.remove('show')}
+
+async function loadAll(){
+ const [w,c,g,a,ad,mm,bc,ar,ob,rr,un,du,st,oldb,dl]=await Promise.all([api('/api/admin/weekly/current'),api('/api/admin/captains-list'),api('/api/admin/detected-groups'),api('/api/admin/authorized-list'),api('/api/admin/weekly/adjustments'),api('/api/admin/weekly/manual-movements'),api('/api/admin/weekly/balance-corrections'),api('/api/admin/weekly/archive'),api('/api/admin/objections'),api('/api/admin/captain-registrations'),api('/api/admin/unregistered'),api('/api/admin/captains-duplicates'),api('/api/admin/system-transfer-settings'),api('/api/admin/weekly/old-balances'),api('/api/admin/daily-ledger')]);
+ if(w.ok){state.week=w.week;state.rows=w.rows||[];state.totals=w.totals||{}}
+ if(c.ok)state.captains=c.rows||[];if(g.ok)state.groups=g.rows||[];if(a.ok)state.authorized=a.rows||[];if(ad.ok)state.adjustments=ad.rows||[];if(mm.ok)state.manualMovements=mm.rows||[];if(bc.ok)state.balanceCorrections=bc.rows||[];if(ar.ok)state.archive=ar.rows||[];if(ob.ok)state.objections=ob.rows||[];if(rr.ok)state.registrations=rr.rows||[];if(un.ok){state.unregistered=un.rows||[];state.legacyUnknown=un.legacy_active||0;}if(du.ok)state.duplicates=du;if(st.ok)state.systemTransfer=st.data||null;if(oldb.ok)state.oldBalances={rows:oldb.rows||[],total:Number(oldb.total||0),count:Number(oldb.count||0),captains:Number(oldb.captains||0)};if(dl.ok)state.dailyLedger={rows:dl.rows||[],pending:dl.pending||[],summary:dl.summary||{},date:dl.date||""};
+ renderAll();
+ const failed=[['الأسبوع',w],['الكباتن',c],['القروبات',g],['المخولين',a],['التعديلات',ad],['الحركات',mm],['التصحيحات',bc],['الأرشيف',ar],['الاعتراضات',ob],['التسجيلات',rr],['غير المسجلين',un],['المكررين',du],['إعدادات التحويل',st],['الأرصدة القديمة',oldb],['جرد اليوم',dl]].filter(x=>!x[1]?.ok).map(x=>x[0]);if(failed.length)tell('⚠️ تعذر تحديث: '+failed.join('، '));
+}
+function renderAll(){
+ weekLabel.textContent=state.week?`الأسبوع الحالي #${state.week.id} — بدأ ${dt(state.week.starts_at)}${state.week.floor_applied_at?' — الأرضية مضافة ✅':' — الأرضية لم تضف بعد'}`:'—';
+ ovActive.textContent=state.captains.filter(x=>x.active).length;ovStopped.textContent=state.captains.filter(x=>!x.active).length;ovProd.textContent=money(state.totals.production);ovCons.textContent=money(state.totals.consumption);ovFloor.textContent=money(state.totals.floor);
+ overviewSettlement.innerHTML=`<div class="row"><span>💰 مطلوب تحويله للكباتن — هذا الأسبوع فقط</span><b class="money plus">${money(state.totals.currentToCaptains??state.totals.toCaptains)} د.أ</b></div><div class="row"><span>💳 مطلوب تحصيله من الكباتن — هذا الأسبوع فقط</span><b class="money minus">${money(state.totals.currentFromCaptains??state.totals.fromCaptains)} د.أ</b></div><div class="row"><span>🧾 إجمالي الأرضيات</span><b class="money floor">${money(state.totals.floor)} د.أ</b></div><div class="muted" style="margin-top:8px;font-size:11px">🔄 الأرصدة القديمة مفصولة بالكامل بالجدول الموجود تحت هذا الملخص.</div>`;
+ renderOldBalances();renderDailyLedger();
+ floorBtn.textContent=state.week?.floor_applied_at?'✅ الأرضية مضافة':'🧾 أرضية 0.75';floorBtn.disabled=!!state.week?.floor_applied_at;
+ const wq=(window.weeklySearch?.value||'').trim();
+ weeklyBody.innerHTML=[...state.rows].filter(x=>captainMatches(x,wq)).sort(captainSort).map(x=>{let n=Number(x.net),old=Number(x.old_balance||0),result=n>0?`<span class="badge ok">إله ${money(n)}</span>`:n<0?`<span class="badge off">عليه ${money(Math.abs(n))}</span>`:`<span class="badge info">صفر</span>`;return `<tr><td><b>${esc(x.name)}</b><div class="muted" dir="ltr">${esc(x.phone)}</div></td><td>${x.active?'<span class="badge ok">فعال</span>':'<span class="badge off">موقوف</span>'}</td><td class="money plus">${money(x.production)}</td><td class="money minus">${money(x.consumption)}</td><td class="money floor">${money(x.floor_fee)}</td><td class="money minus">${old>0?`<b>${money(old)}</b>`:'0.00'}</td><td>${money(Number(x.consumption)+Number(x.floor_fee)+old)}</td><td><b>${money(x.net)}</b></td><td><button class="btn" onclick='openBalanceCorrection(${JSON.stringify(x.phone)})'>✏️ الرصيد</button> ${result}</td></tr>`}).join('')||'<tr><td colspan="9" class="empty">لا يوجد كباتن مطابقين للبحث</td></tr>';
+ renderCaptains();renderRegistrations();renderArchive();renderGroups();renderAuthorized();renderAdjustments();renderManualMovements();renderBalanceCorrections();renderObjections();renderUnknown();renderSystemTransferSettings();
+}
+
+function renderDailyLedger(){
+ const d=state.dailyLedger||{},s=d.summary||{},rows=d.rows||[],pending=d.pending||[];
+ if(window.dailyOrders)dailyOrders.textContent=Number(s.orders||0);
+ if(window.dailyProduction)dailyProduction.textContent=money(s.production);
+ if(window.dailyConsumption)dailyConsumption.textContent=money(s.consumption);
+ if(window.dailyPending)dailyPending.textContent=Number(s.pending_registration||0);
+ if(window.dailyLedgerNote&&d.date)dailyLedgerNote.innerHTML='جرد <b>'+esc(d.date)+'</b> حسب توقيت الأردن — الحركات المحتسبة فعلياً اليوم فقط.';
+ if(window.dailyLedgerBody)dailyLedgerBody.innerHTML=rows.map(x=>'<tr><td>'+dt(x.applied_at)+'</td><td><b>'+esc(x.producer_name||x.producer_phone)+'</b><div class="muted" dir="ltr">'+esc(x.producer_phone)+'</div></td><td><b>'+esc(x.consumer_name||x.consumer_phone)+'</b><div class="muted" dir="ltr">'+esc(x.consumer_phone)+'</div></td><td><span class="badge info">'+esc(x.current_reaction||'—')+'</span></td><td class="money plus">'+money(x.production)+'</td><td class="money minus">'+money(x.consumption)+'</td><td><span class="badge ok">✅ محتسب</span></td></tr>').join('')||'<tr><td colspan="7" class="empty">ما في حركات محتسبة اليوم لحد الآن</td></tr>';
+ if(window.dailyPendingBody)dailyPendingBody.innerHTML=pending.map(x=>'<tr><td>'+dt(x.updated_at)+'</td><td><b>'+esc(x.producer_name||x.producer_phone)+'</b><div class="muted" dir="ltr">'+esc(x.producer_phone)+'</div></td><td><b>'+esc(x.consumer_name||x.consumer_phone)+'</b><div class="muted" dir="ltr">'+esc(x.consumer_phone)+'</div></td><td><span class="badge wait">'+esc(x.current_reaction||'—')+'</span></td><td>'+money(x.current_value)+'</td><td><span class="badge wait">بانتظار تسجيل</span></td></tr>').join('')||'<tr><td colspan="6" class="empty">✅ ما في حركات معلقة اليوم</td></tr>';
+}
+async function loadDailyLedger(){
+ const j=await api('/api/admin/daily-ledger?_='+Date.now());
+ if(!j.ok){tell('❌ تعذر تحميل جرد اليوم');return}
+ state.dailyLedger={rows:j.rows||[],pending:j.pending||[],summary:j.summary||{},date:j.date||''};
+ renderDailyLedger();
+ tell('✅ تم تحديث جرد اليوم');
+}
+
+
+let negativeCarryCandidates=[];
+let negativeCarryRemoved=[];
+
+function renderNegativeCarryCandidates(){
+  if(!window.negativeCarryBody)return;
+  negativeCarryCount.textContent=negativeCarryCandidates.length+' كابتن';
+  negativeCarryBody.innerHTML=negativeCarryCandidates.map(x=>'<tr>'+
+    '<td><input type="checkbox" class="neg-carry-check" value="'+esc(x.phone)+'"></td>'+
+    '<td><b>'+esc(x.name)+'</b></td>'+
+    '<td dir="ltr">'+esc(x.phone)+'</td>'+
+    '<td class="money minus">'+money(x.old_balance)+'</td>'+
+    '<td class="money minus"><b>'+money(x.current_net)+'</b></td>'+
+    '<td class="money plus">'+money(x.current_week_production)+'</td>'+
+    '<td class="money minus">'+money(x.current_week_consumption)+'</td>'+
+    '<td><span class="badge ok">جاهز للإزالة</span></td>'+
+  '</tr>').join('')||'<tr><td colspan="8" class="empty">✅ ما في كباتن مؤهلين للإزالة حالياً</td></tr>';
+}
+
+function removedGroupsHtml(groups){
+  const xs=Array.isArray(groups)?groups:[];
+  if(!xs.length)return '<span class="muted">—</span>';
+  return '<div style="display:flex;gap:6px;flex-wrap:wrap">'+xs.map(g=>'<span class="badge info">'+esc(g.group_name||g.group_id||'قروب')+'</span>').join('')+'</div>';
+}
+
+function renderNegativeCarryRemoved(){
+  if(!window.negativeRemovedBody)return;
+  negativeRemovedCount.textContent=negativeCarryRemoved.length+' كابتن';
+  negativeRemovedBody.innerHTML=negativeCarryRemoved.map(x=>'<tr>'+
+    '<td><b>'+esc(x.name)+'</b></td>'+
+    '<td dir="ltr">'+esc(x.phone)+'</td>'+
+    '<td>'+dt(x.removed_at)+'</td>'+
+    '<td class="'+(Number(x.current_net)<0?'money minus':'money plus')+'"><b>'+money(x.current_net)+'</b></td>'+
+    '<td>'+removedGroupsHtml(x.groups)+'</td>'+
+    '<td>'+(Number(x.current_net)<0?'<span class="badge off">عليه '+money(Math.abs(Number(x.current_net||0)))+' د.أ</span>':'<span class="badge ok">✅ الرصيد 0 أو موجب</span>')+'</td>'+
+    '<td><button class="btn btn-primary" onclick="restoreNegativeCaptain(\''+esc(x.phone)+'\')">↩️ إرجاع للقروبات</button></td>'+
+  '</tr>').join('')||'<tr><td colspan="7" class="empty">ما في كباتن تمت إزالتهم حالياً</td></tr>';
+}
+
+async function loadNegativeCarryCandidates(){
+  const j=await api('/api/admin/negative-carry-candidates?_='+Date.now());
+  if(!j.ok){tell('❌ تعذر تحميل أصحاب الرصيد السالب');return}
+  negativeCarryCandidates=j.rows||[];
+  if(window.negativeCarryWeek)negativeCarryWeek.textContent='الأسبوع #'+(j.week?.id||'—');
+  renderNegativeCarryCandidates();
+}
+
+async function loadNegativeCarryRemoved(){
+  const j=await api('/api/admin/negative-carry-removed?_='+Date.now());
+  if(!j.ok){tell('❌ تعذر تحميل قائمة تم إزالتهم');return}
+  negativeCarryRemoved=j.rows||[];
+  renderNegativeCarryRemoved();
+}
+
+async function loadNegativeRemovalSection(){
+  await Promise.all([loadNegativeCarryCandidates(),loadNegativeCarryRemoved()]);
+}
+
+function toggleNegativeCarryAll(on){
+  const boxes=[...document.querySelectorAll('.neg-carry-check')];
+  boxes.forEach((b,i)=>b.checked=!!on&&i<5);
+}
+
+async function removeSelectedNegativeCaptains(){
+  const phones=[...document.querySelectorAll('.neg-carry-check:checked')].map(x=>x.value);
+  if(!phones.length){tell('حدد كابتن واحد على الأقل');return}
+  if(phones.length>5){tell('❌ الحد الأقصى 5 كباتن في الدفعة للحماية');return}
+  const names=negativeCarryCandidates.filter(x=>phones.includes(x.phone)).map(x=>x.name).join('، ');
+  if(!confirm('إزالة المحددين من جميع القروبات المفعلة؟\n\n'+names+'\n\nبعد النجاح ينتقل الكابتن تلقائياً إلى قسم «تم إزالتهم».'))return;
+
+  tell('⏳ جاري الإزالة بشكل تدريجي...');
+  try{
+    const j=await api('/api/admin/negative-carry-remove',{method:'POST',body:JSON.stringify({phones})});
+    if(!j.ok){tell('❌ '+(j.message||j.error||'فشل الإزالة'));return}
+    const rows=j.results||[];
+    negativeRemovalResultBody.innerHTML=rows.map(r=>'<tr>'+
+      '<td><b>'+esc(r.name||r.phone)+'</b><div class="muted" dir="ltr">'+esc(r.phone||'')+'</div></td>'+
+      '<td>'+esc(r.group_name||r.group_id||'—')+'</td>'+
+      '<td>'+(r.status==='removed'?'<span class="badge ok">تمت الإزالة</span>':r.status==='not_in_group'?'<span class="badge info">غير موجود</span>':r.status==='skipped_group_admin'?'<span class="badge wait">تم التخطي — أدمن</span>':'<span class="badge off">'+esc(r.status||'failed')+'</span>')+'</td>'+
+      '<td>'+esc(r.error||'—')+'</td>'+
+    '</tr>').join('')||'<tr><td colspan="4" class="empty">لا توجد عمليات</td></tr>';
+    const s=j.summary||{},firstFailure=rows.find(r=>r.status==='failed'&&r.error);
+    tell('✅ النتيجة — إزالة: '+(s.removed||0)+' | غير موجود: '+(s.not_in_group||0)+' | Admin: '+(s.skipped_admin||0)+' | فشل: '+(s.failed||0)+(s.halted?' | توقفت للحماية':'')+(firstFailure?' | '+String(firstFailure.error).slice(0,90):''));
+    await loadNegativeRemovalSection();
+    await loadAll();
+  }catch(e){tell('❌ '+e.message)}
+}
+
+async function restoreNegativeCaptain(phone){
+  const x=negativeCarryRemoved.find(r=>r.phone===phone);
+  if(!x)return;
+  const groups=(x.groups||[]).map(g=>g.group_name||g.group_id).join('، ');
+  const balanceNote=Number(x.current_net)<0?'\n\n⚠️ تنبيه: رصيده ما زال سالب '+money(Math.abs(Number(x.current_net||0)))+' د.أ، ومع ذلك سيتم إرجاعه.':'';
+  if(!confirm('إرجاع '+x.name+' إلى القروبات؟\n\n'+groups+balanceNote+'\n\nسيتم الإرجاع تدريجياً لنفس القروبات التي انشال منها.'))return;
+  tell('⏳ جاري إرجاع الكابتن للقروبات...');
+  try{
+    const j=await api('/api/admin/negative-carry-restore',{method:'POST',body:JSON.stringify({phone})});
+    if(!j.ok){tell('❌ '+(j.message||j.error||'فشل الإرجاع'));return}
+    const rows=j.results||[];
+    negativeRemovalResultBody.innerHTML=rows.map(r=>'<tr>'+
+      '<td><b>'+esc(x.name)+'</b><div class="muted" dir="ltr">'+esc(phone)+'</div></td>'+
+      '<td>'+esc(r.group_name||r.group_id||'—')+'</td>'+
+      '<td>'+(r.status==='restored'?'<span class="badge ok">تمت الإعادة</span>':r.status==='already_in_group'?'<span class="badge info">موجود مسبقاً</span>':'<span class="badge off">'+esc(r.status||'failed')+'</span>')+'</td>'+
+      '<td>'+esc(r.error||'—')+'</td>'+
+    '</tr>').join('')||'<tr><td colspan="4" class="empty">لا توجد عمليات</td></tr>';
+    const s=j.summary||{};
+    tell('✅ تمت الإعادة: '+(s.restored||0)+' | متبقي: '+(s.remaining||0)+(s.halted?' | توقفت للحماية':''));
+    await loadNegativeRemovalSection();
+    await loadAll();
+  }catch(e){tell('❌ '+e.message)}
+}
+
+function payLabel(m){return {cliq:'CliQ',wallet:'محفظة',bank:'بنك',cash:'كاش',other:'أخرى'}[m]||'غير محدد'}
+function tnum(v=''){const m=String(v||'').match(/\bT\s*0*(\d+)\b/i);return m?Number(m[1]):Number.MAX_SAFE_INTEGER}
+function captainSort(a,b){return tnum(a.name)-tnum(b.name)||String(a.name||'').localeCompare(String(b.name||''),'ar')}
+function phoneDigits(v=''){return String(v||'').replace(/\D/g,'')}
+function captainMatches(c,q=''){
+ q=String(q||'').trim().toLowerCase();if(!q)return true;
+ const name=String(c.name||'').toLowerCase(),raw=String(c.phone||'').toLowerCase();
+ if(name.includes(q)||raw.includes(q))return true;
+ const qd=phoneDigits(q),pd=phoneDigits(c.phone);if(!qd)return false;
+ const variants=new Set([pd]);
+ if(pd.startsWith('962'))variants.add('0'+pd.slice(3));
+ if(pd.startsWith('0'))variants.add('962'+pd.slice(1));
+ if(pd.startsWith('79')){variants.add('0'+pd);variants.add('962'+pd)}
+ return [...variants].some(v=>v.includes(qd)||qd.includes(v));
+}
+const registrationObjectUrls=[];
+function releaseRegistrationUrls(){while(registrationObjectUrls.length){try{URL.revokeObjectURL(registrationObjectUrls.pop())}catch(_){}}}
+async function registrationFileBlobUrl(id,kind){const r=await fetch(`/api/admin/captain-registrations/${id}/file/${encodeURIComponent(kind)}`,{headers:{authorization:'Bearer '+token}});if(!r.ok)throw new Error('FILE_NOT_AVAILABLE');const url=URL.createObjectURL(await r.blob());registrationObjectUrls.push(url);return url}
+async function hydrateRegistrationThumbs(root=document){const imgs=[...root.querySelectorAll('img[data-reg-id][data-reg-kind]')];await Promise.all(imgs.map(async img=>{try{img.src=await registrationFileBlobUrl(img.dataset.regId,img.dataset.regKind);img.style.opacity='1'}catch(_){img.alt='تعذر عرض الصورة';img.style.opacity='.35'}}))}
+async function viewRegistrationFile(id,kind){const w=window.open('about:blank','_blank');try{const url=await registrationFileBlobUrl(id,kind);if(w)w.location.href=url;else location.href=url}catch(e){if(w)w.close();tell('❌ تعذر فتح المستند')}}
+function registrationDocsCell(x){const docs=[['identity','الهوية','🪪',x.identity_image],['vehicle_license','رخصة المركبة','🚗',x.vehicle_license_image]];return `<div class="reg-docs">${docs.map(([k,l,ico,ok])=>ok?`<div class="reg-doc"><img data-reg-id="${x.id}" data-reg-kind="${k}" alt="${esc(l)}" onclick="viewRegistrationFile(${x.id},'${k}')"><button class="btn" onclick="viewRegistrationFile(${x.id},'${k}')">${ico} ${l}</button></div>`:`<span class="badge off">❌ ${esc(l)}</span>`).join('')}</div>`}
+function renderRegistrations(){
+ releaseRegistrationUrls();
+ const rows=state.registrations||[],pending=rows.filter(x=>x.status==='pending'),history=rows.filter(x=>x.status!=='pending').slice(0,100);
+ if(window.registrationBadge)registrationBadge.textContent=pending.length;
+ if(window.registrationLinkText)registrationLinkText.textContent=location.origin+'/register';
+ if(window.registrationPendingBody)registrationPendingBody.innerHTML=pending.map(x=>`<tr><td><b>#${x.id}</b></td><td><b>${esc(x.name)}</b><div class="reg-edit-note">تقدر تعدله قبل القبول</div></td><td dir="ltr">${esc(x.phone)}</td><td>${registrationDocsCell(x)}</td><td>${esc(x.note||'—')}</td><td>${dt(x.created_at)}</td><td><div class="reg-actions"><button class="btn" onclick="editRegistration(${x.id})">✏️ تعديل</button><button class="btn btn-primary" onclick="approveRegistration(${x.id})">✅ قبول</button><button class="btn btn-danger" onclick="rejectRegistration(${x.id})">❌ رفض</button></div></td></tr>`).join('')||'<tr><td colspan="7" class="empty">✅ ما في طلبات تسجيل جديدة</td></tr>';
+ if(window.registrationHistoryBody)registrationHistoryBody.innerHTML=history.map(x=>`<tr><td><b>${esc(x.name)}</b></td><td dir="ltr">${esc(x.phone)}</td><td>${x.status==='approved'?'<span class="badge ok">✅ مقبول</span>':'<span class="badge off">❌ مرفوض</span>'}</td><td>${esc(x.admin_note||'—')}</td><td>${dt(x.reviewed_at||x.updated_at)}</td></tr>`).join('')||'<tr><td colspan="5" class="empty">لا يوجد سجل بعد</td></tr>';
+ hydrateRegistrationThumbs(document).catch(()=>{});
+}
+async function loadRegistrations(){const j=await api('/api/admin/captain-registrations');if(j.ok){state.registrations=j.rows||[];renderRegistrations()}else tell('❌ تعذر تحميل طلبات التسجيل')}
+async function copyRegistrationLink(){const url=location.origin+'/register';try{await navigator.clipboard.writeText(url);tell('📋 تم نسخ رابط تسجيل الكباتن')}catch(e){prompt('انسخ رابط التسجيل:',url)}}
+function editRegistration(id){const x=(state.registrations||[]).find(r=>Number(r.id)===Number(id));if(!x)return;const doc=(k,label,ico,ok)=>`<div class="card"><b>${ico} ${label}</b>${ok?`<img data-reg-id="${x.id}" data-reg-kind="${k}" alt="${esc(label)}" onclick="viewRegistrationFile(${x.id},'${k}')"><button class="btn" style="margin-top:7px" onclick="viewRegistrationFile(${x.id},'${k}')">🖼️ فتح الصورة</button>`:'<div class="badge off" style="margin-top:10px">❌ غير مرفوعة</div>'}</div>`;showModal('✏️ مراجعة وتعديل طلب الكابتن',`<div class="callout">راجع الصور والبيانات. التعديل هنا يصير <b>قبل القبول النهائي</b> ولا ينشئ حساب كابتن لحاله.</div><div class="reg-form-docs">${doc('identity','الهوية','🪪',x.identity_image)}${doc('vehicle_license','رخصة المركبة','🚗',x.vehicle_license_image)}</div><div class="form-grid"><div><div class="muted" style="font-size:11px;margin-bottom:5px">اسم الكابتن</div><input id="regEditName" class="input" value="${esc(x.name)}"></div><div><div class="muted" style="font-size:11px;margin-bottom:5px">رقم الهاتف</div><input id="regEditPhone" class="input" value="${esc(x.phone)}" dir="ltr"></div><div class="wide"><div class="muted" style="font-size:11px;margin-bottom:5px">ملاحظة الطلب</div><input id="regEditNote" class="input" value="${esc(x.note||'')}"></div><button class="btn btn-primary wide" onclick="saveRegistrationEdit(${x.id})">💾 حفظ التعديل قبل القبول</button></div>`);hydrateRegistrationThumbs(modalBody).catch(()=>{})}
+async function saveRegistrationEdit(id){const body={name:regEditName.value.trim(),phone:regEditPhone.value.trim(),note:regEditNote.value.trim()};const j=await api('/api/admin/captain-registrations/'+id,{method:'PATCH',body:JSON.stringify(body)});if(j.ok){hideModal();tell('✅ تم تعديل طلب الكابتن — لسا ما تم قبوله');await loadRegistrations()}else if(j.error==='PHONE_EXISTS'||j.error==='REQUEST_PHONE_EXISTS')tell('❌ الرقم مستخدم مسبقاً');else if(j.error==='NAME_EXISTS'||j.error==='NAME_REQUEST_EXISTS')tell('❌ الاسم مستخدم مسبقاً');else if(j.error==='INVALID_JORDAN_PHONE')tell('❌ رقم الهاتف غير صحيح');else tell('❌ '+(j.error||'فشل التعديل'))}
+async function approveRegistration(id){if(!confirm('✅ راجعت الهوية والرخصة وحوالة الـ5 دنانير؟\n\nقبول الطلب وإضافة الكابتن للنظام؟'))return;const j=await api('/api/admin/captain-registrations/'+id+'/approve',{method:'POST',body:'{}'});if(j.ok){tell(`✅ تم قبول ${j.name||'الكابتن'} وإضافته للكباتن`);await loadAll()}else if(j.error==='DOCUMENTS_REQUIRED')tell('❌ لا يمكن القبول قبل وجود الهوية + رخصة المركبة');else if(j.error==='PHONE_EXISTS')tell('❌ الرقم صار مسجل عند كابتن موجود');else if(j.error==='NAME_EXISTS')tell('❌ الاسم صار مستخدم عند كابتن موجود');else tell('❌ '+(j.error||'فشل القبول'))}
+async function rejectRegistration(id){const note=prompt('سبب الرفض (اختياري):','')??null;if(note===null)return;const j=await api('/api/admin/captain-registrations/'+id+'/reject',{method:'POST',body:JSON.stringify({note})});if(j.ok){tell('تم رفض الطلب');await loadRegistrations()}else tell('❌ '+(j.error||'فشل الرفض'))}
+function renderCaptains(){
+ const aq=(window.capSearch?.value||'').trim(),sq=(window.stopSearch?.value||'').trim(),map=new Map(state.rows.map(x=>[x.phone,x]));
+ const active=state.captains.filter(x=>x.active&&captainMatches(x,aq)).sort(captainSort),stopped=state.captains.filter(x=>!x.active&&captainMatches(x,sq)).sort(captainSort);
+ activeCaps.innerHTML=active.map(c=>{let r=map.get(c.phone)||{};return `<tr><td><b>${esc(c.name)}</b></td><td dir="ltr">${esc(c.phone)}</td><td class="money plus">${money(r.production)}</td><td class="money minus">${money(r.consumption)}</td><td class="money floor">${money(r.floor_fee)}</td><td><b>${money(r.net)}</b></td><td><span class="badge ok">فعال</span></td><td>${c.onboarding_completed?'<span class="badge ok">جاهز</span>':'<span class="badge wait">أول دخول</span>'}</td><td>${esc(payLabel(c.payment_method))}</td><td><button class="btn" onclick='editCaptain(${JSON.stringify(c.phone)})'>✏️ تعديل</button> <button class="btn" onclick='openExemption(${JSON.stringify(c.phone)})'>🛡️ إعفاء</button> <button class="btn" onclick='openCaptainAccess(${JSON.stringify(c.phone)})'>🔐 كلمة السر</button> <button class="btn btn-danger" onclick='deleteCaptain(${JSON.stringify(c.phone)},${JSON.stringify(c.name)})'>🗑️</button></td></tr>`}).join('')||'<tr><td colspan="10" class="empty">لا يوجد كباتن فعالين</td></tr>';
+ stoppedCaps.innerHTML=stopped.map(c=>`<tr><td><b>${esc(c.name)}</b></td><td dir="ltr">${esc(c.phone)}</td><td>${esc(c.status_reason||'موقوف')}</td><td>${dt(c.last_group_seen_at)}</td><td>${dt(c.status_checked_at)}</td><td>${c.onboarding_completed?'<span class="badge ok">جاهز</span>':'<span class="badge wait">أول دخول</span>'}</td><td>${esc(payLabel(c.payment_method))}</td><td><button class="btn" onclick='editCaptain(${JSON.stringify(c.phone)})'>✏️ تعديل</button> <button class="btn" onclick='openExemption(${JSON.stringify(c.phone)})'>🛡️ إعفاء</button> <button class="btn" onclick='openCaptainAccess(${JSON.stringify(c.phone)})'>🔐 كلمة السر</button> <button class="btn btn-danger" onclick='deleteCaptain(${JSON.stringify(c.phone)},${JSON.stringify(c.name)})'>🗑️ إزالة من النظام</button></td></tr>`).join('')||'<tr><td colspan="8" class="empty">لا يوجد كباتن موقوفين ✅</td></tr>';
+}
+function renderDuplicates(){
+ const d=state.duplicates||{},phones=d.phone_duplicates||[],names=d.name_duplicates||[];
+ if(!window.duplicateSummary||!window.duplicateDetails)return;
+ if(!phones.length&&!names.length){duplicateSummary.innerHTML='<span class="badge ok">✅ لا يوجد أرقام أو أسماء مكررة</span>';duplicateDetails.innerHTML='';return;}
+ duplicateSummary.innerHTML=`<span class="badge off">⚠️ تم العثور على ${phones.length} تكرار أرقام و ${names.length} تكرار أسماء</span>`;
+ let html='';
+ if(phones.length){html+='<div class="table"><table><thead><tr><th colspan="3">📱 الأرقام المكررة</th></tr><tr><th>الرقم</th><th>العدد</th><th>الحسابات</th></tr></thead><tbody>'+phones.map(x=>`<tr><td dir="ltr"><b>${esc(x.key)}</b></td><td>${x.count}</td><td>${x.rows.map(r=>`${esc(r.name)} — ${esc(r.phone)}`).join('<br>')}</td></tr>`).join('')+'</tbody></table></div>';}
+ if(names.length){html+='<div class="table" style="margin-top:10px"><table><thead><tr><th colspan="3">👤 الأسماء المكررة</th></tr><tr><th>الاسم</th><th>العدد</th><th>الأرقام</th></tr></thead><tbody>'+names.map(x=>`<tr><td><b>${esc(x.rows[0]?.name||x.key)}</b></td><td>${x.count}</td><td dir="ltr">${x.rows.map(r=>esc(r.phone)).join('<br>')}</td></tr>`).join('')+'</tbody></table></div>';}
+ duplicateDetails.innerHTML=html;
+}
+async function loadDuplicates(){const j=await api('/api/admin/captains-duplicates');if(j.ok){state.duplicates=j;renderDuplicates();tell(j.total?'⚠️ يوجد تكرارات تحتاج مراجعة':'✅ لا يوجد تكرارات')}else tell('❌ تعذر فحص التكرارات')}
+
+function renderOldBalances(){
+ const d=state.oldBalances||{rows:[],total:0,count:0,captains:0},rows=d.rows||[];
+ if(window.oldBalanceGrandTotal)oldBalanceGrandTotal.textContent=money(d.total||0);
+ if(window.oldBalanceCount)oldBalanceCount.textContent=Number(d.count||rows.length);
+ if(window.oldBalanceCaptains)oldBalanceCaptains.textContent=Number(d.captains||new Set(rows.map(x=>x.captain_phone)).size);
+ if(window.oldBalanceCountBadge)oldBalanceCountBadge.textContent=`${Number(d.count||rows.length)} رصيد`;
+ if(window.oldBalancesBody)oldBalancesBody.innerHTML=rows.map(x=>`<tr><td><span class="badge info">الأسبوع #${Number(x.week_id||0)}</span></td><td><b>${esc(x.captain_name||'—')}</b></td><td dir="ltr">${esc(x.captain_phone||'')}</td><td class="money minus"><b>${money(x.amount||Math.abs(Number(x.net||0)))} د.أ</b></td><td><span class="badge wait">غير مسدد</span></td></tr>`).join('')||'<tr><td colspan="5" class="empty">✅ لا توجد أرصدة قديمة غير مسددة</td></tr>';
+}
+async function loadOldBalances(){const j=await api('/api/admin/weekly/old-balances');if(j.ok){state.oldBalances={rows:j.rows||[],total:Number(j.total||0),count:Number(j.count||0),captains:Number(j.captains||0)};renderOldBalances();tell(j.count?`🔄 ${j.count} رصيد قديم — ${money(j.total)} د.أ`:'✅ لا توجد أرصدة قديمة')}else tell('❌ تعذر تحميل الأرصدة القديمة')}
+
+function renderArchive(){archiveBody.innerHTML=state.archive.map(w=>`<tr><td><b>#${w.id}</b></td><td>${dt(w.starts_at)}</td><td>${dt(w.closed_at)}</td><td>${money(w.floor_total)}</td><td class="money plus">${money(w.to_captains)}</td><td class="money minus">${money(w.from_captains)}</td><td>${w.pending?`<span class="badge wait">${w.pending}</span>`:'<span class="badge ok">0</span>'}</td><td><button class="btn" onclick="openWeek(${Number(w.id)})">فتح</button> <button class="btn btn-danger" onclick="trashWeek(${Number(w.id)})">🗑️ حذف</button></td></tr>`).join('')||'<tr><td colspan="8" class="empty">لا يوجد أسابيع مقفلة بعد</td></tr>'}
+async function loadTrash(){const j=await api('/api/admin/weekly/trash');if(j.ok){trashBody.innerHTML=(j.rows||[]).map(w=>`<tr><td><b>#${Number(w.id)}</b></td><td>${dt(w.starts_at)}</td><td>${dt(w.closed_at)}</td><td>${dt(w.trashed_at)}</td><td><button class="btn btn-primary" onclick="restoreWeek(${Number(w.id)})">♻️ استرجاع</button></td></tr>`).join('')||'<tr><td colspan="5" class="empty">السلة فارغة</td></tr>'}else tell('❌ تعذر تحميل السلة')}
+async function trashWeek(id){if(!confirm(`نقل الأسبوع #${id} إلى سلة المحذوفات؟\\nلن تُحذف أي أرصدة أو حوالات.`))return;const j=await api('/api/admin/weekly/'+id+'/trash',{method:'POST',body:'{}'});if(j.ok){tell('🗑️ تم النقل للسلة');await loadArchive();await loadTrash()}else tell('❌ '+(j.error||'تعذر النقل'))}
+async function restoreWeek(id){if(!confirm(`استرجاع الأسبوع #${id} للأرشيف؟`))return;const j=await api('/api/admin/weekly/'+id+'/restore',{method:'POST',body:'{}'});if(j.ok){tell('♻️ تم استرجاع الأسبوع');await loadTrash();await loadArchive()}else tell('❌ '+(j.error||'تعذر الاسترجاع'))}
+
+function renderGroups(){groupsList.innerHTML=state.groups.map(g=>`<div class="row"><div><b>${esc(g.saved_name||g.name||'قروب')}</b><div class="muted" style="font-size:10px;direction:ltr">${esc(g.group_id)}</div></div><div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap"><span class="badge ${g.active?'ok':'off'}">${g.active?'مفعّل':'موقوف'}</span><span class="badge ${g.auto_register_members?'wait':'off'}">${g.auto_register_members?'📥 مصدر تسجيل':'ليس مصدر تسجيل'}</span><button class="btn ${g.auto_register_members?'btn-danger':'btn-primary'}" onclick='toggleGroupSource(${JSON.stringify(g.group_id)},${!g.auto_register_members})'>${g.auto_register_members?'إلغاء مصدر التسجيل':'اعتماد كمصدر تسجيل'}</button><button class="btn ${g.active?'btn-danger':'btn-primary'}" onclick='toggleGroup(${JSON.stringify(g.group_id)},${!g.active},${JSON.stringify(g.saved_name||g.name||'قروب')})'>${g.active?'إيقاف':'تشغيل'}</button></div></div>`).join('')||'<div class="empty">لا يوجد قروبات</div>'}
+function renderAuthorized(){authList.innerHTML=state.authorized.map(x=>`<div class="row"><div><b>${esc(x.name||'بدون اسم')}</b><div class="muted" dir="ltr">${esc(x.phone)}</div></div><span class="badge ${x.active?'ok':'off'}">${x.active?'مفعل':'موقف'}</span></div>`).join('')||'<div class="empty">لا يوجد أرقام مخولة</div>'}
+function renderManualMovements(){if(window.manualMovBody)manualMovBody.innerHTML=(state.manualMovements||[]).map(x=>`<tr><td>${esc(x.name||x.captain_phone)}</td><td>${x.direction==='production'?'<span class="badge ok">إنتاج +</span>':'<span class="badge off">استهلاك +</span>'}</td><td><b>${Number(x.order_count||Math.round(Number(x.amount||0)/0.25))}</b></td><td>${money(x.amount)} د.أ</td><td>${esc(x.note||'')}</td><td>${dt(x.created_at)}</td><td><button class="btn btn-danger" onclick="deleteManualMovement(${x.id})">حذف</button></td></tr>`).join('')||'<tr><td colspan="7" class="empty">لا توجد حركات يدوية</td></tr>'}
+function renderBalanceCorrections(){if(window.balanceCorrBody)balanceCorrBody.innerHTML=(state.balanceCorrections||[]).map(x=>`<tr><td>${esc(x.name||x.captain_phone)}</td><td>${money(x.previous_net)}</td><td>${money(x.target_net)}</td><td>${money(x.delta)}</td><td>${esc(x.note||'')}</td><td>${dt(x.created_at)}</td></tr>`).join('')||'<tr><td colspan="6" class="empty">لا توجد تصحيحات أرصدة</td></tr>'}
+async function deleteManualMovement(id){if(!confirm('حذف الحركة اليدوية؟'))return;const j=await api('/api/admin/weekly/manual-movement/'+id,{method:'DELETE',body:'{}'});if(j.ok){tell('🗑️ تم حذف الحركة');loadAll()}else tell('❌ '+(j.error||'فشل'))}
+function renderAdjustments(){adjustBody.innerHTML=state.adjustments.map(x=>`<tr><td>${esc(x.name||x.captain_phone)}</td><td>${x.direction==='production'?'<span class="badge ok">إنتاج +</span>':'<span class="badge off">استهلاك +</span>'}</td><td>${money(x.amount)}</td><td>${esc(x.note)}</td><td>${dt(x.created_at)}</td><td><button class="btn btn-danger" onclick="deleteAdjustment(${x.id})">حذف</button></td></tr>`).join('')||'<tr><td colspan="6" class="empty">لا يوجد تصحيحات</td></tr>'}
+
+async function applyFloor(){if(state.week?.floor_applied_at)return tell('الأرضية مضافة مسبقاً ✅');if(!confirm(`إضافة أرضية 0.75 د.أ على الكباتن الفعالين فقط؟\nالموقوفين لن ينزل عليهم شيء.`))return;const j=await api('/api/admin/weekly/floor',{method:'POST',body:JSON.stringify({amount:.75})});if(j.ok){tell(`✅ انضافت الأرضية على ${j.count} كابتن`);loadAll()}else tell(j.error==='FLOOR_ALREADY_APPLIED'?'الأرضية مضافة مسبقاً':'❌ '+(j.error||'فشل'))}
+async function completeFloor(){if(!confirm('فحص كل الكباتن الفعالين وإضافة الأرضية فقط لمن الأرضية ناقصة عنده؟\nلن تتكرر الأرضية على أي كابتن موجودة عنده مسبقاً.'))return;const j=await api('/api/admin/weekly/floor/complete',{method:'POST',body:'{}'});if(j.ok){tell(j.added?`✅ تم استكمال الأرضية لـ ${j.added} كابتن — بدون تكرار`:`✅ الفحص مكتمل — ما في أرضيات ناقصة`);loadAll()}else tell('❌ '+(j.message||j.error||'فشل استكمال الأرضيات'))}
+function previewClose(){let t=state.totals;showModal('👁️ معاينة التسكير الأسبوعي',`<div class="stats"><div class="stat"><span>الإنتاج</span><b>${money(t.production)}</b></div><div class="stat"><span>الاستهلاك</span><b>${money(t.consumption)}</b></div><div class="stat"><span>الأرضيات</span><b>${money(t.floor)}</b></div><div class="stat"><span>رصيد قديم داخل الحسبة الحالية</span><b class="money minus">${money(t.oldBalance)}</b></div><div class="stat"><span>للكباتن</span><b class="money plus">${money(t.toCaptains)}</b></div><div class="stat"><span>على الكباتن</span><b class="money minus">${money(t.fromCaptains)}</b></div></div><div class="callout">المعاينة لا تغيّر أي شيء. الرصيد القديم داخل بالحسبة. عند الإغلاق، أي مبلغ يظل على الكابتن يظهر في الأسبوع الجديد كرصد قديم إلى أن تتم تسويته.</div>`)}
+async function closeWeek(){const msg=`هل أنت متأكد من إغلاق الأسبوع؟\n\nللكباتن: ${money(state.totals.toCaptains)} د.أ\nعلى الكباتن: ${money(state.totals.fromCaptains)} د.أ\nرصيد قديم داخل الحسبة: ${money(state.totals.oldBalance)} د.أ\nالأرضيات: ${money(state.totals.floor)} د.أ\n\nبعدها يبدأ أسبوع جديد، وأي رصيد يبقى على الكابتن يظهر فيه كرصد قديم.`;if(!confirm(msg))return;const j=await api('/api/admin/weekly/close',{method:'POST',body:JSON.stringify({expected_week_id:state.week?.id})});if(j.ok){tell(`🔒 تم إغلاق الأسبوع #${j.closed_week_id} — تم ترحيل ${j.old_balances_carried||0} رصيد قديم`);loadAll();loadArchive()}else tell('❌ '+(j.error||'فشل التسكير'))}
+function openAdjustment(){const opts=state.captains.map(c=>`<option value="${esc(c.phone)}">${esc(c.name)} — ${esc(c.phone)}</option>`).join('');showModal('✏️ تصحيح الأسبوع الحالي',`<div class="form-grid"><select id="adjPhone" class="select">${opts}</select><select id="adjDir" class="select"><option value="production">زيادة إنتاج</option><option value="consumption">زيادة استهلاك</option></select><input id="adjAmount" class="input" type="number" step="0.25" min="0.01" placeholder="القيمة"><input id="adjNote" class="input" placeholder="سبب التصحيح"><button class="btn btn-primary wide" onclick="saveAdjustment()">حفظ التصحيح</button></div>`)}
+async function saveAdjustment(){const j=await api('/api/admin/weekly/adjustments',{method:'POST',body:JSON.stringify({phone:adjPhone.value,direction:adjDir.value,amount:Number(adjAmount.value),note:adjNote.value})});if(j.ok){hideModal();tell('✅ تم حفظ التصحيح');loadAll()}else tell('❌ '+(j.error||'فشل'))}
+async function deleteAdjustment(id){if(!confirm('حذف هذا التصحيح؟'))return;const j=await api('/api/admin/weekly/adjustments/'+id,{method:'DELETE'});if(j.ok){tell('تم الحذف');loadAll()}}
+
+async function scanGroups(){scanResult.innerHTML='<span class="spinner"></span> جاري فحص أعضاء القروبات...';const j=await api('/api/admin/check-group-members',{method:'POST',body:'{}'});if(j.ok){scanResult.innerHTML=`<div class="callout">✅ تم الفحص: <b>${j.groups}</b> قروبات — فعالين <b>${j.active}</b> — موقوفين <b>${j.stopped}</b></div>`;tell('✅ اكتمل فحص القروبات');loadAll()}else{const m=j.error==='GREEN_GROUP_CHECK_NOT_CONFIGURED'?'يلزم إضافة متغيرات GREEN API الخاصة بالفحص في Railway.':(j.message||j.error||'فشل الفحص');scanResult.innerHTML=`<div class="callout dangerbox">❌ ${esc(m)}</div>`;tell('❌ فشل فحص القروبات')}}
+function openAddCaptain(){
+ showModal('➕ إضافة كابتن',`<div class="form-grid add-captain-form">
+   <input id="newCapName" class="input" placeholder="اسم الكابتن / مثال T 1050">
+   <input id="newCapPhone" class="input" inputmode="tel" placeholder="رقم الهاتف 07XXXXXXXX">
+   <input id="newCapPassword" class="input" value="123456" placeholder="كلمة السر الأولى">
+   <select id="newCapActive" class="select"><option value="true">فعال</option><option value="false">موقوف</option></select>
+   <div class="callout wide">🔐 إذا خليت كلمة السر <b>123456</b>، أول دخول للكابتن سيطلب منه تغييرها وإكمال طريقة التحويل.</div>
+   <button class="btn btn-primary wide addcap-save" onclick="saveNewCaptain()">✅ حفظ الكابتن</button>
+ </div>`)
+}
+async function saveNewCaptain(){
+ const name=String(newCapName?.value||'').trim(),phone=String(newCapPhone?.value||'').trim(),password=String(newCapPassword?.value||'123456'),active=newCapActive?.value!=='false';
+ if(!name||!phone)return tell('اكتب اسم الكابتن ورقم الهاتف');
+ if(password.length<6)return tell('كلمة السر لازم تكون 6 خانات على الأقل');
+ const j=await api('/api/admin/captains',{method:'POST',body:JSON.stringify({name,phone,password,active})});
+ if(j.ok){hideModal();tell('✅ تمت إضافة الكابتن');loadAll()}
+ else if(j.error==='PHONE_EXISTS')tell(`❌ هذا الرقم مسجل مسبقاً${j.captain?.name?' باسم '+j.captain.name:''}`);
+ else if(j.error==='NAME_EXISTS')tell(`❌ هذا الاسم مسجل مسبقاً${j.captain?.phone?' على الرقم '+j.captain.phone:''}`);
+ else tell('❌ '+(j.error||j.message||'فشلت إضافة الكابتن'));
+}
+async function importCaptains(){const j=await api('/api/admin/import-captains-sheet',{method:'POST',body:'{}'});if(j.ok){tell(`✅ جديد ${j.imported} — تحديث ${j.updated} — تم تجاهل ${j.skipped_not_in_source_group||0} رقم غير موجود بقروب مصدر التسجيل`);loadAll()}else tell('❌ '+(j.error==='NO_AUTO_REGISTER_GROUP'?'حدد قروب مصدر تسجيل أولاً':j.error||'فشل الاستيراد'))}
+async function openAddGroup(){
+ showModal('➕ ربط قروب AMMAN DELIVERY',`<div class="callout">اختار القروب مباشرة من جلسة DropConnect. ما رح يبدأ الجرد تلقائيًا.</div><div class="form-grid"><label>قروبات DropConnect<select id="dropcodeGroupSelect" class="select" onchange="selectDropcodeGroup(this.value)"><option value="">جاري تحميل القروبات...</option></select></label><label>اسم القروب<input id="newGroupName" class="input" placeholder="Click plus delivery"></label><label>Group ID<input id="newGroupId" class="input" dir="ltr" placeholder="يُعبّأ تلقائيًا من القائمة"></label></div><button class="btn btn-primary" style="width:100%;margin-top:12px" onclick="saveNewGroup()">حفظ وتفعيل القروب</button>`);
+ const j=await api('/api/admin/dropcode-groups');
+ const sel=document.getElementById('dropcodeGroupSelect');if(!sel)return;
+ if(!j.ok){sel.innerHTML='<option value="">تعذر جلب القروبات: '+esc(j.error||'خطأ')+'</option>';tell('❌ تعذر جلب قروبات DropConnect: '+(j.error||'خطأ'));return}
+ window.dropcodeGroupChoices=j.rows||[];
+ sel.innerHTML='<option value="">اختر القروب...</option>'+window.dropcodeGroupChoices.map(g=>'<option value="'+esc(g.group_id)+'">'+esc(g.name||g.group_id)+'</option>').join('');
+ if(!window.dropcodeGroupChoices.length)tell('⚠️ لا توجد قروبات في جلسة DropConnect الحالية');
+}
+function selectDropcodeGroup(id){const g=(window.dropcodeGroupChoices||[]).find(x=>x.group_id===id);if(!g)return;document.getElementById('newGroupId').value=g.group_id;document.getElementById('newGroupName').value=g.name||'';}
+async function saveNewGroup(){
+ const id=document.getElementById('newGroupId')?.value.trim()||'';
+ const name=document.getElementById('newGroupName')?.value.trim()||'';
+ if(!/^[0-9]+@g[.]us$/.test(id)){tell('❌ أدخل Group ID صحيح ينتهي بـ @g.us');return}
+ if(!name){tell('❌ أدخل اسم القروب');return}
+ const j=await api('/api/admin/groups',{method:'POST',body:JSON.stringify({group_id:id,name,active:true,auto_register_members:false})});
+ if(j.ok){tell('✅ تم اعتماد القروب — الجرد التلقائي ما زال متوقفًا');await loadGroups();document.querySelectorAll('.modal').forEach(x=>x.classList.add('hidden'))}
+ else tell('❌ '+(j.error||j.message||'فشل إضافة القروب'));
+}
+async function activateGroup(id,name){const j=await api('/api/admin/groups',{method:'POST',body:JSON.stringify({group_id:id,name,active:true})});if(j.ok){tell('✅ تم تفعيل القروب');loadGroups()}}
+
+async function toggleGroup(id,active,name='قروب'){
+ if(!confirm(active?'تشغيل هذا القروب؟':'إيقاف هذا القروب؟ لن يدخل في فحص الأعضاء.'))return;
+ const j=await api('/api/admin/groups',{method:'POST',body:JSON.stringify({group_id:id,name,active})});
+ if(j.ok){tell(active?'✅ تم تشغيل القروب':'⛔ تم إيقاف القروب');await loadGroups()}
+ else tell('❌ فشل تغيير حالة القروب: '+(j.error||j.message||'خطأ غير معروف'))
+}
+async function toggleGroupSource(id,auto){
+ const msg=auto?'اعتماد هذا القروب كمصدر تسجيل تلقائي للكباتن؟':'إلغاء هذا القروب كمصدر تسجيل؟';
+ if(!confirm(msg))return;
+ const j=await api('/api/admin/groups/'+encodeURIComponent(id),{method:'PATCH',body:JSON.stringify({auto_register_members:auto})});
+ if(j.ok){tell(auto?'✅ صار القروب مصدر تسجيل':'✅ تم إلغاء مصدر التسجيل');await loadGroups()}
+ else if(j.error==='LAST_AUTO_REGISTER_GROUP')tell('⚠️ لازم يظل عندك قروب مصدر تسجيل واحد على الأقل');
+ else tell('❌ '+(j.error||'فشل التعديل'))
+}
+function renderUnknown(){if(!window.unknownBody)return;unknownBadge.textContent=state.unregistered.length;legacyWarning.innerHTML=state.legacyUnknown?`<div class="callout dangerbox">⚠️ يوجد <b>${state.legacyUnknown}</b> طلب قديم محسوب وفيه طرف غير مسجل. اضغط «تصحيح الحركات القديمة الناقصة» حتى يتوقف الحساب لطرف واحد ويصير معلق لحين تسجيل الرقم.</div>`:'<span class="badge ok">✅ ما في حركات قديمة ناقصة</span>';unknownBody.innerHTML=state.unregistered.map(x=>`<tr><td><b>${esc(x.name||'غير معروف')}</b></td><td dir="ltr">${esc(x.phone)}</td><td>${x.occurrences}</td><td>${x.producer_count}</td><td>${x.consumer_count}</td><td>${money(Number(x.production_value||0)+Number(x.consumption_value||0))}</td><td>${x.pending_count}</td><td>${dt(x.last_seen)}</td><td><button class="btn btn-primary" onclick='registerUnknown(${JSON.stringify(x.phone)},${JSON.stringify(x.name||'')})'>➕ تسجيل</button> <button class="btn" onclick='linkUnknown(${JSON.stringify(x.phone)})'>🔗 ربط</button></td></tr>`).join('')||'<tr><td colspan="9" class="empty">✅ ما في أرقام غير مسجلة</td></tr>'}
+async function loadUnregistered(){const j=await api('/api/admin/unregistered');if(j.ok){state.unregistered=j.rows||[];state.legacyUnknown=j.legacy_active||0;renderUnknown()}}
+function registerUnknown(phone,name){showModal('➕ تسجيل الرقم',`<div class="form-grid"><input id="unknownName" class="input" value="${esc(name||'')}" placeholder="اسم الكابتن"><input class="input" value="${esc(phone)}" disabled><button class="btn btn-primary wide" onclick='confirmRegisterUnknown(${JSON.stringify(phone)})'>تسجيل ومعالجة الحركات المعلقة</button></div>`)}
+async function confirmRegisterUnknown(phone){const j=await api('/api/admin/unregistered/'+encodeURIComponent(phone)+'/register',{method:'POST',body:JSON.stringify({name:unknownName.value.trim()||phone})});if(j.ok){hideModal();tell(`✅ تم التسجيل ومعالجة ${j.reconciled||0} حركة`);loadAll()}else if(j.error==='PHONE_EXISTS')tell('❌ الرقم مسجل مسبقاً');else if(j.error==='NAME_EXISTS')tell(`❌ الاسم مسجل مسبقاً${j.captain?.phone?' على '+j.captain.phone:''}`);else tell('❌ '+(j.error||'فشل التسجيل'))}
+function linkUnknown(phone){const opts=state.captains.slice().sort(captainSort).map(c=>`<option value="${esc(c.phone)}">${esc(c.name)} — ${esc(c.phone)}</option>`).join('');showModal('🔗 ربط الرقم بكابتن موجود',`<select id="linkTarget" class="select">${opts}</select><button class="btn btn-primary" style="width:100%;margin-top:10px" onclick='confirmLinkUnknown(${JSON.stringify(phone)})'>ربط ومعالجة</button>`)}
+async function confirmLinkUnknown(phone){const j=await api('/api/admin/unregistered/'+encodeURIComponent(phone)+'/link',{method:'POST',body:JSON.stringify({target_phone:linkTarget.value})});if(j.ok){hideModal();tell(`✅ تم الربط ومعالجة ${j.reconciled||0} حركة`);loadAll()}else tell('❌ '+(j.error||'فشل الربط'))}
+async function repairLegacyUnknown(){if(!confirm('سيتم إلغاء أثر الحركات القديمة التي انحسبت لطرف مسجل بينما الطرف الثاني غير مسجل، وتتحول لمعلقة لحين تسجيل الرقم. متابعة؟'))return;const j=await api('/api/admin/integrity/repair-unregistered',{method:'POST',body:'{}'});if(j.ok){tell(`🛡️ تم تصحيح ${j.repaired} طلب`);loadAll()}else tell('❌ '+(j.error||'فشل التصحيح'))}
+async function cleanupWaiting(){const j=await api('/api/admin/cleanup/waiting',{method:'POST',body:'{}'});if(j.ok)tell(`🧹 تم حذف ${j.deleted} طلب انتظار قديم`);else tell('❌ فشل التنظيف')}
+
+async function loadGroups(){const j=await api('/api/admin/detected-groups');if(j.ok){state.groups=j.rows||[];renderGroups()}}
+async function addAuthorized(){const j=await api('/api/admin/authorized-cancel',{method:'POST',body:JSON.stringify({name:aname.value.trim(),phone:aphone.value.trim(),active:true})});if(j.ok){tell('✅ تم الحفظ');const a=await api('/api/admin/authorized-list');state.authorized=a.rows||[];renderAuthorized()}else tell('❌ '+(j.error||'فشل'))}
+function openManualMovement(){
+ const opts=state.captains.slice().sort(captainSort).map(c=>`<option value="${esc(c.phone)}">${esc(c.name)} — ${esc(c.phone)}</option>`).join('');
+ showModal('➕ إضافة إنتاج / استهلاك',`<div class="form-grid"><select id="mmCaptain" class="select">${opts}</select><select id="mmDirection" class="select"><option value="production">إنتاج +</option><option value="consumption">استهلاك +</option></select><input id="mmOrderCount" class="input" type="number" step="1" min="1" inputmode="numeric" placeholder="عدد الأوردرات"><div class="callout wide">💰 كل أوردر = <b>0.25 د.أ</b><br>مثال: 4 أوردرات = 1.00 د.أ</div><input id="mmNote" class="input wide" placeholder="ملاحظة (اختياري)"><button class="btn btn-primary wide" onclick="saveManualMovement()">✅ حفظ وتحديث الجرد</button></div>`);
+}
+async function saveManualMovement(){const count=Number(mmOrderCount.value);if(!Number.isInteger(count)||count<1)return tell('اكتب عدد أوردرات صحيح');const j=await api('/api/admin/weekly/manual-movement',{method:'POST',body:JSON.stringify({phone:mmCaptain.value,direction:mmDirection.value,order_count:count,note:mmNote.value.trim()})});if(j.ok){hideModal();tell(`✅ تمت إضافة ${j.row.order_count} أوردر = ${money(j.row.amount)} د.أ`);loadAll()}else tell('❌ '+(j.error||'فشل إضافة الحركة'))}
+function openBalanceCorrection(phone){const r=state.rows.find(x=>x.phone===phone);if(!r)return;showModal('✏️ تعديل الرصيد النهائي',`<div class="callout"><b>${esc(r.name)}</b><br>الرصيد الحالي: <strong>${money(r.net)} د.أ</strong><br><span class="muted">اكتب الرصيد الصحيح النهائي، والنظام يسجل فرق التصحيح في السجل بدون حذف الحركات الأصلية.</span></div><div class="form-grid" style="margin-top:10px"><input id="bcTarget" class="input" type="number" step="0.001" value="${Number(r.net||0).toFixed(3)}" placeholder="الرصيد الصحيح"><input id="bcNote" class="input" placeholder="سبب التعديل (مطلوب)" ><button class="btn btn-primary wide" onclick='saveBalanceCorrection(${JSON.stringify(phone)})'>✅ اعتماد الرصيد الجديد</button></div>`)}
+async function saveBalanceCorrection(phone){const note=bcNote.value.trim();if(note.length<2)return tell('اكتب سبب التعديل');const j=await api('/api/admin/weekly/balance-correction',{method:'POST',body:JSON.stringify({phone,target_net:bcTarget.value,note})});if(j.ok){hideModal();tell(`✅ تم تعديل الرصيد من ${money(j.row.previous_net)} إلى ${money(j.row.target_net)} د.أ`);loadAll()}else tell('❌ '+(j.error||'فشل تعديل الرصيد'))}
+async function deleteCaptain(phone,name){if(!confirm(`⚠️ إزالة الكابتن «${name}» من النظام نهائيًا؟\n\nسيتم حذف بياناته وحركاته وتسوياته وعملياته المرتبطة من النظام. هذا الإجراء لا يمكن التراجع عنه.`))return;const check=prompt('للتأكيد اكتب: حذف');if(check!=='حذف')return tell('تم إلغاء الحذف');const j=await api('/api/admin/captains/'+encodeURIComponent(phone),{method:'DELETE',body:'{}'});if(j.ok){tell('🗑️ تم إزالة الكابتن من النظام بالكامل');loadAll()}else tell('❌ '+(j.error||'فشل الحذف'))}
+
+async function openCaptainAccess(phone){
+ const j=await api('/api/admin/captains/'+encodeURIComponent(phone)+'/access');
+ if(!j.ok)return tell('❌ تعذر تحميل بيانات الدخول');
+ const d=j.data,details=d.payment_details||{};
+ const pwBox=d.password_readable!==false
+  ? `<div class="callout wide"><b>كلمة السر الحالية</b><div style="font-size:24px;font-weight:950;margin-top:8px" dir="ltr">${esc(d.password||'')}</div><div class="muted" style="margin-top:5px">${d.onboarding_completed?'✅ الحساب مجهز':'🟠 أول دخول غير مكتمل'} — آخر دخول: ${dt(d.last_login_at)}</div></div>`
+  : `<div class="callout wide" style="border-color:#7a3f26;background:#21120d"><b>⚠️ كلمة السر الحالية غير قابلة للقراءة</b><div class="muted" style="margin-top:7px">غالباً بيانات التشفير القديمة لهذا الكابتن تالفة أو من مفتاح سابق. تقدر تصلحها فوراً من الأزرار تحت بدون حذف الكابتن أو حساباته.</div></div>`;
+ showModal('🔐 كلمة سر الكابتن — '+esc(d.name),`<div class="form-grid">
+  ${pwBox}
+  <div class="callout wide"><b>💰 طريقة التحويل: ${esc(payLabel(d.payment_method))}</b><div style="margin-top:7px">${Object.entries(details).map(([k,v])=>`${esc(k)}: <b>${esc(v)}</b>`).join('<br>')||'لا توجد بيانات تحويل بعد'}</div></div>
+  <div class="wide" style="padding:12px;border:1px solid #263341;border-radius:14px;background:#0b1219"><b>✏️ تغيير كلمة السر يدويًا</b><div class="muted" style="margin:5px 0 10px">اكتب كلمة سر جديدة من 6 خانات أو أكثر.</div><input id="customCaptainPw" class="input" type="text" autocomplete="off" placeholder="كلمة السر الجديدة"><button class="btn btn-primary" style="width:100%;margin-top:9px" onclick='changeCaptainPassword(${JSON.stringify(d.phone)})'>💾 حفظ كلمة السر الجديدة</button></div>
+  <div class="wide" style="padding:12px;border:1px solid #5b4214;border-radius:14px;background:#1a1309"><b>↩️ إرجاع كلمة السر للأصل</b><div class="muted" style="margin:5px 0 10px">ترجع إلى <b dir="ltr">123456</b>، وتنتهي كل جلسات الكابتن الحالية، وعند دخوله سيُطلب منه اختيار كلمة سر جديدة من جديد.</div><button class="btn btn-danger" style="width:100%" onclick='restoreCaptainPassword(${JSON.stringify(d.phone)})'>↩️ إرجاع إلى 123456</button></div>
+ </div>`)
+}
+async function changeCaptainPassword(phone){
+ const el=document.getElementById('customCaptainPw'),pw=String(el?.value||'').trim();
+ if(pw.length<6)return tell('❌ كلمة السر لازم تكون 6 خانات على الأقل');
+ if(pw==='123456')return tell('استخدم زر «إرجاع إلى 123456» بدل التغيير اليدوي');
+ if(!confirm('تغيير كلمة سر الكابتن إلى الكلمة الجديدة؟ سيتم تسجيل خروجه من الجلسات المفتوحة.'))return;
+ const j=await api('/api/admin/captains/'+encodeURIComponent(phone)+'/reset-password',{method:'POST',body:JSON.stringify({password:pw})});
+ if(j.ok){tell('✅ تم تغيير كلمة السر وتسجيل خروج الجلسات القديمة');await openCaptainAccess(phone);loadAll()}else tell('❌ '+(j.error||'فشل تغيير كلمة السر'))
+}
+async function restoreCaptainPassword(phone){
+ if(!confirm('إرجاع كلمة سر الكابتن إلى 123456؟\nسيتم تسجيل خروجه من كل الجلسات وسيُطلب منه تغييرها عند الدخول.'))return;
+ const j=await api('/api/admin/captains/'+encodeURIComponent(phone)+'/reset-password',{method:'POST',body:JSON.stringify({password:'123456'})});
+ if(j.ok){tell('✅ رجعت كلمة السر إلى 123456');await openCaptainAccess(phone);loadAll()}else tell('❌ '+(j.error||'فشل إرجاع كلمة السر'))
+}
+function renderObjections(){if(!window.objectionsBody)return;objectionsBody.innerHTML=(state.objections||[]).map(o=>`<tr><td>#${o.id}</td><td><b>${esc(o.captain_name||o.captain_phone)}</b><div class="muted" dir="ltr">${esc(o.captain_phone)}</div></td><td style="white-space:normal;max-width:420px">${esc(o.reason)}</td><td>${o.status==='resolved'?'<span class="badge ok">تم الحل</span>':o.status==='rejected'?'<span class="badge off">مرفوض</span>':o.status==='reviewing'?'<span class="badge wait">قيد المراجعة</span>':'<span class="badge info">مفتوح</span>'}</td><td>${dt(o.created_at)}</td><td><button class="btn" onclick="reviewObjection(${o.id})">فتح</button></td></tr>`).join('')||'<tr><td colspan="6" class="empty">لا توجد اعتراضات</td></tr>'}
+async function loadObjections(){const j=await api('/api/admin/objections');if(j.ok){state.objections=j.rows||[];renderObjections()}}
+function reviewObjection(id){const o=state.objections.find(x=>Number(x.id)===Number(id));if(!o)return;showModal('⚠️ اعتراض #'+id,`<div class="callout"><b>${esc(o.captain_name||o.captain_phone)}</b><br>${esc(o.reason)}</div><div class="form-grid" style="margin-top:10px"><select id="objStatus" class="select"><option value="open" ${o.status==='open'?'selected':''}>مفتوح</option><option value="reviewing" ${o.status==='reviewing'?'selected':''}>قيد المراجعة</option><option value="resolved" ${o.status==='resolved'?'selected':''}>تم الحل</option><option value="rejected" ${o.status==='rejected'?'selected':''}>مرفوض</option></select><input id="objNote" class="input" value="${esc(o.admin_note||'')}" placeholder="رد / ملاحظة الإدارة"><button class="btn btn-primary wide" onclick="saveObjection(${id})">حفظ وإرسال الحالة للكابتن</button></div>`)}
+async function saveObjection(id){const j=await api('/api/admin/objections/'+id,{method:'PATCH',body:JSON.stringify({status:objStatus.value,admin_note:objNote.value})});if(j.ok){hideModal();tell('✅ تم تحديث الاعتراض');loadObjections()}else tell('❌ فشل التحديث')}
+let editingCaptainPaymentDetails={};
+function adminPaymentLabel(m){return {cliq:'CliQ',wallet:'محفظة إلكترونية',bank:'تحويل بنكي',cash:'كاش / يدوي',other:'طريقة أخرى'}[m]||'غير محدد'}
+function renderAdminPaymentFields(methodOverride=null,detailsOverride=null){
+ const sel=document.getElementById('ecPayMethod'),box=document.getElementById('ecPayFields');if(!sel||!box)return;
+ if(methodOverride!==null)sel.value=methodOverride||'';
+ const m=sel.value;const d=detailsOverride!==null?(detailsOverride||{}):{};
+ let h='';
+ if(m==='cliq')h='<div class="form-grid"><input id="ecp_name" class="input" placeholder="اسم المستفيد"><input id="ecp_alias" class="input" placeholder="CliQ Alias / رقم CliQ"></div>';
+ if(m==='wallet')h='<div class="form-grid"><input id="ecp_name" class="input" placeholder="اسم صاحب المحفظة"><input id="ecp_wallet" class="input" placeholder="اسم المحفظة"><input id="ecp_number" class="input" placeholder="رقم المحفظة"></div>';
+ if(m==='bank')h='<div class="form-grid"><input id="ecp_name" class="input" placeholder="اسم المستفيد"><input id="ecp_bank" class="input" placeholder="اسم البنك"><input id="ecp_iban" class="input" placeholder="IBAN"></div>';
+ if(m==='cash')h='<input id="ecp_note" class="input" placeholder="ملاحظة طريقة التحويل">';
+ if(m==='other')h='<div class="form-grid"><input id="ecp_method" class="input" placeholder="اسم طريقة التحويل"><input id="ecp_note" class="input" placeholder="التفاصيل"></div>';
+ if(!m)h='<div class="callout">لا توجد طريقة تحويل محددة. إذا حفظتها هكذا سيظهر للكابتن أنها غير محددة.</div>';
+ box.innerHTML=h;
+ const map={name:'ecp_name',alias:'ecp_alias',wallet:'ecp_wallet',number:'ecp_number',bank:'ecp_bank',iban:'ecp_iban',note:'ecp_note',method:'ecp_method'};
+ for(const [k,v] of Object.entries(d||{})){const e=document.getElementById(map[k]);if(e)e.value=v??''}
+}
+function collectAdminPaymentDetails(){const d={};for(const k of ['name','alias','wallet','number','bank','iban','note','method']){const e=document.getElementById('ecp_'+k);if(e&&String(e.value||'').trim())d[k]=String(e.value).trim()}return d}
+function openExemption(phone){const c=state.captains.find(x=>x.phone===phone);if(!c)return;showModal('🛡️ إعفاء الأرضية — '+esc(c.name),`<div class="form-grid"><div class="callout wide">عند تفعيل الإعفاء، لن تُخصم الأرضية من الكابتن عند تنزيلها أو استكمالها لاحقًا. الخصومات المسجلة مسبقًا لا تتغير.</div><select id="exemptionChoice" class="select wide"><option value="none" ${!c.floor_exempt?'selected':''}>بدون إعفاء — تنزل الأرضية</option><option value="floor" ${c.floor_exempt?'selected':''}>إعفاء من الأرضية — لا تنزل الأرضية</option></select><button class="btn btn-primary wide" onclick='saveExemption(${JSON.stringify(phone)})'>💾 حفظ الإعفاء</button></div>`)}
+async function saveExemption(phone){const v=document.getElementById('exemptionChoice')?.value;const j=await api('/api/admin/captains/'+encodeURIComponent(phone)+'/exemption',{method:'PUT',body:JSON.stringify({floor_exempt:v==='floor',deduction_exempt:false})});if(j.ok){hideModal();tell('✅ تم حفظ إعفاء الأرضية');await loadAll()}else tell('❌ '+(j.message||j.error||'فشل حفظ الإعفاء'))}
+function editCaptain(phone){
+ const c=state.captains.find(x=>x.phone===phone);if(!c)return;editingCaptainPaymentDetails=c.payment_details||{};
+ showModal('✏️ تعديل بيانات الكابتن',`<div class="form-grid">
+   <div><div class="muted" style="font-size:11px;margin-bottom:5px">اسم الكابتن</div><input id="ecName" class="input" value="${esc(c.name)}"></div>
+   <div><div class="muted" style="font-size:11px;margin-bottom:5px">رقم الهاتف</div><input id="ecPhone" class="input" value="${esc(c.phone)}" dir="ltr"></div>
+   <div><div class="muted" style="font-size:11px;margin-bottom:5px">الحالة</div><select id="ecActive" class="select"><option value="true" ${c.active?'selected':''}>فعال</option><option value="false" ${!c.active?'selected':''}>موقوف</option></select></div>
+   <div><div class="muted" style="font-size:11px;margin-bottom:5px">طريقة التحويل التي تظهر للكابتن وفي التسكير</div><select id="ecPayMethod" class="select" onchange="renderAdminPaymentFields()"><option value="">غير محدد</option><option value="cliq">CliQ</option><option value="wallet">محفظة إلكترونية</option><option value="bank">تحويل بنكي</option><option value="cash">كاش / يدوي</option><option value="other">طريقة أخرى</option></select></div>
+   <div id="ecPayFields" class="wide"></div>
+   <div class="callout wide">💳 أي تعديل على الاسم أو CliQ/المحفظة/البنك وطريقة التحويل من هنا يظهر مباشرة للكابتن في حسابه، ويظهر أيضاً في التسكير الأسبوعي.</div>
+   <button class="btn btn-primary wide" onclick='saveCaptain(${JSON.stringify(c.phone)})'>💾 حفظ بيانات الكابتن والتحويل</button>
+ </div>`);
+ renderAdminPaymentFields(c.payment_method||'',editingCaptainPaymentDetails);
+}
+async function saveCaptain(old){
+ const method=document.getElementById('ecPayMethod')?.value||'';const details=collectAdminPaymentDetails();
+ const j=await api('/api/admin/captains/'+encodeURIComponent(old),{method:'PATCH',body:JSON.stringify({name:ecName.value.trim(),phone:ecPhone.value.trim(),active:ecActive.value==='true',payment_method:method,payment_details:details})});
+ if(j.ok){hideModal();tell('✅ تم تعديل بيانات الكابتن وطريقة التحويل');loadAll()}else if(j.error==='PHONE_EXISTS')tell(`❌ الرقم مستخدم لكابتن آخر${j.captain?.name?' — '+j.captain.name:''}`);else if(j.error==='NAME_EXISTS')tell(`❌ الاسم مستخدم لكابتن آخر${j.captain?.phone?' — '+j.captain.phone:''}`);else if(j.error==='INVALID_PAYMENT_METHOD')tell('❌ طريقة التحويل غير صحيحة');else tell('❌ '+(j.error||'فشل'))
+}
+
+
+function renderSystemTransferSettings(){
+ const x=state.systemTransfer||{method_name:'',account_name:'',account_number:'',note:''};
+ if(window.stMethod&&document.activeElement!==window.stMethod)window.stMethod.value=x.method_name||'';
+ if(window.stName&&document.activeElement!==window.stName)window.stName.value=x.account_name||'';
+ if(window.stNumber&&document.activeElement!==window.stNumber)window.stNumber.value=x.account_number||'';
+ if(window.stNote&&document.activeElement!==window.stNote)window.stNote.value=x.note||'';
+ renderSystemTransferPreview();
+ if(window.systemTransferUpdated)systemTransferUpdated.textContent=x.updated_at?'آخر تحديث: '+dt(x.updated_at):'';
+}
+function renderSystemTransferPreview(){
+ if(!window.systemTransferPreview)return;
+ const method=window.stMethod?.value||state.systemTransfer?.method_name||'—',name=window.stName?.value||state.systemTransfer?.account_name||'—',number=window.stNumber?.value||state.systemTransfer?.account_number||'—',note=window.stNote?.value||state.systemTransfer?.note||'';
+ systemTransferPreview.innerHTML=`<div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap"><div><div class="muted" style="font-size:11px">${esc(method)}</div><b style="font-size:18px">${esc(name)}</b><div dir="ltr" style="font-size:20px;font-weight:900;margin-top:6px">${esc(number)}</div>${note?`<div class="muted" style="font-size:10px;margin-top:5px">${esc(note)}</div>`:''}</div><button class="btn btn-primary" disabled>📋 نسخ بيانات التحويل</button></div>`;
+}
+async function loadSystemTransferSettings(){const j=await api('/api/admin/system-transfer-settings');if(j.ok){state.systemTransfer=j.data;renderSystemTransferSettings()}else tell('❌ تعذر تحميل بيانات التحويل للنظام')}
+async function saveSystemTransferSettings(){
+ const body={method_name:window.stMethod.value.trim(),account_name:window.stName.value.trim(),account_number:window.stNumber.value.trim(),note:window.stNote.value.trim()};
+ if(!body.method_name||!body.account_name||!body.account_number)return tell('❌ أكمل طريقة التحويل والاسم والرقم');
+ const j=await api('/api/admin/system-transfer-settings',{method:'PATCH',body:JSON.stringify(body)});
+ if(j.ok){state.systemTransfer=j.data;tell('✅ تم تحديث بيانات التحويل للنظام لكل الكباتن');renderSystemTransferSettings()}else tell('❌ '+(j.error||'فشل الحفظ'));
+}
+
+async function loadArchive(){const j=await api('/api/admin/weekly/archive');if(j.ok){state.archive=j.rows||[];renderArchive()}}
+let openedWeekId=null;
+const proofObjectUrls=[];
+function releaseProofUrls(){while(proofObjectUrls.length){try{URL.revokeObjectURL(proofObjectUrls.pop())}catch(_){}}}
+async function proofBlobUrl(id,direction){
+ const r=await fetch(`/api/admin/weekly/settlements/${id}/proof/${encodeURIComponent(direction)}`,{headers:{authorization:'Bearer '+token}});
+ if(!r.ok)throw new Error('PROOF_NOT_AVAILABLE');
+ const url=URL.createObjectURL(await r.blob());proofObjectUrls.push(url);return url;
+}
+async function hydrateProofThumbs(){
+ const imgs=[...modalBody.querySelectorAll('img[data-proof-id][data-proof-dir]')];
+ await Promise.all(imgs.map(async img=>{try{img.src=await proofBlobUrl(img.dataset.proofId,img.dataset.proofDir);img.dataset.loaded='1'}catch(_){img.alt='تعذر عرض صورة الحوالة';img.style.opacity='.45'}}));
+}
+async function viewProof(id,direction){
+ const w=window.open('about:blank','_blank');
+ try{const url=await proofBlobUrl(id,direction);if(w)w.location.href=url;else location.href=url}catch(e){if(w)w.close();tell('❌ تعذر فتح صورة الحوالة')}
+}
+async function uploadAdminProof(id,input){
+ const f=input.files?.[0];if(!f)return;
+ if(!confirm('رفع صورة الحوالة لهذا الكابتن؟')){input.value='';return}
+ const fd=new FormData();fd.append('proof',f);
+ const j=await api('/api/admin/weekly/settlements/'+id+'/transfer-proof',{method:'POST',body:fd});
+ if(j.ok){tell('✅ تم رفع صورة الحوالة للكابتن');await openWeek(openedWeekId)}else tell('❌ '+(j.error||'فشل رفع الحوالة'));
+}
+async function markReceived(id,btn){
+ if(!confirm('✅ تأكيد استلام المبلغ من الكابتن؟\n\nبعد التأكيد سيختفي من قائمة «عليهم إلنا» وينتقل فوراً إلى «التسويات المنتهية».'))return;
+ if(btn){btn.disabled=true;btn.textContent='⏳ جاري النقل...'}
+ const j=await api('/api/admin/weekly/settlements/'+id+'/mark-received',{method:'POST',body:'{}'});
+ if(j.ok){
+   const carryMsg=Number(j.cleared_old_balance||0)>0?` — وانشال ${money(j.cleared_old_balance)} د.أ من «الرصيد القديم» بالأسبوع الحالي`:'';
+   tell((j.had_proof?'✅ تم الاستلام وحذف صورة الحوالة ونقل الكابتن للمنتهية':'✅ تم الاستلام ونقل الكابتن للمنتهية (بدون صورة حوالة)')+carryMsg);
+   await loadAll();
+   await openWeek(openedWeekId);
+   await loadArchive();
+ }else{
+   if(btn){btn.disabled=false;btn.textContent='✅ تم الاستلام'}
+   tell('❌ '+(j.message||j.error||'فشل تأكيد الاستلام'));
+ }
+}
+async function copyArchiveSettlements(type){
+  const isTo=type==='to';
+  const list=Array.isArray(isTo?window.__weeklyTo:window.__weeklyFrom)
+    ? (isTo?window.__weeklyTo:window.__weeklyFrom)
+    : [];
+  if(!list.length)return tell(isTo?'⚠️ لا يوجد كباتن إلهم علينا لنسخهم':'⚠️ لا يوجد كباتن عليهم إلنا لنسخهم');
+
+  const ordered=[...list].sort((a,b)=>tnum(a.captain_name)-tnum(b.captain_name)||String(a.captain_name||'').localeCompare(String(b.captain_name||''),'ar'));
+  const lines=ordered.map(s=>{
+    const method=String(s.payment_method||'').toLowerCase();
+    const d=s.payment_details||{};
+    if(method==='cliq')return String(d.alias||d.cliq||d.username||'').trim();
+    return '';
+  }).filter(Boolean);
+
+  if(!lines.length)return tell('⚠️ ما في معرفات CliQ مسجلة بهذه القائمة');
+  const text=lines.join('\n');
+  try{await navigator.clipboard.writeText(text);tell('📋 تم نسخ '+lines.length+' معرف CliQ')}
+  catch(_){prompt('انسخ معرفات CliQ:',text)}
+}
+
+async function openWeek(id){
+ openedWeekId=Number(id);releaseProofUrls();
+ const j=await api('/api/admin/weekly/'+id+'/settlements?_='+Date.now());
+ if(!j.ok)return tell('تعذر فتح الأسبوع');
+ const rows=j.rows||[];
+ const archiveSort=(a,b)=>tnum(a.captain_name)-tnum(b.captain_name)||String(a.captain_name||'').localeCompare(String(b.captain_name||''),'ar');
+ const pendingTo=rows.filter(s=>Number(s.net)>0&&!['settled','carried_forward'].includes(String(s.status))).sort(archiveSort);
+ const pendingFrom=rows.filter(s=>Number(s.net)<0&&!['settled','carried_forward'].includes(String(s.status))).sort(archiveSort);
+ window.__weeklyTo=pendingTo;
+ window.__weeklyFrom=pendingFrom;
+ window.__weeklyProducers=pendingTo;
+ const completed=rows.filter(s=>String(s.status)==='settled').sort(archiveSort);
+ const carried=rows.filter(s=>String(s.status)==='carried_forward').sort(archiveSort);
+ const sumTo=pendingTo.reduce((a,s)=>a+Number(s.net||0),0);
+ const sumFrom=pendingFrom.reduce((a,s)=>a+Math.abs(Number(s.net||0)),0);
+
+ function proofThumb(s,direction,label){
+  return `<div style="display:grid;gap:7px;min-width:132px"><img data-proof-id="${s.id}" data-proof-dir="${direction}" alt="${esc(label)}" style="width:122px;height:80px;object-fit:cover;border-radius:10px;border:1px solid #3a4652;background:#0b1117;cursor:pointer" onclick="viewProof(${s.id},'${direction}')"><button class="btn" onclick="viewProof(${s.id},'${direction}')">🖼️ عرض صورة الحوالة</button></div>`;
+ }
+ function settlementAction(s){
+  const n=Number(s.net),st=String(s.status||'');
+  if(st==='carried_forward')return '<span class="badge info">🔄 مرحّل للأسبوع التالي</span>';
+  if(n>0){
+   const proof=s.admin_proof?proofThumb(s,'admin_to_captain','صورة حوالة الإدارة للكابتن'):'';
+   return `<div style="display:grid;gap:8px">${proof}<label class="btn btn-primary">${s.admin_proof?'🔄 تغيير الحوالة':'📤 رفع حوالة له'}<input type="file" accept="image/*" hidden onchange="uploadAdminProof(${s.id},this)"></label>${s.admin_proof?'<span class="badge wait">⏳ بانتظار الكابتن يضغط تم الوصول</span>':''}</div>`;
+  }
+  if(n<0){
+   const proof=s.captain_proof?proofThumb(s,'captain_to_admin','صورة حوالة الكابتن'):'';
+   const proofState=proof?proof:'<span class="badge wait">⏳ لم يرفع حوالة — يمكنك تأكيد الاستلام يدوياً</span>';
+   return `<div style="display:grid;gap:8px">${proofState}<button class="btn btn-green" onclick="markReceived(${s.id},this)">✅ تم الاستلام ونقله للمنتهية</button></div>`;
+  }
+  return '<span class="badge ok">✅ مسدد</span>';
+ }
+ async function copySettlementTransfer(value,label){
+  try{await navigator.clipboard.writeText(String(value||''));tell(`📋 تم نسخ ${label}`)}catch(_){prompt(`انسخ ${label}:`,String(value||''))}
+ }
+ async function copyAllProducers(){
+  const list=Array.isArray(window.__weeklyProducers)?window.__weeklyProducers:[];
+  if(!list.length)return tell('⚠️ لا يوجد منتجين قيد التسوية لنسخهم');
+  const lines=list.map((s,i)=>{
+    const d=s.payment_details||{};
+    const method=payLabel(String(s.payment_method||''));
+    const details=Object.values(d).map(v=>String(v||'').trim()).filter(Boolean).join(' — ');
+    const amount=money(Number(s.net||0));
+    return `${i+1}) ${s.captain_name||''} | ${s.captain_phone||''} | ${amount} د.أ | ${method}${details?': '+details:''}`;
+  });
+  const text=`🟢 المنتج — قيد التسوية
+عدد الكباتن: ${list.length}
+
+${lines.join('\n')}`;
+  try{await navigator.clipboard.writeText(text);tell(`📋 تم نسخ كل المنتج (${list.length} كابتن)`)}catch(_){prompt('انسخ قائمة المنتج:',text)}
+ }
+ function paymentCell(s){
+  const d=s.payment_details||{};const method=String(s.payment_method||'');
+  const cliq=method==='cliq'?String(d.alias||'').trim():'';
+  const copyBtn=cliq?`<button class="btn" style="margin-top:7px;padding:6px 9px" onclick='copySettlementTransfer(${JSON.stringify(cliq)},"CliQ")'>📋 نسخ CliQ</button>`:'';
+  return `<b>${esc(payLabel(method))}</b><div class="muted" style="font-size:10px">${esc(Object.values(d).join(' — '))}</div>${copyBtn}`
+ }
+ function settleBadge(status){
+  const st=String(status||'pending').toLowerCase();
+  if(st==='settled')return '<span class="badge ok">✅ منتهية</span>';
+  if(st==='carried_forward')return '<span class="badge info">🔄 مرحّل</span>';
+  if(st==='captain_uploaded_proof')return '<span class="badge wait">📸 حوالة مرفوعة</span>';
+  if(st==='awaiting_captain_confirmation')return '<span class="badge wait">⏳ بانتظار الوصول</span>';
+  return '<span class="badge off">غير مسدد</span>';
+ }
+ function renderGroup(list,type){
+  const isTo=type==='to';
+  const title=isTo?'🟢 الكباتن إلهم علينا — قيد التسوية':'🔴 الكباتن عليهم إلنا — قيد التحصيل';
+  const total=isTo?sumTo:sumFrom;
+  const accent=isTo?'#22c55e':'#ef4444';
+  if(!list.length)return `<div class="callout" style="margin-top:12px;border-color:${accent}55"><b style="color:${accent}">${title}</b><div class="muted" style="margin-top:6px">لا يوجد كباتن قيد الانتظار في هذه القائمة.</div></div>`;
+  const copyAllBtn=`<button class="btn btn-primary" onclick="copyArchiveSettlements('${isTo?'to':'from'}')">📋 نسخ CliQ</button>`;
+  let h=`<div style="margin-top:16px;border:1px solid ${accent}55;border-radius:14px;overflow:hidden"><div style="padding:12px 14px;background:${accent}12;display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap"><b style="font-size:16px;color:${accent}">${title}</b><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">${copyAllBtn}<span class="badge">${list.length} كابتن</span> <b style="margin-right:8px">المتبقي: ${money(total)} د.أ</b></div></div><div class="table"><table><thead><tr><th>الكابتن</th><th>${isTo?'إله صافي':'عليه صافي'}</th><th>الإنتاج</th><th>الاستهلاك</th><th>الأرضية</th><th>رصيد قديم</th><th>الحالة</th><th>طريقة التحويل</th><th>التسوية</th></tr></thead><tbody>`;
+  h+=list.map(s=>{const n=Number(s.net);const due=isTo?n:Math.abs(n);return `<tr><td><b>${esc(s.captain_name)}</b><div class="muted" dir="ltr">${esc(s.captain_phone)}</div></td><td class="money ${isTo?'plus':'minus'}"><b>${money(due)}</b></td><td class="money plus">${money(s.production)}</td><td class="money minus">${money(s.consumption)}</td><td class="money floor">${money(s.floor_fee)}</td><td class="money minus">${money(s.old_balance)}</td><td>${settleBadge(s.status)}</td><td>${paymentCell(s)}</td><td>${settlementAction(s)}</td></tr>`}).join('');
+  h+='</tbody></table></div></div>';
+  return h;
+ }
+ function completedRow(s){
+  const n=Number(s.net),label=n>0?'✅ وصلته حوالتنا':n<0?'✅ استلمنا حوالته':'✅ متعادل';
+  return `<tr><td><b>${esc(s.captain_name)}</b><div class="muted" dir="ltr">${esc(s.captain_phone)}</div></td><td>${n>0?'<span class="badge ok">إله '+money(n)+'</span>':n<0?'<span class="badge off">عليه '+money(Math.abs(n))+'</span>':'<span class="badge info">0.00</span>'}</td><td>${money(s.production)}</td><td>${money(s.consumption)}</td><td>${money(s.floor_fee)}</td><td>${money(s.old_balance)}</td><td><span class="badge ok">${label}</span></td></tr>`;
+ }
+ function carriedRow(s){
+  const n=Number(s.net);
+  return `<tr><td><b>${esc(s.captain_name)}</b><div class="muted" dir="ltr">${esc(s.captain_phone)}</div></td><td><span class="badge info">عليه ${money(Math.abs(n))}</span></td><td>${money(s.production)}</td><td>${money(s.consumption)}</td><td>${money(s.floor_fee)}</td><td>${money(s.old_balance)}</td><td><span class="badge info">🔄 تم دمجه في أسبوع أحدث</span></td></tr>`;
+ }
+
+ let html=`<div class="callout">✅ التسويات صارت 3 قوائم: <b style="color:#22c55e">إلهم علينا</b>، <b style="color:#ef4444">عليهم إلنا</b>، و <b>منتهية</b>. عند الضغط على «تم الاستلام» أو «تم الوصول» ينتقل الاسم تلقائياً إلى المنتهية. <span class="muted">القوائم مرتبة تدريجياً حسب رقم الكابتن T1 ثم T2 ثم T3، وزر «📋 نسخ CliQ» ينسخ معرفات CliQ فقط، كل معرف بسطر مستقل.</span></div>`;
+ html+=renderGroup(pendingTo,'to');
+ html+=renderGroup(pendingFrom,'from');
+ html+=`<div style="margin-top:16px;border:1px solid #22c55e55;border-radius:14px;overflow:hidden"><div style="padding:12px 14px;background:#22c55e10;display:flex;justify-content:space-between;gap:10px;align-items:center"><b style="color:#86efac">✅ التسويات المنتهية</b><span class="badge ok">${completed.length} كابتن</span></div><div class="table"><table><thead><tr><th>الكابتن</th><th>النتيجة</th><th>الإنتاج</th><th>الاستهلاك</th><th>الأرضية</th><th>رصيد قديم</th><th>الحالة</th></tr></thead><tbody>${completed.map(completedRow).join('')||'<tr><td colspan="7" class="empty">لا توجد تسويات منتهية بعد</td></tr>'}</tbody></table></div></div>`;
+ if(carried.length)html+=`<div style="margin-top:16px;border:1px solid #60a5fa55;border-radius:14px;overflow:hidden"><div style="padding:12px 14px;background:#60a5fa10;display:flex;justify-content:space-between;gap:10px;align-items:center"><b style="color:#93c5fd">🔄 أرصدة تم ترحيلها ودمجها بأسبوع أحدث</b><span class="badge info">${carried.length} كابتن</span></div><div class="table"><table><thead><tr><th>الكابتن</th><th>الرصيد المرحّل</th><th>الإنتاج</th><th>الاستهلاك</th><th>الأرضية</th><th>رصيد قديم داخل الأسبوع</th><th>الحالة</th></tr></thead><tbody>${carried.map(carriedRow).join('')}</tbody></table></div></div>`;
+ const wk=state.archive.find(x=>Number(x.id)===Number(id));
+ if(wk)html+=`<div style="margin-top:14px"><button class="btn btn-danger" onclick="reopenWeek(${id})">🔄 إعادة فتح هذا الأسبوع</button><div class="muted" style="font-size:11px;margin-top:6px">مسموح فقط لآخر أسبوع مقفل وإذا الأسبوع الجديد ما عليه أي حركة.</div></div>`;
+ showModal('📚 الأسبوع #'+id,html);
+ await hydrateProofThumbs();
+}
+async function reopenWeek(id){if(!confirm('إعادة فتح آخر أسبوع؟ هذا الإجراء لن يعمل إذا بدأ نشاط في الأسبوع الجديد.'))return;const j=await api('/api/admin/weekly/'+id+'/reopen',{method:'POST',body:'{}'});if(j.ok){hideModal();tell('✅ تم إعادة فتح الأسبوع');loadAll()}else tell(j.error==='NEW_WEEK_HAS_ACTIVITY'?'❌ لا يمكن: الأسبوع الجديد عليه حركات.':'❌ '+(j.error||'فشل'))}
+async function loadAudit(){const j=await api('/api/admin/audit');if(j.ok){state.audit=j.rows||[];auditBody.innerHTML=state.audit.map(x=>`<tr><td>${dt(x.created_at)}</td><td><b>${esc(x.action)}</b></td><td style="white-space:normal;max-width:600px"><code>${esc(JSON.stringify(x.details||{}))}</code></td></tr>`).join('')||'<tr><td colspan="3" class="empty">لا يوجد سجل</td></tr>'}}
+setTimeout(()=>{if(token)show()},0);
+</script>
+<div id="v324box" class="v324box"><button onclick="v324box.style.display='none'">✕ إغلاق</button><h2>📢 إعلان للكباتن</h2><input id="anTitle" placeholder="عنوان الإعلان"><textarea id="anBody" placeholder="نص الإعلان"></textarea><label><input id="anImportant" type="checkbox" style="width:auto"> إعلان مهم</label><button onclick="createAnnouncement()">نشر الإعلان</button></div><script>
+async function v324api(url,opt={}){const t=localStorage.getItem('amman_token')||'';const r=await fetch(url,{...opt,headers:{'content-type':'application/json',authorization:'Bearer '+t,...(opt.headers||{})}});return r.json().catch(()=>({ok:false}))}
+async function openV324(){v324box.style.display='block';}
+async function createAnnouncement(){const j=await v324api('/api/admin/announcements',{method:'POST',body:JSON.stringify({title:anTitle.value,body:anBody.value,important:anImportant.checked})});if(j.ok){alert('تم نشر الإعلان');anTitle.value='';anBody.value=''}else alert('فشل النشر')}
+</script>
+<footer class="dropcode-promo" aria-label="Drop Code">
+  <a class="dropcode-logo-link" href="https://wa.me/962791579870" target="_blank" rel="noopener" aria-label="تواصل مع Drop Code عبر واتساب">
+    <img class="dropcode-logo" src="/assets/drop-code-logo.webp" alt="Drop Code" loading="lazy">
+  </a>
+  <div class="dropcode-copy">
+    <strong><span class="dropcode-name">Drop Code</span> — صمم موقعك الإلكتروني</strong>
+    <small>اضغط على الصورة أو الرقم للتواصل</small>
+    <a class="dropcode-phone" href="https://wa.me/962791579870" target="_blank" rel="noopener" aria-label="التواصل مع Drop Code عبر واتساب">💬 0791579870</a>
+  </div>
+</footer>
+
+<script src="/assets/amman-admin-v6.js?v=643"></script>
+<script>
+// Admin-only export uses the existing admin token instead of an unauthenticated navigation.
+async function exportCaptainSheet(){
+ try{
+  const exportToken=typeof token!=='undefined'?token:(localStorage.getItem('tiger_token')||localStorage.getItem('amman_token')||'');
+  if(!exportToken){alert('يرجى تسجيل دخول الإدارة أولاً');return;}
+  const res=await fetch('/api/admin/export-captains',{headers:{Authorization:'Bearer '+exportToken},cache:'no-store'});
+  if(!res.ok)throw new Error('HTTP '+res.status);
+  const blob=await res.blob(),url=URL.createObjectURL(blob),a=document.createElement('a');
+  a.href=url;a.download='Captains_Export.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),10000);
+ }catch(e){alert('فشل تصدير الكباتن: '+e.message);}
+}
+</script>
+<button type="button" onclick="exportCaptainSheet()" style="position:fixed;bottom:22px;left:18px;z-index:9000;border:1px solid #29836a;background:#103b32;color:#fff;border-radius:12px;padding:10px 14px;font-weight:700;box-shadow:0 5px 18px #0004">📊 تصدير الكباتن Excel</button>
+</body></html>
