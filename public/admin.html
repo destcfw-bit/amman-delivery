@@ -917,7 +917,7 @@ async function createAnnouncement(){const j=await v324api('/api/admin/announceme
 // Admin-only export uses the existing admin token instead of an unauthenticated navigation.
 async function exportCaptainSheet(){
  try{
-  const exportToken=typeof token!=='undefined'?token:(localStorage.getItem('tiger_token')||localStorage.getItem('amman_token')||'');
+  const exportToken=typeof token!=='undefined'?token:(localStorage.getItem('amman_token')||'');
   if(!exportToken){alert('يرجى تسجيل دخول الإدارة أولاً');return;}
   const res=await fetch('/api/admin/export-captains',{headers:{Authorization:'Bearer '+exportToken},cache:'no-store'});
   if(!res.ok)throw new Error('HTTP '+res.status);
