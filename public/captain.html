@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0b0c10"><title>AMMAN DELIVERY — بوابة الكابتن</title>
+<meta name="theme-color" content="#f6f5f2"><title>AMMAN DELIVERY — بوابة الكابتن</title>
 <link rel="icon" type="image/x-icon" href="/assets/amman-logo.jpeg">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/amman-logo.jpeg">
 <link rel="icon" type="image/png" sizes="48x48" href="/assets/amman-logo.jpeg">
@@ -60,15 +60,25 @@ body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opac
     </aside>
     <div class="am-auth-form-area">
       <div class="login-card">
-        <div class="am-mobile-brand"><img src="/assets/amman-logo.jpeg" alt=""><b>AMMAN DELIVERY</b></div>
-        <div class="am-eyebrow">حساب الكابتن</div>
+        <div class="am-mobile-brand"><div class="am-mobile-brand-logo"><img src="/assets/amman-logo.jpeg" alt="شعار AMMAN DELIVERY"></div><div><b>AMMAN DELIVERY</b><small>CAPTAIN PORTAL</small></div><span class="am-mobile-brand-dot" aria-hidden="true"></span></div>
+        <div class="am-mobile-intro">
+          <div class="am-mobile-intro-top"><span class="am-mobile-overline">مساحة الكابتن</span><span class="am-mobile-intro-symbol" aria-hidden="true">◈</span></div>
+          <h2>حسابك أوضح.<br><span>وشغلك أسهل.</span></h2>
+          <p>تابع رصيدك وحركاتك وكشوفاتك من تلفونك بكل سهولة.</p>
+          <div class="am-mobile-features" aria-label="مميزات حساب الكابتن">
+            <span><i aria-hidden="true">↗</i> رصيدك</span>
+            <span><i aria-hidden="true">▤</i> كشوفاتك</span>
+            <span><i aria-hidden="true">◎</i> تسوياتك</span>
+          </div>
+        </div>
+        <div class="am-eyebrow">دخول حساب الكابتن</div>
         <h1>أهلًا برجعتك</h1>
-        <p class="login-sub">سجّل دخولك لمتابعة حسابك والتسويات.</p>
+        <p class="login-sub">أدخل بيانات حسابك للوصول إلى رصيدك وجميع التفاصيل.</p>
         <div class="stack">
           <label class="am-field-label" for="phone">رقم الهاتف</label>
           <input id="phone" class="input" inputmode="tel" autocomplete="username" placeholder="07XXXXXXXX">
           <label class="am-field-label" for="password">كلمة المرور</label>
-          <input id="password" class="input" type="password" autocomplete="current-password" placeholder="أدخل كلمة المرور">
+          <div class="am-password-wrap"><input id="password" class="input" type="password" autocomplete="current-password" placeholder="أدخل كلمة المرور"><button class="am-password-eye" type="button" aria-label="إظهار كلمة المرور" aria-pressed="false" onclick="adTogglePassword(this)">إظهار</button></div>
           <button class="btn btn-primary login-btn" onclick="loginCaptain()">تسجيل الدخول <span aria-hidden="true">←</span></button>
         </div>
         <div id="loginMsg" class="msg" role="status" aria-live="polite"></div>
