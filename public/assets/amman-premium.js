@@ -19,7 +19,7 @@ const existing=window.loadAll;
 if(typeof existing==='function'&&!window.__ammanPremiumWrapped){
  window.__ammanPremiumWrapped=true;
  window.loadAll=async function(...args){
-  const first=!!window.token&&!document.body.classList.contains('captain-app-ready');
+  const first=!document.body.classList.contains('captain-app-ready');
   let overlay=$('#adPremiumLoading');
   if(!overlay){overlay=document.createElement('div');overlay.id='adPremiumLoading';overlay.className='ad-premium-loading';overlay.setAttribute('role','status');overlay.setAttribute('aria-label','جار تحميل حسابك');overlay.innerHTML='<div class="ad-skeleton"><span></span><span></span><span></span><span></span></div>';document.body.append(overlay)}
   if(first)overlay.classList.add('show');
