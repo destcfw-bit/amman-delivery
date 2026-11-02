@@ -15,6 +15,19 @@ let latestBalance=null;const animateBalance=()=>{const el=$('#balanceText');if(!
 let busy=false;const update=()=>{if(busy)return;busy=true;requestAnimationFrame(()=>{busy=false;afterApp();chart()})};
 document.addEventListener('DOMContentLoaded',()=>{
 afterApp();chart();
+const existing=window.loadAll;
+if(typeof existing==='function'&&!window.__ammanPremiumWrapped){
+ window.__ammanPremiumWrapped=true;
+ window.loadAll=async function(...args){
+  const first=!!window.token&&!document.body.classList.contains('captain-app-ready');
+  let overlay=$('#adPremiumLoading');
+  if(!overlay){overlay=document.createElement('div');overlay.id='adPremiumLoading';overlay.className='ad-premium-loading';overlay.setAttribute('role','status');overlay.setAttribute('aria-label','جار تحميل حسابك');overlay.innerHTML='<div class="ad-skeleton"><span></span><span></span><span></span><span></span></div>';document.body.append(overlay)}
+  if(first)overlay.classList.add('show');
+  try{const result=await existing.apply(this,args);afterApp();chart();if(result){animateBalance()}return result}
+  finally{overlay.classList.remove('show')}
+ };
+}
+
 let lastP='',lastC='',lastBal='';
 setInterval(()=>{if(!document.body.classList.contains('captain-app-ready'))return;const p=$('#prod')?.textContent,c=$('#cons')?.textContent,b=$('#balanceText')?.textContent;if(p!==lastP||c!==lastC){lastP=p;lastC=c;update()}if(b!==lastBal){lastBal=b;/* balance display remains server-authoritative */}},1100);
 const node=$('#app');if(node){const obs=new MutationObserver(()=>{if(document.body.classList.contains('captain-app-ready'))update()});obs.observe(node,{attributes:true,subtree:false})}
