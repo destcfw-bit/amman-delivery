@@ -254,4 +254,19 @@ body.am-v2 #securityBox{color:#4b5160}
  body.amman-captain.am-v2 .am-quick button{padding:13px!important}
  body.am-v2 .am-money-amount{font-size:37px}
 }
+
+/* Consistent top-level visual headers for every captain route */
+body.am-v2 .am-section-intro{
+ margin:0 0 22px;padding:22px 24px;background:#fff;border:1px solid #e8e7ea;
+ border-radius:16px;box-shadow:0 8px 24px rgba(31,37,52,.035);
+ border-right:4px solid #e13e57;
+}
+body.am-v2 .am-section-intro>span{font-size:10px;font-weight:950;letter-spacing:1.1px;color:#e13e57}
+body.am-v2 .am-section-intro h1{font-size:clamp(23px,2.6vw,33px);line-height:1.4;color:#242839;font-weight:950;margin:5px 0}
+body.am-v2 .am-section-intro p{font-size:12px;line-height:1.9;color:#818593;margin:0}
+body.am-v2 .section:not(#s-home) .panel .pb :is(.empty,.callout,.status){color:#464b58}
+body.am-v2 .section:not(#s-home) .panel .pb .callout.dangerbox{color:#b23551!important}
+body.am-v2 .section:not(#s-home) .panel .pb .status.ok{color:#0c8465!important}
+body.am-v2 .section:not(#s-home) .panel .pb .status.off{color:#c8475c!important}
+@media(max-width:600px){body.am-v2 .am-section-intro{padding:18px 17px;margin-bottom:16px}body.am-v2 .am-section-intro h1{font-size:24px}}
 @media(prefers-reduced-motion:reduce){body.am-v2 *,body.am-v2 *:before,body.am-v2 *:after{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
