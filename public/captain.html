@@ -239,13 +239,24 @@ function clickFX(kind='transition',direction='forward'){
 const cpReduceMotion=()=>window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 function cpTween(el,to,format){
   if(!el)return;
-  to=Number(to||0);
-  const from=Number(el.dataset.cpValue||0);
+  to=Number(to);
+  if(!Number.isFinite(to))return;
+  const previous=Number(el.dataset.cpValue);
+  const initialized=el.dataset.cpValue!==undefined&&Number.isFinite(previous);
+  if(initialized&&previous===to){cancelAnimationFrame(el._cpRaf||0);el.textContent=format(to);return}
+  const current=Number(el.dataset.cpFrameValue);
+  const from=Number.isFinite(current)?current:(initialized?previous:to);
   el.dataset.cpValue=String(to);
-  if(cpReduceMotion()||!Number.isFinite(to)){el.textContent=format(to);return}
-  const start=performance.now(),dur=520,delta=to-from;
   cancelAnimationFrame(el._cpRaf||0);
-  const tick=t=>{const p=Math.min(1,(t-start)/dur),e=1-Math.pow(1-p,3);el.textContent=format(from+delta*e);if(p<1)el._cpRaf=requestAnimationFrame(tick)};
+  if(!initialized||cpReduceMotion()||Math.abs(to-from)<0.0005){el.dataset.cpFrameValue=String(to);el.textContent=format(to);return}
+  const start=performance.now(),dur=460,delta=to-from;
+  const tick=t=>{
+    if(el.dataset.cpValue!==String(to))return;
+    const p=Math.min(1,(t-start)/dur),v=p>=1?to:from+delta*(1-Math.pow(1-p,3));
+    el.dataset.cpFrameValue=String(v);
+    el.textContent=format(v);
+    if(p<1)el._cpRaf=requestAnimationFrame(tick);
+  };
   el._cpRaf=requestAnimationFrame(tick);
 }
 function animateMoney(el,v){cpTween(el,v,n=>Number(n).toFixed(2))}
@@ -430,5 +441,42 @@ setTimeout(bindClickSignature,200);
 <script defer src="/assets/amman-motion-v3.js?v=2"></script>
 <script defer src="/assets/amman-motion-real.js?v=1"></script>
 <script defer src="/assets/amman-login-loading.js?v=1"></script>
+<script>
+// Keep the displayed account in sync with the server without reloading the page.
+// Poll only while the captain dashboard is visible. Never derive a balance locally.
+(()=>{
+  let busy=false, lastCheck=0;
+  const POLL_MS=15000;
+  const sync=async()=>{
+    if(busy||!token||!state.me||document.hidden||!document.body.classList.contains('captain-app-ready'))return;
+    if(Date.now()-lastCheck<3500)return;
+    lastCheck=Date.now();busy=true;
+    const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),9000);
+    try{
+      const response=await fetch('/api/captain-auth/me?fresh='+Date.now(),{
+        headers:{authorization:'Bearer '+token,'cache-control':'no-cache'},
+        cache:'no-store',signal:ctrl.signal
+      });
+      if(!response.ok)return;
+      const result=await response.json();
+      if(!result.ok||!result.data||!state.me||!token)return;
+      const old=state.me, now=result.data;
+      // Preserve the currently loaded objects, but refresh account values from the authoritative endpoint.
+      state.me=now;
+      const keys=['net','production','consumption','floor_fee','active','status_reason'];
+      const changed=keys.some(k=>String(old[k]??'')!==String(now[k]??''));
+      const oldWeek=old.week?.id,newWeek=now.week?.id;
+      if(changed||oldWeek!==newWeek){
+        renderAll();
+      }
+    }catch(e){/* Keep last valid data visible on a temporary network failure. */}
+    finally{clearTimeout(timer);busy=false}
+  };
+  setInterval(sync,POLL_MS);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)sync()});
+  window.addEventListener('online',sync);
+  window.addEventListener('focus',sync);
+})();
+</script>
 </body></html>
 
