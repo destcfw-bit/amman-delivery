@@ -509,13 +509,13 @@ function renderOrders(){
 }
 function renderCaptains(){
   const q=(document.getElementById('captainSearch')?.value||'').toLowerCase();
-  const rows=[...state.captains].sort(clickPlusCaptainSort).filter(x=>[x.name,x.phone].join(' ').toLowerCase().includes(q));
+  const rows=[...state.captains].sort(ammanOrderCaptainSort).filter(x=>[x.name,x.phone].join(' ').toLowerCase().includes(q));
   if(!document.getElementById('captainsBody'))return;
   captainsBody.innerHTML=rows.map(x=>`<tr><td><b>${esc(x.name||'—')}</b></td><td dir="ltr">${esc(x.phone)}</td><td style="color:#65dea4">${money(x.production)}</td><td style="color:#ff9d9d">${money(x.consumption)}</td><td><b>${money(x.balance)}</b></td><td>${dt(x.last_movement)}</td></tr>`).join('')||'<tr><td colspan="6" class="empty">لا يوجد كباتن</td></tr>';
 }
 function renderBalances(){
   const q=(document.getElementById('balanceSearch')?.value||'').toLowerCase();
-  const rows=[...state.balances].sort(clickPlusCaptainSortBalance).filter(x=>[x.name,x.captain_phone].join(' ').toLowerCase().includes(q));
+  const rows=[...state.balances].sort(ammanOrderCaptainSortBalance).filter(x=>[x.name,x.captain_phone].join(' ').toLowerCase().includes(q));
   if(!document.getElementById('balancesBody'))return;
   balancesBody.innerHTML=rows.map(x=>`<tr><td><b>${esc(x.name||'—')}</b></td><td dir="ltr">${esc(x.captain_phone)}</td><td style="color:#65dea4">${money(x.production)}</td><td style="color:#ff9d9d">${money(x.consumption)}</td><td><b style="color:${Number(x.net)>=0?'#ffb36e':'#ff8585'}">${money(x.net)}</b></td><td>${dt(x.updated_at)}</td></tr>`).join('')||'<tr><td colspan="6" class="empty">لا يوجد جرد</td></tr>';
 }
@@ -544,9 +544,9 @@ function globalFilter(q){
 }
 if(token)showApp();
 
-function clickPlusTNum(v=''){const m=String(v||'').match(/\bT\s*0*(\d+)\b/i);return m?Number(m[1]):Number.MAX_SAFE_INTEGER}
-function clickPlusCaptainSort(a,b){const x=clickPlusTNum(a.name),y=clickPlusTNum(b.name);return x-y||String(a.name||'').localeCompare(String(b.name||''),'ar')}
-function clickPlusCaptainSortBalance(a,b){const x=clickPlusTNum(a.name||a.captain_name),y=clickPlusTNum(b.name||b.captain_name);return x-y||String(a.name||'').localeCompare(String(b.name||''),'ar')}
+function ammanOrderTNum(v=''){const m=String(v||'').match(/\bT\s*0*(\d+)\b/i);return m?Number(m[1]):Number.MAX_SAFE_INTEGER}
+function ammanOrderCaptainSort(a,b){const x=ammanOrderTNum(a.name),y=ammanOrderTNum(b.name);return x-y||String(a.name||'').localeCompare(String(b.name||''),'ar')}
+function ammanOrderCaptainSortBalance(a,b){const x=ammanOrderTNum(a.name||a.captain_name),y=ammanOrderTNum(b.name||b.captain_name);return x-y||String(a.name||'').localeCompare(String(b.name||''),'ar')}
 const accountantLayoutLabels={hero:'الترحيب',stats:'الإحصائيات',live:'آخر الطلبات وأعلى الكباتن',tools:'الإحصائيات والقروبات والأدوات'};
 function getAccountantLayout(){try{return JSON.parse(localStorage.getItem('amman_accountant_layout')||'null')||{order:['hero','stats','live','tools'],hidden:[]}}catch(e){return {order:['hero','stats','live','tools'],hidden:[]}}}
 function applyAccountantLayout(){const home=document.getElementById('sec-home');if(!home)return;const cfg=getAccountantLayout(),map={};home.querySelectorAll(':scope > [data-layout-key]').forEach(x=>map[x.dataset.layoutKey]=x);cfg.order.forEach(k=>{if(map[k])home.appendChild(map[k])});Object.entries(map).forEach(([k,el])=>{if(!cfg.order.includes(k))home.appendChild(el);el.style.display=(cfg.hidden||[]).includes(k)?'none':''})}
