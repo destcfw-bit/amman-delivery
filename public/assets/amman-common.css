@@ -26,7 +26,7 @@ body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opac
 .sound-toggle{display:none!important}.brand img.amman-signature{filter:none!important;transform:none!important}
 
 /* AMMAN DELIVERY Final v4 common polish */
-::selection{background:rgba(225, 62, 87,.34);color:#fff}.yahya-rights{border-top-color:rgba(74,157,214,.14)!important}.yahya-rights-phone{border-color:rgba(225, 62, 87,.25)!important;background:rgba(225, 62, 87,.08)!important;color:#d2d5df!important}
+::selection{background:rgba(225, 62, 87,.34);color:#fff}.yahya-rights{border-top-color:rgba(170, 180, 200,.14)!important}.yahya-rights-phone{border-color:rgba(225, 62, 87,.25)!important;background:rgba(225, 62, 87,.08)!important;color:#d2d5df!important}
 
 
 /* Distinguish neutral informational status from AMMAN action red. */
