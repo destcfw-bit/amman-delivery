@@ -1,0 +1,32 @@
+/* AMMAN delivery motion v3 — accessibility-friendly, pure red / charcoal / gray */
+.am-liquid-nav{position:absolute;z-index:0;pointer-events:none;top:5px;bottom:5px;right:0;width:20%;border-radius:15px;background:linear-gradient(125deg,#f22929,#b80000);box-shadow:0 6px 18px #a5000055;transition:transform .32s cubic-bezier(.2,.8,.2,1),width .32s}
+body.amman-captain.am-v2 .tabs.am-mobile-tabs{isolation:isolate}
+body.amman-captain.am-v2 .tabs.am-mobile-tabs button{z-index:1;position:relative}
+body.amman-captain.am-v2 .tabs.am-mobile-tabs button.active{background:transparent!important;box-shadow:none!important}
+body.amman-captain.am-v2 .tabs.am-mobile-tabs button.active::after{content:"";position:absolute;bottom:2px;height:2px;left:25%;right:25%;background:#fff;border-radius:10px;animation:amLine .25s ease}
+@keyframes amLine{from{transform:scaleX(.15)}to{transform:scaleX(1)}}
+.am-pulse-once{animation:amBalanceFlash .65s ease}
+@keyframes amBalanceFlash{50%{box-shadow:0 0 0 2px #f62e2e,0 0 30px #e5141466!important}}
+.am-reveal{opacity:0;transform:translateY(17px);transition:opacity .45s,transform .45s}
+.am-reveal.am-visible{opacity:1;transform:none}
+@media(hover:hover) and (pointer:fine){.am-tilt{transition:transform .18s;transform-style:preserve-3d}}
+.am-new-movement{animation:amSlideTransaction .48s ease both}
+@keyframes amSlideTransaction{from{opacity:0;transform:translateX(22px)}to{opacity:1;transform:none}}
+.am-notif-ring .am-header-svg{animation:amBellShake .65s ease}
+@keyframes amBellShake{0%,100%{transform:rotate(0)}25%{transform:rotate(15deg)}50%{transform:rotate(-12deg)}75%{transform:rotate(7deg)}}
+.am-refresh-spinning .am-header-svg{animation:amSpin .7s linear infinite}
+@keyframes amSpin{to{transform:rotate(360deg)}}
+.am-ripple{position:absolute;pointer-events:none;border-radius:50%;background:#ff595966;transform:scale(0);animation:amRipple .52s ease-out}
+@keyframes amRipple{to{transform:scale(3.5);opacity:0}}
+.am-success-check{position:fixed;z-index:9000;top:85px;left:50%;transform:translateX(-50%);background:#27332d;border:1px solid #35be68;color:#fff;padding:12px 18px;border-radius:15px;box-shadow:0 15px 30px #0006;animation:amCheckIn .3s ease}
+@keyframes amCheckIn{from{opacity:0;transform:translate(-50%,-14px)}to{opacity:1;transform:translate(-50%,0)}}
+body.amman-captain.am-v2 #modal.show{background:#090b10b8!important;backdrop-filter:blur(8px)}
+body.amman-captain.am-v2 #modal.show .modal-card{animation:amModalIn .24s ease both}
+@keyframes amModalIn{from{opacity:0;transform:translateY(20px) scale(.975)}to{opacity:1;transform:none}}
+.am-progress{position:fixed;z-index:9001;top:0;right:0;left:0;height:3px;pointer-events:none;background:linear-gradient(90deg,transparent,#f02b2b,transparent);background-size:200% 100%;animation:amProgress 1s linear infinite}
+@keyframes amProgress{to{background-position:-200% 0}}
+body.amman-captain.am-v2 .am-week-card{overflow:hidden;position:relative}
+body.amman-captain.am-v2 .am-week-card:after{content:"";position:absolute;inset:0 auto 0 -50%;width:25%;transform:skewX(-22deg);background:linear-gradient(90deg,transparent,#ef25251b,transparent);pointer-events:none;animation:amSpotlight 12s ease-in-out infinite}
+@keyframes amSpotlight{0%,82%{left:-50%}100%{left:160%}}
+.am-notif-stagger{animation:amSlideTransaction .38s both}
+@media(prefers-reduced-motion:reduce){.am-liquid-nav,.am-reveal,.am-tilt{transition:none!important}.am-pulse-once,.am-new-movement,.am-notif-ring .am-header-svg,.am-refresh-spinning .am-header-svg,.am-ripple,.am-success-check,.am-progress,.am-week-card:after,.am-notif-stagger{animation:none!important}.am-reveal{opacity:1!important;transform:none!important}}
