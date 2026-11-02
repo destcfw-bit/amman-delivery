@@ -52,3 +52,6 @@ body.amman-captain.am-v2 #s-history :is(.btn,.chip),body.amman-captain.am-v2 #s-
 body.amman-captain.am-v2 #s-profile input,body.amman-captain.am-v2 #s-profile select{border-radius:14px!important}
 body.amman-captain.am-v2 .login-card.ad-login-card{box-shadow:0 25px 60px #1b1d2b68,0 0 0 1px #ffffff0d inset!important}
 @media(max-width:700px){body.amman-captain.am-v2 #s-history .week-card{padding:15px!important}body.amman-captain.am-v2 #s-orders .cp-move-card{padding:16px!important}}
+
+/* Hide only the floating sound control on mobile; notification audio and other controls remain unchanged. */
+@media(max-width:980px){body.amman-captain.am-v2 #soundToggle,body.amman-captain.am-v2 .sound-toggle{display:none!important}}
