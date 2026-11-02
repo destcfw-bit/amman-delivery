@@ -29,8 +29,8 @@ test('captain dashboard is a new finance app with distinct login and home archit
   'am-week-card','am-account-grid','am-metrics','am-quick','am-mobile-tabs','am-workspace']){
   assert.ok(beforeScripts.includes(marker),'missing new layout: '+marker);
  }
- assert.match(html,/amman-captain-v7\.css\?v=1/);
- assert.match(html,/amman-captain-v7\.js\?v=1/);
+ assert.match(html,/amman-captain-v7\.css\?v=2/);
+ assert.match(html,/amman-captain-v7\.js\?v=2/);
  assert.doesNotMatch(beforeScripts,/Click\s*Plus|TiGER|تايجر|كلك/);
 });
 test('all six captain sections remain navigable on desktop and mobile',()=>{
