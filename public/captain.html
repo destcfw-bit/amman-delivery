@@ -44,6 +44,8 @@ body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opac
 <link rel="stylesheet" href="/assets/amman-captain-v7.css?v=2">
 <style id="ad-captain-login-redesign">
 /* AMMAN DELIVERY — isolated login redesign. Dashboard remains untouched. */
+body.amman-captain.captain-app-ready #login.ad-login,body.amman-captain.captain-onboarding #login.ad-login{display:none!important}
+body.amman-captain #login.ad-login[style*="display: none"]{display:none!important}
 body.amman-captain:has(#login:not(.hidden)){background:#f6f5f8!important}
 body.amman-captain #login.ad-login{min-height:100svh;min-height:100dvh;display:flex!important;align-items:center;justify-content:center;padding:35px 17px 48px;background:radial-gradient(ellipse at 104% 0%,#ffe2e9 0,transparent 32%),radial-gradient(ellipse at -10% 100%,#fce1e9 0,transparent 30%),#f6f5f8!important;position:relative;isolation:isolate;overflow:hidden;color:#fff}
 body.amman-captain #login.ad-login:before{content:"";position:absolute;inset:-50%;background:conic-gradient(from 0deg,transparent 0deg,#ef455709 75deg,transparent 115deg);animation:adAmbient 18s linear infinite;pointer-events:none}
