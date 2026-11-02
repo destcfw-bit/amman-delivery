@@ -3,8 +3,8 @@
   "short_name": "AMMAN",
   "start_url": "/captain",
   "display": "standalone",
-  "background_color": "#101013",
-  "theme_color": "#101013",
+  "background_color": "#f6f5f2",
+  "theme_color": "#f6f5f2",
   "description": "AMMAN DELIVERY Captain Portal",
   "icons": [
     {
