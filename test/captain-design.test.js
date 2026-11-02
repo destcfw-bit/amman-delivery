@@ -45,6 +45,10 @@ test('all six captain sections remain navigable on desktop and mobile',()=>{
  assert.match(js,/window\.renderOrders=timeline/);
 });
 test('visual layer supports responsive mobile and keeps onboarding and statements',()=>{
+ assert.match(html,/am-mobile-intro/);
+ assert.match(html,/am-mobile-features/);
+ assert.match(html,/am-password-wrap/);
+ assert.match(js,/adTogglePassword/);
  assert.match(css,/@media\(max-width:980px\)/);
  assert.match(css,/@media\(max-width:700px\)/);
  assert.match(css,/am-auth-form-area/);
