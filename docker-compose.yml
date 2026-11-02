@@ -1,27 +1,54 @@
+# AMMAN DELIVERY production stack for Coolify (Git > Docker Compose).
+# Configure all required environment variables in Coolify before deployment.
+# Use a URL-safe hex password for POSTGRES_PASSWORD because it is embedded in DATABASE_URL.
 services:
   db:
     image: postgres:16-alpine
+    restart: unless-stopped
     environment:
       POSTGRES_DB: amman
       POSTGRES_USER: amman
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set a new unique POSTGRES_PASSWORD}
     volumes:
       - amman_pg:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U amman -d amman"]
       interval: 5s
-      retries: 10
+      timeout: 5s
+      retries: 15
   app:
     build: .
-    env_file: .env
+    restart: unless-stopped
     environment:
+      NODE_ENV: production
+      PORT: "3000"
+      SITE_MODE: ${SITE_MODE:-all}
+      TIMEZONE: Asia/Amman
       DATABASE_URL: postgres://amman:${POSTGRES_PASSWORD}@db:5432/amman
-      RUN_WORKER: "1"
+      JWT_SECRET: ${JWT_SECRET:?Set a new unique JWT_SECRET}
+      CAPTAIN_PASSWORD_KEY: ${CAPTAIN_PASSWORD_KEY:?Set a new unique CAPTAIN_PASSWORD_KEY}
+      ADMIN_USERNAME: ${ADMIN_USERNAME:?Set ADMIN_USERNAME}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:?Set a strong ADMIN_PASSWORD}
+      RUN_WORKER: "${RUN_WORKER:-0}"
+      AUTO_REGISTER_GROUP_MEMBERS: "${AUTO_REGISTER_GROUP_MEMBERS:-0}"
+      WHATSAPP_PROVIDER: ${WHATSAPP_PROVIDER:-dropcode}
+      DROPCODE_API_URL: ${DROPCODE_API_URL:-}
+      DROPCODE_API_TOKEN: ${DROPCODE_API_TOKEN:-}
+      DROPCODE_API_KEY: ${DROPCODE_API_KEY:-}
+      DROPCODE_SESSION_ID: ${DROPCODE_SESSION_ID:-}
+      DROPCODE_WEBHOOK_SECRET: ${DROPCODE_WEBHOOK_SECRET:-}
+      AMMAN_SHEETS_BRIDGE_URL: ${AMMAN_SHEETS_BRIDGE_URL:-}
+      AMMAN_SHEETS_BRIDGE_KEY: ${AMMAN_SHEETS_BRIDGE_KEY:-}
     depends_on:
       db:
         condition: service_healthy
-    ports:
-      - "3000:3000"
-    restart: unless-stopped
+    expose:
+      - "3000"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 10s
+      start_period: 60s
+      retries: 3
 volumes:
   amman_pg:
