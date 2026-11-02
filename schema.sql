@@ -147,7 +147,7 @@ CREATE TABLE IF NOT EXISTS accounting_weeks (
   starts_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   closed_at TIMESTAMPTZ,
   status TEXT NOT NULL DEFAULT 'open' CHECK (status IN ('open','closed')),
-  floor_amount NUMERIC(12,3) NOT NULL DEFAULT 0.750,
+  floor_amount NUMERIC(12,3) NOT NULL DEFAULT 0.500,
   floor_applied_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
