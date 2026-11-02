@@ -1,0 +1,38 @@
+# Isolated preview only. Run with: docker compose -f docker-compose.preview.yml --env-file .env.preview up --build -d
+name: amman-delivery-preview
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: amman_preview
+      POSTGRES_USER: amman_preview
+      POSTGRES_PASSWORD: ${PREVIEW_POSTGRES_PASSWORD:?Set PREVIEW_POSTGRES_PASSWORD}
+    volumes:
+      - amman_preview_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U amman_preview -d amman_preview"]
+      interval: 5s
+      retries: 15
+  app:
+    build: .
+    env_file:
+      - .env.preview
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      DATABASE_URL: postgres://amman_preview:${PREVIEW_POSTGRES_PASSWORD}@db:5432/amman_preview
+      RUN_WORKER: "0"
+      WHATSAPP_PROVIDER: "disabled"
+      DROPCODE_API_URL: ""
+      DROPCODE_API_TOKEN: ""
+      DROPCODE_API_KEY: ""
+      DROPCODE_SESSION_ID: ""
+      DROPCODE_WEBHOOK_SECRET: ""
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:3001:3000"
+    restart: unless-stopped
+volumes:
+  amman_preview_pg:
