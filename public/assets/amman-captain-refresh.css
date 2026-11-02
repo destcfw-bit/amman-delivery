@@ -38,3 +38,72 @@ body.amman-captain.am-v2 .am-money-card,body.amman-captain.am-v2 .am-week-card,b
 @keyframes adDashUp{from{opacity:.4;transform:translateY(10px)}to{opacity:1;transform:none}}
 @media(max-width:700px){body.amman-captain.am-v2 #s-home .am-page-heading{gap:8px!important}body.amman-captain.am-v2 .am-metrics{grid-template-columns:repeat(2,minmax(0,1fr))!important}body.amman-captain.am-v2 #s-home{padding-bottom:16px}}
 @media(prefers-reduced-motion:reduce){body.amman-captain.am-v2 .am-money-card,body.amman-captain.am-v2 .am-week-card,body.amman-captain.am-v2 .am-metrics .stat{animation:none!important}}
+
+
+/* V2 Unified visual tokens: all captain workspace surfaces, including nested routes */
+html:has(body.amman-captain.am-v2){background:#474952!important;color-scheme:dark!important}
+body.amman-captain.am-v2{color-scheme:dark!important;
+ --ad-bg:#474952!important;--ad-white:#30323b!important;--ad-ink:#f4f4f7!important;--ad-sub:#bcc0ca!important;--ad-line:#666873!important;
+ --text:#f4f4f7!important;--muted:#bbc0ca!important;--panel:#30323b!important;--panel2:#383b45!important;--line:#666873!important;
+ --cp-text:#f4f4f7!important;--cp-muted:#bbc0ca!important;
+}
+body.amman-captain.am-v2 #app,body.amman-captain.am-v2 .am-app-workspace{background:#474952!important;color:#f4f4f7!important}
+body.amman-captain.am-v2 .top.am-top{background:#282b35!important;border-bottom:1px solid #555864!important;box-shadow:0 5px 24px #1c1d262e!important}
+body.amman-captain.am-v2 .am-top-title strong{color:#f7f7fb!important}
+body.amman-captain.am-v2 .top .iconbtn{background:#383b47!important;color:#f8f8fc!important;border-color:#686b79!important}
+body.amman-captain.am-v2 .am-side{background:#272a34!important;color:#f9f9fd!important;border-color:#4f5261!important}
+body.amman-captain.am-v2 .am-side-links button{color:#c9cbd5!important}
+body.amman-captain.am-v2 .am-side-links button:hover{background:#414453!important}
+body.amman-captain.am-v2 .am-side-caption,body.amman-captain.am-v2 .am-side-bottom{color:#b7bdca!important}
+body.amman-captain.am-v2 .am-page-heading h1,body.amman-captain.am-v2 .am-block-heading h2,body.amman-captain.am-v2 .am-section-intro h1{color:#fafaff!important}
+body.amman-captain.am-v2 .am-page-heading p,body.amman-captain.am-v2 .am-block-heading>span,body.amman-captain.am-v2 .am-section-intro p{color:#c3c6d0!important}
+body.amman-captain.am-v2 .am-subtle-link{background:#343743!important;color:#f7f7fb!important;border-color:#6f7180!important}
+body.amman-captain.am-v2 .am-identity-band,body.amman-captain.am-v2 .am-week-card,body.amman-captain.am-v2 .am-section-intro{background:linear-gradient(140deg,#373a46,#30323c)!important;color:#f7f7fb!important;border:1px solid #686b79!important;box-shadow:0 9px 20px #1517221c!important}
+body.amman-captain.am-v2 .am-id-avatar{background:#44404b!important;border-color:#7e5262!important}
+body.amman-captain.am-v2 .am-id-icon{color:#f6648019!important}
+body.amman-captain.am-v2 .am-id-text h2,body.amman-captain.am-v2 .am-week-label,body.amman-captain.am-v2 .am-week-footer b{color:#fff!important}
+body.amman-captain.am-v2 .am-week-card .am-card-head,body.amman-captain.am-v2 .am-week-line,body.amman-captain.am-v2 .am-week-footer{color:#c4c6d1!important}
+body.amman-captain.am-v2 .am-week-action{background:transparent!important;border:0!important;border-top:1px solid #666978!important;color:#ff738b!important}
+body.amman-captain.am-v2 .am-money-card{background:linear-gradient(140deg,#292c37,#1e2029 75%,#46242f)!important;border-color:#92546a!important}
+body.amman-captain.am-v2 .am-money-amount{color:#fff!important}
+body.amman-captain.am-v2 .stats.am-metrics .stat{background:#30333f!important;border:1px solid #6b6e7b!important;color:#f7f7fb!important;box-shadow:0 6px 19px #17192125!important}
+body.amman-captain.am-v2 .am-metrics .stat b{color:#fff!important}
+body.amman-captain.am-v2 .am-metrics .stat span:not(.am-metric-icon),body.amman-captain.am-v2 .am-metrics .stat small{color:#c4c8d3!important}
+body.amman-captain.am-v2 .panel,body.amman-captain.am-v2 .order,body.amman-captain.am-v2 .cp-move-card,body.amman-captain.am-v2 .profile-card{background:#30333e!important;border:1px solid #666a78!important;color:#f4f4fa!important;box-shadow:0 5px 18px #15162120!important}
+body.amman-captain.am-v2 .ph{background:#383b47!important;border-bottom:1px solid #636672!important}
+body.amman-captain.am-v2 .ph h3,body.amman-captain.am-v2 .profile-card h2{color:#f8f8fc!important}
+body.amman-captain.am-v2 .ph small,body.amman-captain.am-v2 .cp-move-sub,body.amman-captain.am-v2 .cp-move-head time{color:#bec3ce!important}
+body.amman-captain.am-v2 .pb,body.amman-captain.am-v2 .cp-move-main{background:transparent!important;color:#e9eaf0!important}
+body.amman-captain.am-v2 .row{border-bottom-color:#60636f!important}
+body.amman-captain.am-v2 .row span{color:#bfc3ce!important}
+body.amman-captain.am-v2 .row b{color:#f8f8fc!important}
+body.amman-captain.am-v2 .callout{background:#373b46!important;border:1px solid #737784!important;color:#eef0f5!important}
+body.amman-captain.am-v2 .dangerbox{background:#4e303c!important;color:#ffd6e0!important;border-color:#aa5069!important}
+body.amman-captain.am-v2 .am-last-week-btn{background:#30333e!important;color:#f3f3f7!important;border:1px dashed #a25870!important}
+body.amman-captain.am-v2 .btn:not(.btn-primary):not(.btn-danger):not(.btn-green):not(.btn-blue),body.amman-captain.am-v2 .cp-account-tools button{background:#3c3f4c!important;color:#fafafd!important;border-color:#757886!important}
+body.amman-captain.am-v2 .btn-danger{background:#622c40!important;color:#ffe2e7!important;border-color:#c14f68!important}
+body.amman-captain.am-v2 :is(.input,.select,.textarea,input:not([type="checkbox"]):not([type="radio"]),select,textarea){background:#272b35!important;color:#fff!important;border-color:#757988!important;box-shadow:none!important}
+body.amman-captain.am-v2 :is(input,textarea)::placeholder{color:#aeb4c1!important;opacity:1}
+body.amman-captain.am-v2 :is(.input,.select,.textarea):focus-visible{border-color:#ff5879!important;outline:2px solid #ff59793b!important}
+body.amman-captain.am-v2 :is(select option){background:#292c38;color:#fff}
+body.amman-captain.am-v2 .chips .chip{background:#383b47!important;border-color:#727584!important;color:#d8dbe5!important}
+body.amman-captain.am-v2 .chips .chip.active{background:#df2951!important;color:#fff!important;border-color:#ff5874!important}
+body.amman-captain.am-v2 .sound-toggle{background:#373b47!important;color:#fff!important;border:1px solid #787c89!important}
+body.amman-captain.am-v2 #securityBox{color:#dce0e9!important}
+body.amman-captain.am-v2 #modal .modal-card{background:#30333e!important;color:#fafafe!important;border-color:#777b87!important}
+body.amman-captain.am-v2 .modal-head{border-color:#686b77!important}
+body.amman-captain.am-v2 .modal-body{color:#e1e5ef!important}
+body.amman-captain.am-v2 .onboarding{background:#292b34ed!important}
+body.amman-captain.am-v2 .onboard-card{background:#30333e!important;color:#fff!important;border-color:#727584!important}
+body.amman-captain.am-v2 .am-field-label{color:#f4f5f9!important}
+body.amman-captain.am-v2 .am-login-secure{color:#bfc3cf!important}
+body.amman-captain.am-v2 #login.ad-login{color:#f8f8fa!important}
+/* Mobile navigation previously forced white by V7 @media rules */
+@media(max-width:980px){
+ body.amman-captain.am-v2 .tabs.am-mobile-tabs{background:#272a34!important;border-top:1px solid #666978!important;box-shadow:0 -7px 25px #1b1d2747!important}
+ body.amman-captain.am-v2 .tabs.am-mobile-tabs button{color:#c9ccd7!important;background:transparent!important}
+ body.amman-captain.am-v2 .tabs.am-mobile-tabs button.active{color:#fff!important;background:linear-gradient(130deg,#ef3659,#b81a3b)!important;border-radius:13px!important}
+}
+@media(max-width:700px){
+ body.amman-captain.am-v2 .stats.am-metrics{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
