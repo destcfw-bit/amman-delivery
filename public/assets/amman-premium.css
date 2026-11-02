@@ -1,0 +1,39 @@
+/* AMMAN DELIVERY PREMIUM EXPERIENCE — presentation only */
+:root{--premium-red:#ed3155;--premium-gray:#464952;--premium-surface:#2d303b;--premium-border:#6c6f7d}
+body.amman-captain.am-v2{font-family:'Cairo',Tahoma,Arial,sans-serif!important}
+body.amman-captain.am-v2 #s-home .am-money-card{border-radius:27px!important;background:radial-gradient(circle at 0% 0%,#a52c4c45,transparent 42%),linear-gradient(135deg,#303440,#1e222b)!important;box-shadow:0 18px 40px #17182254!important;transition:transform .28s,box-shadow .28s}
+body.amman-captain.am-v2 #s-home .am-money-card:hover{transform:translateY(-3px);box-shadow:0 23px 48px #17182268!important}
+body.amman-captain.am-v2 :is(.am-week-card,.am-identity-band,.panel,.profile-card,.am-metrics .stat){backdrop-filter:blur(12px);border-radius:22px!important;transition:transform .22s ease,box-shadow .22s ease}
+body.amman-captain.am-v2 :is(.am-week-card,.panel,.am-metrics .stat):hover{transform:translateY(-2px);box-shadow:0 13px 30px #17182233!important}
+body.amman-captain.am-v2 :is(button,.btn){transition:transform .17s ease,filter .17s ease,box-shadow .17s ease}
+body.amman-captain.am-v2 button:active{transform:scale(.975)!important;filter:brightness(1.1)}
+body.amman-captain.am-v2 .section.active{animation:premiumSlide .31s ease both}
+@keyframes premiumSlide{from{opacity:.2;transform:translateY(12px)}to{opacity:1;transform:none}}
+body.amman-captain.am-v2 .tabs.am-mobile-tabs{left:12px!important;right:12px!important;bottom:max(10px,env(safe-area-inset-bottom))!important;width:calc(100% - 24px)!important;height:72px!important;min-height:72px!important;border:1px solid #737686!important;border-radius:22px!important;box-shadow:0 18px 36px #16182073!important;backdrop-filter:blur(24px)!important}
+body.amman-captain.am-v2 .am-workspace{padding-bottom:125px!important}
+body.amman-captain.am-v2 .cp-move-card{border-right:3px solid #ec3155!important;border-radius:18px!important;transition:transform .2s}
+body.amman-captain.am-v2 .cp-move-card:hover{transform:translateY(-2px)}
+body.amman-captain.am-v2 #toast{position:fixed!important;left:50%!important;right:auto!important;bottom:104px!important;top:auto!important;transform:translateX(-50%);max-width:min(92vw,420px);border:1px solid #ff789499!important;border-radius:16px!important;background:#252934!important;color:#fff!important;box-shadow:0 16px 36px #0007!important;z-index:4000!important;animation:premiumSlide .28s ease both}
+body.amman-captain.am-v2 #modal{align-items:flex-end!important}
+body.amman-captain.am-v2 #modal .modal-card{border-radius:26px 26px 0 0!important;max-height:90dvh;overflow-y:auto;animation:premiumSheet .28s ease both}
+@keyframes premiumSheet{from{transform:translateY(80px);opacity:.2}to{transform:translateY(0);opacity:1}}
+@media(min-width:900px){body.amman-captain.am-v2 #modal{align-items:center!important}body.amman-captain.am-v2 #modal .modal-card{border-radius:22px!important}}
+.ad-premium-chart{background:linear-gradient(140deg,#30343f,#252932);border:1px solid #676b7a;border-radius:22px;padding:19px;margin:19px 0;box-shadow:0 14px 35px #10131c24}
+.ad-premium-chart h3{margin:0 0 12px;font-weight:900;font-size:17px;color:#fff}
+.ad-premium-bars{height:118px;display:flex;align-items:end;justify-content:space-around;gap:18px;border-bottom:1px solid #6c6f7b;padding:10px 15px 0}
+.ad-premium-bar{width:44%;max-width:180px;min-height:5px;border-radius:12px 12px 0 0;transition:height .7s cubic-bezier(.2,.75,.2,1);position:relative}
+.ad-premium-bar.production{background:linear-gradient(0deg,#19765f,#42dbb0)}
+.ad-premium-bar.consumption{background:linear-gradient(0deg,#ac1537,#ff6483)}
+.ad-premium-legend{display:flex;justify-content:space-between;gap:14px;padding-top:10px;font-size:12px;color:#d5d8e0}
+.ad-premium-legend strong{color:#fff}
+.ad-premium-loading{position:fixed;inset:0;z-index:5000;display:none;place-items:center;background:#444752ea}
+.ad-premium-loading.show{display:grid}
+.ad-skeleton{width:min(380px,85vw);display:grid;gap:12px}
+.ad-skeleton>span{height:22px;border-radius:12px;background:linear-gradient(100deg,#676a75 15%,#9b9da8 48%,#676a75 82%);background-size:200% 100%;animation:premiumShine 1.15s infinite}
+.ad-skeleton>span:first-child{height:92px}
+@keyframes premiumShine{to{background-position-x:-200%}}
+.ad-login .ad-brandmark img{animation:premiumFloat 4s ease-in-out infinite!important}
+@keyframes premiumFloat{50%{transform:translateY(-8px)}}
+.ad-premium-whatsapp{display:inline-flex;align-items:center;gap:7px;text-decoration:none;border:1px solid #d94a68;background:#a72344;color:white!important;border-radius:12px;padding:9px 13px;font-weight:900;font-size:12px;margin-top:10px}
+body.amman-captain.am-v2 .profile-card .ad-premium-whatsapp{color:#fff!important}
+@media(prefers-reduced-motion:reduce){body.amman-captain.am-v2 .section.active,.ad-login .ad-brandmark img,.ad-skeleton>span,body.amman-captain.am-v2 #modal .modal-card{animation:none!important}}
