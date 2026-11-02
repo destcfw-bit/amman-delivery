@@ -54,3 +54,11 @@ test('visual layer supports responsive mobile and keeps onboarding and statement
  assert.match(html,/changePassword\(\)/);
  assert.match(html,/markNotificationsRead\(\)/);
 });
+
+test('captain inline runtime and redesigned interactive bundle parse as JavaScript',()=>{
+ const vm=require('node:vm');
+ const inline=html.match(/<script>([\s\S]*?)<\/script>/);
+ assert.ok(inline,'captain page must retain inline application logic');
+ assert.doesNotThrow(()=>new vm.Script(inline[1]),'original captain runtime syntax invalid');
+ assert.doesNotThrow(()=>new vm.Script(js),'new captain navigation bundle syntax invalid');
+});
