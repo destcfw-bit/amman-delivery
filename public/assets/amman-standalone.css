@@ -1,0 +1,234 @@
+/* AMMAN DELIVERY / 2026 — independent editorial control system.
+   Presentation only. No event, account, or accounting handlers are replaced. */
+:root{
+ --am-ink:#0b0c10;--am-surface:#161820;--am-raised:#20232c;--am-line:#343741;
+ --am-silver:#ced0da;--am-muted:#9599a6;--am-red:#df3650;--am-red2:#ff697a;
+ --am-white:#f8f7f8;--am-good:#42c89a;--am-shadow:0 20px 55px rgba(0,0,0,.24);
+ --bg:#0b0c10;--bg2:#101118;--panel:#161820;--panel2:#20232c;
+ --line:#343741;--text:#f8f7f8;--muted:#9599a6;--orange:#df3650;--orange2:#ff697a;
+ --cp-bg:#0b0c10;--cp-bg2:#101118;--cp-panel:#161820;--cp-panel2:#20232c;
+ --cp-blue:#df3650;--cp-blue2:#b8243b;--cp-orange:#df3650;--cp-gold:#d6d7df;
+ --cp-line:#343741;--cp-text:#f8f7f8;--cp-muted:#9599a6;
+ color-scheme:dark;
+}
+html{background:#0b0c10!important}
+body.amman-index,body.amman-admin,body.amman-captain,body.amman-register{
+ background:linear-gradient(130deg,#0b0c10 0%,#12141b 44%,#0a0b0f 100%)!important;
+ color:var(--am-white)!important;font-family:"Cairo","Tajawal",Tahoma,Arial,sans-serif!important;
+ -webkit-font-smoothing:antialiased;
+}
+body.amman-index:before,body.amman-admin:before,body.amman-captain:before,body.amman-register:before,
+body.amman-index:after,body.amman-admin:after,body.amman-captain:after,body.amman-register:after{
+ display:none!important;content:none!important;
+}
+body.amman-index *,body.amman-admin *,body.amman-captain *,body.amman-register *{box-sizing:border-box}
+body.amman-index ::selection,body.amman-admin ::selection,body.amman-captain ::selection,body.amman-register ::selection{background:rgba(223,54,80,.38);color:#fff}
+body.amman-index .muted,body.amman-admin .muted,body.amman-captain .muted,body.amman-register .muted{color:var(--am-muted)!important}
+body.amman-index :is(button,a,input,select,textarea):focus-visible,
+body.amman-admin :is(button,a,input,select,textarea):focus-visible,
+body.amman-captain :is(button,a,input,select,textarea):focus-visible,
+body.amman-register :is(button,a,input,select,textarea):focus-visible{
+ outline:2px solid #ff798a!important;outline-offset:3px!important;
+}
+body.amman-index :is(.btn,.icon-btn,.stat-card,.panel),
+body.amman-admin :is(.btn,.stat,.panel),
+body.amman-captain :is(.btn,.stat,.panel,.balance-card){transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+body.amman-index :is(.btn,.icon-btn):hover,body.amman-admin .btn:hover,body.amman-captain .btn:hover{transform:translateY(-2px)}
+body.amman-index :is(.btn-primary,.nav button.active),
+body.amman-admin :is(.btn-primary,.nav button.active),
+body.amman-captain :is(.btn-primary,.nav button.active),
+body.amman-register .btn.primary{
+ background:#df3650!important;border:1px solid #ef4a64!important;color:#fff!important;
+ box-shadow:0 10px 24px rgba(223,54,80,.18)!important;
+}
+body.amman-index :is(.panel,.card,.stat-card),
+body.amman-admin :is(.panel,.card,.stat),
+body.amman-captain :is(.panel,.card,.stat,.balance-card),
+body.amman-register :is(.card,.panel){
+ background:var(--am-surface)!important;border:1px solid var(--am-line)!important;
+ box-shadow:var(--am-shadow)!important;backdrop-filter:none!important;
+}
+body.amman-index :is(input,select,textarea),
+body.amman-admin :is(input,select,textarea),
+body.amman-captain :is(input,select,textarea),
+body.amman-register :is(input,select,textarea){
+ background:#101219!important;color:#f8f7f8!important;border:1px solid #454852!important;
+ border-radius:12px!important;
+}
+body.amman-index :is(input,select,textarea):focus,body.amman-admin :is(input,select,textarea):focus,
+body.amman-captain :is(input,select,textarea):focus,body.amman-register :is(input,select,textarea):focus{
+ border-color:#f3687d!important;box-shadow:0 0 0 3px rgba(223,54,80,.14)!important;
+}
+body.amman-index :is(.brand img,.hero-logo,.login-logo),
+body.amman-admin :is(.brand img,.logo),
+body.amman-captain :is(.brand img,.logo),
+body.amman-register .brand img{
+ filter:none!important;object-fit:contain!important;transform:none!important;
+}
+
+/* Control center: asymmetric editorial rail, spacious data surface */
+body.amman-index .shell{grid-template-columns:272px minmax(0,1fr)!important}
+body.amman-index .sidebar{
+ background:#111218!important;border-inline-end:1px solid #383a44!important;
+ border-inline-start:0!important;padding:28px 16px!important;
+ box-shadow:10px 0 45px rgba(0,0,0,.18)!important;
+}
+body.amman-index .sidebar .brand{padding:12px 8px 26px!important;border-bottom:1px solid #363841!important;gap:15px!important}
+body.amman-index .sidebar .brand img{width:65px!important;height:65px!important;background:#1a1c23!important;border:1px solid #484953;border-radius:17px!important;padding:6px}
+body.amman-index .brand-name{font-weight:950!important;line-height:1.2;letter-spacing:.2px;font-size:19px!important}
+body.amman-index .brand-name b{color:#f1f0f3!important}
+body.amman-index .brand small{letter-spacing:1px!important;font-size:10px!important;margin-top:8px!important;color:#a9aab2!important}
+body.amman-index .nav{gap:5px!important;margin-top:24px!important}
+body.amman-index .nav :is(button,a){border-radius:10px!important;text-align:right!important;padding:13px 16px!important;color:#bfc0ca!important;background:transparent!important;border:1px solid transparent!important;font-weight:800!important}
+body.amman-index .nav :is(button,a):hover{background:#20222b!important;color:#fff!important}
+body.amman-index .nav button.active{background:#29202a!important;border-color:#59404b!important;color:#fff!important;box-shadow:inset -4px 0 0 #e53b55!important}
+body.amman-index .main{min-width:0;background:transparent!important}
+body.amman-index .topbar{background:rgba(18,19,25,.96)!important;border-bottom:1px solid #34363f!important;padding:13px 30px!important}
+body.amman-index .topbar .search{max-width:440px}
+body.amman-index .user-chip{background:#242630!important;border:1px solid #40414b!important;border-radius:12px!important}
+body.amman-index .content{max-width:1540px;margin-inline:auto;padding:28px 30px 80px!important}
+body.amman-index .hero{
+ background:linear-gradient(118deg,#29242d,#1a1d26 60%,#14151b)!important;
+ border:1px solid #52424b!important;border-inline-start:5px solid #df3650!important;
+ border-radius:18px!important;padding:34px 38px!important;box-shadow:0 24px 54px rgba(0,0,0,.21)!important;
+}
+body.amman-index .hero:before{background:linear-gradient(140deg,rgba(255,255,255,.035),transparent)!important}
+body.amman-index .hero-logo{width:125px!important;height:125px!important;background:rgba(255,255,255,.04)!important;border:1px solid #4d434b;border-radius:16px!important;padding:12px!important}
+body.amman-index .hero h1{font-size:clamp(25px,2.5vw,40px)!important;line-height:1.4!important;letter-spacing:-.6px!important}
+body.amman-index .hero h1 span{color:#ff6d82!important}
+body.amman-index .hero-meta{gap:8px!important}
+body.amman-index .hero-meta>span{background:#22242e!important;border:1px solid #3c3d46!important;border-radius:8px!important}
+body.amman-index .stats{gap:14px!important;margin-top:24px!important}
+body.amman-index .stat-card{border-radius:14px!important;position:relative;overflow:hidden;padding:22px!important}
+body.amman-index .stat-card:before{content:"";position:absolute;right:0;top:0;width:4px;height:100%;background:#df3650}
+body.amman-index .stat-value{font-size:clamp(24px,3vw,37px)!important;letter-spacing:-1px!important}
+body.amman-index .side-card{background:#1c1d24!important;border:1px solid #3e404a!important;border-radius:12px!important}
+
+/* Admin: command desk with separated header and accessible vertical navigation */
+body.amman-admin .top{
+ position:sticky!important;top:0!important;background:#15161c!important;border-bottom:1px solid #393b45!important;
+ height:86px!important;padding:0 clamp(18px,3vw,42px)!important;box-shadow:0 14px 28px #0002!important;
+}
+body.amman-admin .top .brand{font-size:18px!important;letter-spacing:.3px;gap:14px!important}
+body.amman-admin .top .brand img{width:58px!important;height:58px!important;background:#23242c!important;border-radius:14px!important;border:1px solid #41434c;padding:5px}
+body.amman-admin .top .brand b{color:#fa7486!important}
+body.amman-admin .wrap{gap:22px!important;max-width:1700px!important;margin:auto!important;padding:22px!important}
+body.amman-admin .side{
+ background:#13151c!important;border:1px solid #383a44!important;border-radius:16px!important;
+ padding:14px!important;box-shadow:0 18px 40px #0003!important;
+}
+body.amman-admin .side .nav{gap:5px!important}
+body.amman-admin .side .nav button{
+ border-radius:9px!important;border:1px solid transparent!important;background:transparent!important;
+ color:#b8bac5!important;padding:13px 15px!important;text-align:right!important;font-size:13px!important;
+}
+body.amman-admin .side .nav button.active{background:#29202a!important;color:#fff!important;border-color:#62404d!important;box-shadow:inset -4px 0 0 #df3650!important}
+body.amman-admin .main{min-width:0!important}
+body.amman-admin .hero{
+ background:linear-gradient(118deg,#302630,#191b24 64%,#161820)!important;
+ border:1px solid #4c3d47!important;border-bottom:1px solid #4c3d47!important;
+ border-right:5px solid #df3650!important;border-radius:16px!important;
+ padding:30px!important;margin-bottom:22px!important;box-shadow:var(--am-shadow)!important;
+}
+body.amman-admin .hero h1{font-size:clamp(24px,2.4vw,35px)!important;letter-spacing:-.7px!important}
+body.amman-admin .hero h1 span{color:#ff7889!important}
+body.amman-admin .stats{gap:14px!important}
+body.amman-admin .stat{border-radius:13px!important;padding:22px!important;border-top:3px solid #4b3d47!important}
+body.amman-admin .stat b{font-size:clamp(25px,2.6vw,35px)!important;color:#faf9fb!important}
+body.amman-admin .stat:nth-child(3){border-top-color:#df3650!important}
+body.amman-admin .panel{border-radius:14px!important;overflow:hidden}
+body.amman-admin .ph{background:#1e2028!important;border-bottom:1px solid #383a44!important}
+body.amman-admin table{border-collapse:separate;border-spacing:0}
+body.amman-admin th{background:#23252d!important;color:#d6d5dd!important}
+body.amman-admin td{border-bottom-color:#393a43!important}
+body.amman-admin tr:hover td{background:#252630!important}
+
+/* Captain: account-first mobile banking composition, not old hero + glowing cards */
+body.amman-captain .top{background:#171920!important;border-bottom:1px solid #363840!important;padding:12px 20px!important;height:auto!important;min-height:78px!important}
+body.amman-captain .top .brand{gap:13px!important;font-size:19px!important;letter-spacing:.3px!important}
+body.amman-captain .top .brand img{width:58px!important;height:58px!important;border-radius:15px!important;padding:5px!important;background:#23252e!important;border:1px solid #454751!important}
+body.amman-captain .top .brand b{color:#ff7588!important}
+body.amman-captain .wrap{max-width:1160px!important;margin:auto!important;padding:26px 20px 115px!important}
+body.amman-captain #s-home.section.active{display:flex!important;flex-direction:column!important;gap:0!important}
+body.amman-captain #s-home .hero{order:-4;border-radius:18px!important;background:linear-gradient(120deg,#332832 0%,#1e2029 62%,#171920 100%)!important;border:1px solid #58414c!important;border-right:5px solid #df3650!important;padding:30px 32px!important;margin-bottom:16px!important}
+body.amman-captain #s-home .hero .hello{color:#e2aab4!important;font-size:14px!important}
+body.amman-captain #s-home .hero h1{font-size:clamp(26px,4vw,40px)!important;margin:7px 0 14px!important}
+body.amman-captain #s-home .hero-grid{order:-3;gap:14px!important;margin:0 0 20px!important}
+body.amman-captain #s-home .balance-card{border-radius:16px!important;padding:26px!important;background:#20222b!important}
+body.amman-captain #s-home .balance-card:first-child{background:linear-gradient(118deg,#29232c,#1f222b)!important;border-color:#58424d!important}
+body.amman-captain #s-home .balance{color:#f9f6f7!important;font-size:clamp(31px,4vw,47px)!important}
+body.amman-captain #s-home .quick{order:-2;margin:0 0 16px!important;gap:12px!important}
+body.amman-captain #s-home .quick button{background:#22242d!important;border:1px solid #41424c!important;border-radius:12px!important;padding:17px 12px!important;min-height:94px!important;box-shadow:none!important}
+body.amman-captain #s-home .quick button:hover{background:#322830!important;border-color:#804555!important}
+body.amman-captain #s-home .stats{gap:13px!important;margin-bottom:20px!important}
+body.amman-captain .stat{border-radius:13px!important;padding:20px!important;border-top:3px solid #46404a!important}
+body.amman-captain .stat b{font-size:28px!important}
+body.amman-captain .panel{border-radius:14px!important;overflow:hidden}
+body.amman-captain .ph{background:#20212a!important;border-color:#3b3b45!important}
+body.amman-captain .bottom-nav{background:#171820!important;border-top:1px solid #3e3e48!important}
+body.amman-captain .bottom-nav button.active{color:#fefefe!important;background:#39242f!important;border-color:#70404e!important}
+
+/* Auth: strong portal identity instead of the generic legacy card */
+body.amman-index .login-screen,body.amman-admin .login,body.amman-captain .login{
+ background:linear-gradient(125deg,#0d0e14 0%,#19161d 45%,#0b0c10 100%)!important;
+}
+body.amman-index .login-card,body.amman-admin .login-card,body.amman-captain .login-card{
+ background:#1d1e26!important;border:1px solid #4e3c46!important;border-top:5px solid #df3650!important;
+ border-radius:17px!important;max-width:510px!important;width:min(510px,100%)!important;
+ padding:clamp(26px,4vw,48px)!important;box-shadow:0 40px 100px #0008!important;
+}
+body.amman-index .login-card h1,body.amman-admin .login-card h1,body.amman-captain .login-card h1{letter-spacing:.4px!important;font-size:clamp(27px,3vw,35px)!important}
+body.amman-index .login-card img,body.amman-admin .login-card img,body.amman-captain .login-card img{max-width:120px!important;max-height:120px!important;object-fit:contain!important;margin-bottom:14px!important}
+body.amman-index .login-card button,body.amman-admin .login-card button,body.amman-captain .login-card .login-btn{min-height:54px!important;border-radius:11px!important}
+body.amman-index .login-card input,body.amman-admin .login-card input,body.amman-captain .login-card input{min-height:50px!important}
+
+/* Captain application: streamlined stepper and branded document form */
+body.amman-register .shell{max-width:850px!important;margin:40px auto 70px!important;padding:0 18px!important}
+body.amman-register .brand{background:linear-gradient(118deg,#2c232e,#1a1c25)!important;border:1px solid #55414b!important;border-right:5px solid #df3650!important;border-radius:17px!important;padding:25px!important;margin-bottom:22px!important}
+body.amman-register .brand img{width:100px!important;height:100px!important}
+body.amman-register .brand h1{font-size:clamp(24px,4vw,35px)!important}
+body.amman-register .card{border-radius:16px!important;padding:clamp(18px,3vw,32px)!important}
+body.amman-register .progress{background:#292b35!important;border-radius:100px!important}
+body.amman-register .progress>div{background:#df3650!important}
+body.amman-register .step-labels{color:#bec0c8!important}
+body.amman-register .btn.primary{min-height:49px!important}
+
+/* Non-promotional independent footer */
+.amman-footer{margin:28px auto 22px!important;max-width:1200px;text-align:center!important;
+ padding:24px 16px!important;border-top:1px solid #3b3d46!important;color:#a6a9b5!important;font-size:12px!important;letter-spacing:.2px!important}
+.amman-footer strong{color:#f8f7f8!important;letter-spacing:1px!important}
+
+/* Compact screens */
+@media(max-width:900px){
+ body.amman-index .shell{grid-template-columns:1fr!important}
+ body.amman-index .sidebar{position:relative!important;top:auto!important;height:auto!important;padding:13px!important;box-shadow:none!important}
+ body.amman-index .sidebar .brand{padding:6px 8px 12px!important}
+ body.amman-index .sidebar .nav{display:flex!important;flex-direction:row!important;overflow-x:auto!important;gap:6px!important;margin-top:12px!important}
+ body.amman-index .sidebar .nav :is(button,a){flex:0 0 auto!important;white-space:nowrap}
+ body.amman-index .content{padding:18px 14px 80px!important}
+ body.amman-index .topbar{padding:12px 14px!important}
+ body.amman-admin .wrap{padding:12px!important;gap:10px!important}
+ body.amman-admin .top{padding:8px 12px!important;min-height:70px!important;height:auto!important}
+ body.amman-admin .side{padding:8px!important}
+ body.amman-captain .wrap{padding:15px 12px 110px!important}
+}
+@media(max-width:600px){
+ body.amman-index .hero{padding:22px!important;display:flex!important;flex-direction:column!important;align-items:flex-start!important}
+ body.amman-index .hero-logo{height:82px!important;width:82px!important}
+ body.amman-index .stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ body.amman-index .stat-card{padding:15px!important}
+ body.amman-admin .hero{padding:20px!important}
+ body.amman-admin .stat{padding:16px!important}
+ body.amman-admin .top .brand{font-size:13px!important}
+ body.amman-admin .top .brand img{width:43px!important;height:43px!important}
+ body.amman-captain .top{min-height:68px!important;padding:10px 12px!important}
+ body.amman-captain .top .brand{font-size:15px!important}
+ body.amman-captain .top .brand img{width:46px!important;height:46px!important}
+ body.amman-captain #s-home .hero{padding:22px!important}
+ body.amman-captain #s-home .balance-card{padding:20px!important}
+ body.amman-captain #s-home .quick{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ body.amman-captain #s-home .quick button{min-height:79px!important}
+ body.amman-register .shell{margin:16px auto 50px!important}
+ body.amman-register .brand{padding:20px!important}
+}
+@media(prefers-reduced-motion:reduce){body.amman-index *,body.amman-admin *,body.amman-captain *,body.amman-register *{animation-duration:.01ms!important;transition-duration:.01ms!important}}
