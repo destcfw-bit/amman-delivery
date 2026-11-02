@@ -1,0 +1,17 @@
+/* Compact, legible login loading state — overrides old oversized skeleton masks */
+body.amman-captain:not(.captain-app-ready) #login{position:relative}
+body.amman-captain #login .ad-login-card{overflow:visible!important}
+body.amman-captain #login .ad-login-card::after{border-radius:inherit}
+body.amman-captain #login .ad-login-card .ad-card-glow{pointer-events:none}
+body.amman-captain #login .ad-login-wait{position:absolute;inset:0;z-index:25;display:flex;align-items:center;justify-content:center;padding:20px;border-radius:inherit;background:#181b26d9;backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px)}
+body.amman-captain #login .ad-login-wait[hidden]{display:none!important}
+body.amman-captain #login .ad-wait-panel{width:min(100%,280px);text-align:center;padding:24px 18px;background:linear-gradient(150deg,#30343d,#22252e);border:1px solid #656a75;border-radius:22px;color:#fff;box-shadow:0 15px 35px #0006;animation:adWaitAppear .22s ease}
+body.amman-captain #login .ad-wait-spinner{width:50px;height:50px;margin:0 auto 14px;border:3px solid #676b74;border-top-color:#ef2020;border-right-color:#d82020;border-radius:50%;animation:adWaitSpin .85s linear infinite}
+body.amman-captain #login .ad-wait-title{font:900 16px Cairo,Tahoma,sans-serif;color:#fff}
+body.amman-captain #login .ad-wait-sub{font:600 12px Cairo,Tahoma,sans-serif;color:#c3c8d2;margin-top:8px}
+body.amman-captain #login .ad-wait-progress{height:3px;background:#555963;border-radius:3px;margin-top:17px;overflow:hidden}
+body.amman-captain #login .ad-wait-progress:after{content:"";display:block;width:40%;height:100%;background:#ef2929;animation:adWaitSlide 1.2s ease-in-out infinite alternate}
+@keyframes adWaitAppear{from{opacity:0;transform:translateY(12px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes adWaitSpin{to{transform:rotate(360deg)}}
+@keyframes adWaitSlide{from{transform:translateX(160%)}to{transform:translateX(-150%)}}
+@media(prefers-reduced-motion:reduce){body.amman-captain #login .ad-wait-spinner,body.amman-captain #login .ad-wait-progress:after,body.amman-captain #login .ad-wait-panel{animation:none!important}}
