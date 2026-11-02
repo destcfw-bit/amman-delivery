@@ -10,3 +10,14 @@ body.amman-captain.am-v2 .am-top-actions .iconbtn.am-loading{opacity:.8;cursor:p
 body.amman-captain.am-v2 .section.am-exit-real{animation:amExitReal .14s ease both}
 @keyframes amExitReal{to{opacity:.35;transform:translateY(-7px)}}
 @media(prefers-reduced-motion:reduce){.am-numeric-morph,.am-actual-progress:after,body.amman-captain.am-v2 .section.am-exit-real{animation:none!important}}
+
+/* Directional cross-page transitions; content remains interactive after the 135ms exit. */
+body.amman-captain.am-v2 .section.cp-leave{pointer-events:none;animation:amPageOut .135s cubic-bezier(.4,0,1,1) both!important}
+body.amman-captain.am-v2 .section.cp-leave-back{--am-exit-x:18px}
+body.amman-captain.am-v2 .section.cp-leave-forward{--am-exit-x:-18px}
+body.amman-captain.am-v2 .section.cp-enter{animation:amPageIn .36s cubic-bezier(.16,.8,.2,1) both!important}
+body.amman-captain.am-v2 .section.cp-enter-forward{--am-enter-x:24px}
+body.amman-captain.am-v2 .section.cp-enter-back{--am-enter-x:-24px}
+@keyframes amPageOut{from{opacity:1;transform:translateX(0) scale(1)}to{opacity:.15;transform:translateX(var(--am-exit-x,0px)) scale(.992)}}
+@keyframes amPageIn{from{opacity:.25;transform:translateX(var(--am-enter-x,0px)) translateY(6px) scale(.99)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){body.amman-captain.am-v2 .section.cp-leave,body.amman-captain.am-v2 .section.cp-enter{animation:none!important;transform:none!important;opacity:1!important}}
