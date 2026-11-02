@@ -19,8 +19,8 @@
   --line:#222b36;
   --text:#f7f8fa;
   --muted:#8f9baa;
-  --orange:#ff7518;
-  --orange2:#ff9f36;
+  --orange:#ef4557;
+  --orange2:#ff7887;
   --green:#32d583;
   --red:#ff5d5d;
   --blue:#50a7ff;
@@ -31,8 +31,8 @@
 html{scroll-behavior:smooth}
 body{
   margin:0;background:
-  radial-gradient(circle at 20% -10%,rgba(255,117,24,.13),transparent 26%),
-  radial-gradient(circle at 90% 0,rgba(255,117,24,.07),transparent 22%),
+  radial-gradient(circle at 20% -10%,rgba(239,69,87,.13),transparent 26%),
+  radial-gradient(circle at 90% 0,rgba(239,69,87,.07),transparent 22%),
   linear-gradient(180deg,#080a0e 0,#06080b 100%);
   color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;
   min-height:100vh;
@@ -46,7 +46,7 @@ a{text-decoration:none;color:inherit}
   background:rgba(7,9,12,.93);backdrop-filter:blur(18px);z-index:20;
 }
 .brand{display:flex;align-items:center;gap:12px;padding:5px 8px 18px;border-bottom:1px solid var(--line)}
-.brand img{width:54px;height:54px;object-fit:contain;filter:drop-shadow(0 6px 18px rgba(255,117,24,.28))}
+.brand img{width:54px;height:54px;object-fit:contain;filter:drop-shadow(0 6px 18px rgba(239,69,87,.28))}
 .brand-name{font-weight:950;font-size:21px;letter-spacing:.4px}
 .brand-name b{color:var(--orange)}
 .brand small{display:block;color:var(--muted);font-size:10px;letter-spacing:2px;margin-top:3px}
@@ -59,7 +59,7 @@ a{text-decoration:none;color:inherit}
 .nav .active{background:linear-gradient(135deg,var(--orange),#ff8e2a);color:#101114;font-weight:900}
 .nav .icon{width:24px;text-align:center;font-size:18px}
 .side-bottom{position:absolute;bottom:18px;left:14px;right:14px}
-.side-card{border:1px solid #2a1d16;background:linear-gradient(145deg,rgba(255,117,24,.1),rgba(255,117,24,.025));border-radius:16px;padding:14px}
+.side-card{border:1px solid #2a1d16;background:linear-gradient(145deg,rgba(239,69,87,.1),rgba(239,69,87,.025));border-radius:16px;padding:14px}
 .side-card strong{display:block;margin-bottom:4px}
 .side-card span{font-size:12px;color:var(--muted)}
 .main{min-width:0}
@@ -72,7 +72,7 @@ a{text-decoration:none;color:inherit}
   width:100%;height:44px;border-radius:13px;border:1px solid var(--line);
   background:#0d1218;color:#fff;padding:0 44px 0 14px;outline:none;
 }
-.search input:focus{border-color:#74431e;box-shadow:0 0 0 3px rgba(255,117,24,.08)}
+.search input:focus{border-color:#74431e;box-shadow:0 0 0 3px rgba(239,69,87,.08)}
 .search::before{content:"⌕";position:absolute;right:15px;top:6px;font-size:24px;color:#798695}
 .top-actions{display:flex;align-items:center;gap:9px;margin-right:auto}
 .icon-btn{
@@ -86,14 +86,14 @@ a{text-decoration:none;color:inherit}
   border:1px solid #2c241e;border-radius:24px;overflow:hidden;min-height:220px;position:relative;
   background:
     linear-gradient(90deg,rgba(8,10,13,.97) 0%,rgba(8,10,13,.72) 50%,rgba(8,10,13,.15) 100%),
-    radial-gradient(circle at 80% 45%,rgba(255,117,24,.28),transparent 26%),
+    radial-gradient(circle at 80% 45%,rgba(239,69,87,.28),transparent 26%),
     linear-gradient(120deg,#10151b,#0a0d11);
   box-shadow:var(--shadow);
 }
-.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 60%,rgba(255,117,24,.08));pointer-events:none}
-.hero-logo{position:absolute;left:18px;bottom:-30px;width:250px;opacity:.92;filter:drop-shadow(0 14px 45px rgba(255,117,24,.25))}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 60%,rgba(239,69,87,.08));pointer-events:none}
+.hero-logo{position:absolute;left:18px;bottom:-30px;width:250px;opacity:.92;filter:drop-shadow(0 14px 45px rgba(239,69,87,.25))}
 .hero-copy{position:relative;z-index:2;padding:38px 34px;max-width:680px}
-.eyebrow{display:inline-flex;align-items:center;gap:7px;padding:6px 10px;border:1px solid #4d2d18;border-radius:999px;background:rgba(255,117,24,.08);color:#ffc28e;font-size:12px}
+.eyebrow{display:inline-flex;align-items:center;gap:7px;padding:6px 10px;border:1px solid #4d2d18;border-radius:999px;background:rgba(239,69,87,.08);color:#ffc28e;font-size:12px}
 .hero h1{font-size:36px;margin:16px 0 7px;line-height:1.2}
 .hero h1 span{color:var(--orange)}
 .hero p{color:#aab4c1;margin:0;line-height:1.8}
@@ -104,7 +104,7 @@ a{text-decoration:none;color:inherit}
   border:1px solid var(--line);border-radius:17px;padding:15px;background:linear-gradient(145deg,#10161d,#0d1218);
   position:relative;overflow:hidden;
 }
-.stat-card::after{content:"";position:absolute;width:80px;height:80px;border-radius:50%;background:rgba(255,117,24,.06);left:-20px;bottom:-35px}
+.stat-card::after{content:"";position:absolute;width:80px;height:80px;border-radius:50%;background:rgba(239,69,87,.06);left:-20px;bottom:-35px}
 .stat-top{display:flex;justify-content:space-between;align-items:flex-start}
 .stat-icon{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;background:#1a2028;font-size:20px}
 .stat-label{font-size:12px;color:var(--muted)}
@@ -166,7 +166,7 @@ tr:hover td{background:rgba(255,255,255,.012)}
   width:min(460px,100%);border:1px solid #2d271f;border-radius:24px;background:linear-gradient(145deg,#10151b,#090c10);
   box-shadow:0 28px 100px rgba(0,0,0,.5);padding:28px;text-align:center
 }
-.login-logo{width:170px;max-width:70%;filter:drop-shadow(0 14px 32px rgba(255,117,24,.18))}
+.login-logo{width:170px;max-width:70%;filter:drop-shadow(0 14px 32px rgba(239,69,87,.18))}
 .login-card h1{margin:6px 0;font-size:28px}
 .login-card p{color:var(--muted);font-size:13px;margin-bottom:22px}
 .login-card .input{width:100%;margin:6px 0;height:48px}
@@ -467,8 +467,8 @@ function requestCell(x){
   const image=type.includes('image')||mime.startsWith('image/');
   const video=type.includes('video')||mime.startsWith('video/');
   if(audio)return `<div class="order-text">🎙️ تسجيل صوتي${url?`<br><audio class="audio" controls preload="none" src="${esc(url)}"></audio>`:''}</div>`;
-  if(image)return `<div class="order-text">🖼️ صورة${text?' — '+esc(text):''}${url?`<br><a style="color:#ff9f36" href="${esc(url)}" target="_blank">فتح الصورة ↗</a>`:''}</div>`;
-  if(video)return `<div class="order-text">🎥 فيديو${text?' — '+esc(text):''}${url?`<br><a style="color:#ff9f36" href="${esc(url)}" target="_blank">فتح الفيديو ↗</a>`:''}</div>`;
+  if(image)return `<div class="order-text">🖼️ صورة${text?' — '+esc(text):''}${url?`<br><a style="color:#ff7887" href="${esc(url)}" target="_blank">فتح الصورة ↗</a>`:''}</div>`;
+  if(video)return `<div class="order-text">🎥 فيديو${text?' — '+esc(text):''}${url?`<br><a style="color:#ff7887" href="${esc(url)}" target="_blank">فتح الفيديو ↗</a>`:''}</div>`;
   return `<div class="order-text">${text?esc(text):'بدون نص'}</div>`;
 }
 function groupName(id){const g=state.groups.find(x=>x.group_id===id);return g?(g.saved_name||g.name||id):id||'—'}
