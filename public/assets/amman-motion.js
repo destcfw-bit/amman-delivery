@@ -9,5 +9,5 @@ function movements(){const list=q('#ordersList');if(!list)return;qa('.cp-move-ca
 function adminHero(){if(!document.body.classList.contains('amman-admin')&&!location.pathname.includes('/admin'))return;let anchor=q('main')||q('.wrap')||q('.container');if(!anchor||q('#amCommandHero'))return;let box=document.createElement('div');box.id='amCommandHero';box.className='am-command-hero';box.innerHTML='<div><h2>مركز إدارة AMMAN DELIVERY</h2><p>لوحة العمليات والإحصائيات — القيم أدناه مصدرها النظام الحالي</p></div><span><i aria-hidden="true"></i>واجهة الإدارة</span>';anchor.prepend(box)}
 function enhance(){ring();connection();movements();adminHero()}
 let queued=false;function schedule(){if(queued)return;queued=true;requestAnimationFrame(()=>{queued=false;enhance()})}
-document.addEventListener('DOMContentLoaded',()=>{enhance();addEventListener('online',connection);addEventListener('offline',connection);const root=q('#app')||document.body;const mo=new MutationObserver(schedule);mo.observe(root,{childList:true,subtree:true});setInterval(()=>{if(document.visibilityState==='visible'){ring();connection()}},4500)});
+document.addEventListener('DOMContentLoaded',()=>{enhance();addEventListener('online',connection);addEventListener('offline',connection);setInterval(()=>{if(document.visibilityState==='visible')enhance()},1800)});
 })();
