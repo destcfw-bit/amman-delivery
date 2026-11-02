@@ -1,0 +1,12 @@
+/* Real-data animations: no fake percentage or accounting changes */
+body.amman-captain.am-v2 .am-numeric-morph{animation:amNumericSwap .25s ease-out}
+@keyframes amNumericSwap{from{filter:brightness(1.5);opacity:.76;transform:translateY(3px)}to{filter:brightness(1);opacity:1;transform:none}}
+body.amman-captain.am-v2 .am-top-actions .iconbtn.am-loading .am-header-svg{animation:amSpin .7s linear infinite!important}
+body.amman-captain.am-v2 .am-top-actions .iconbtn.am-loading{opacity:.8;cursor:progress}
+.am-actual-progress{position:fixed;top:0;left:0;right:0;height:3px;background:#363941;z-index:9998;overflow:hidden;pointer-events:none}
+.am-actual-progress:after{content:"";position:absolute;width:33%;height:100%;background:linear-gradient(90deg,#b90000,#ff3838);animation:amIndeterminate 1.05s ease-in-out infinite}
+@keyframes amIndeterminate{from{transform:translateX(-110vw)}to{transform:translateX(410vw)}}
+.am-load-status{position:fixed;top:8px;left:50%;transform:translateX(-50%);background:#262932;color:#fff;border:1px solid #565c68;border-radius:11px;padding:5px 13px;font:700 11px Cairo,Tahoma,sans-serif;z-index:9997;pointer-events:none}
+body.amman-captain.am-v2 .section.am-exit-real{animation:amExitReal .14s ease both}
+@keyframes amExitReal{to{opacity:.35;transform:translateY(-7px)}}
+@media(prefers-reduced-motion:reduce){.am-numeric-morph,.am-actual-progress:after,body.amman-captain.am-v2 .section.am-exit-real{animation:none!important}}
