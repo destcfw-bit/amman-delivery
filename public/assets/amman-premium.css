@@ -55,3 +55,10 @@ body.amman-captain.am-v2 .login-card.ad-login-card{box-shadow:0 25px 60px #1b1d2
 
 /* Hide only the floating sound control on mobile; notification audio and other controls remain unchanged. */
 @media(max-width:980px){body.amman-captain.am-v2 #soundToggle,body.amman-captain.am-v2 .sound-toggle{display:none!important}}
+
+/* High contrast SVG navigation icons */
+body.amman-captain.am-v2 .tabs.am-mobile-tabs button .ad-nav-icon{display:grid!important;place-items:center!important;width:31px!important;height:29px!important;flex:0 0 29px!important;margin:0 auto 2px!important;font-family:inherit!important}
+body.amman-captain.am-v2 .tabs.am-mobile-tabs button .ad-nav-icon svg{display:block!important;width:25px!important;height:25px!important;stroke-width:2.15!important;filter:drop-shadow(0 1px 1px #0002);transition:transform .22s ease,filter .22s ease}
+body.amman-captain.am-v2 .tabs.am-mobile-tabs button.active .ad-nav-icon svg{stroke-width:2.5!important;transform:scale(1.12);filter:drop-shadow(0 2px 4px #0004)}
+body.amman-captain.am-v2 .tabs.am-mobile-tabs button .ad-nav-label{font:800 11px/1.2 'Cairo',Tahoma,Arial,sans-serif!important;white-space:nowrap!important;letter-spacing:0!important}
+body.amman-captain.am-v2 .tabs.am-mobile-tabs button{gap:3px!important}
