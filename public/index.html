@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#080a0e">
+<meta name="theme-color" content="#0b0c10">
 <title>AMMAN DELIVERY — Control Center</title>
 <link rel="icon" type="image/x-icon" href="/assets/amman-logo.jpeg">
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/amman-logo.jpeg">
@@ -238,28 +238,14 @@ tr:hover td{background:rgba(255,255,255,.012)}
 .layout-chip{display:flex;align-items:center;gap:8px;border:1px solid #2b3540;background:#0c1117;border-radius:12px;padding:10px;margin:7px 0}.layout-chip b{flex:1}.layout-chip button{width:38px;height:34px;border:1px solid #303a45;background:#151b23;color:#fff;border-radius:9px}.layout-hidden{opacity:.38}
 </style>
 
-<style id="dropcode-promo-style">
-.dropcode-promo{width:min(760px,calc(100% - 24px));margin:28px auto 96px;padding:15px 17px;border:1px solid rgba(255,92,0,.32);border-radius:20px;background:radial-gradient(circle at 92% 0,rgba(255,92,0,.13),transparent 34%),linear-gradient(145deg,rgba(13,16,20,.98),rgba(6,8,11,.98));box-shadow:0 20px 60px rgba(0,0,0,.34),0 0 0 1px rgba(255,255,255,.015) inset;display:flex;align-items:center;justify-content:center;gap:15px;direction:rtl;position:relative;overflow:hidden}
-.dropcode-promo:before{content:"";position:absolute;left:-50px;bottom:-95px;width:220px;height:220px;border-radius:50%;background:rgba(255,92,0,.08);filter:blur(12px);pointer-events:none}
-.dropcode-logo-link{display:block;flex:0 0 auto;border-radius:18px;transition:.2s ease;position:relative;z-index:1}
-.dropcode-logo-link:hover{transform:translateY(-2px) scale(1.025);filter:brightness(1.08)}
-.dropcode-logo{display:block;width:76px;height:76px;object-fit:cover;border-radius:18px;border:1px solid rgba(255,105,32,.36);box-shadow:0 10px 30px rgba(0,0,0,.4),0 0 24px rgba(255,92,0,.08)}
-.dropcode-copy{min-width:0;line-height:1.55;position:relative;z-index:1}
-.dropcode-copy strong{display:block;color:#fff;font-size:15px;font-weight:950;letter-spacing:.2px}
-.dropcode-copy .dropcode-name{color:#ff6a1a}
-.dropcode-copy small{display:block;color:#98a2ad;font-size:11px;margin-top:2px}
-.dropcode-phone{display:inline-flex;align-items:center;gap:7px;margin-top:8px;padding:7px 11px;border-radius:999px;border:1px solid rgba(255,105,32,.34);background:rgba(255,92,0,.08);color:#ffb07b!important;font-weight:950;font-size:12px;text-decoration:none!important;direction:ltr;transition:.18s ease}
-.dropcode-phone:hover{transform:translateY(-1px);border-color:rgba(255,105,32,.62);background:rgba(255,92,0,.14);color:#fff!important}
-@media(max-width:640px){.dropcode-promo{width:calc(100% - 20px);margin:20px auto 110px;padding:12px;justify-content:flex-start;gap:11px}.dropcode-logo{width:62px;height:62px;border-radius:15px}.dropcode-copy strong{font-size:13px}.dropcode-copy small{font-size:10px}.dropcode-phone{font-size:11px;padding:6px 9px}}
-</style>
-
 <link rel="stylesheet" href="/assets/amman-admin.css">
-<link rel="stylesheet" href="/assets/amman-theme.css"><meta name="color-scheme" content="dark"></head>
-<body>
+<link rel="stylesheet" href="/assets/amman-theme.css"><meta name="color-scheme" content="dark"><link rel="stylesheet" href="/assets/amman-standalone.css?v=1">
+</head>
+<body class="amman-index">
 <div id="loginScreen" class="login-screen">
   <div class="login-card">
     <img class="login-logo" src="/assets/amman-logo.jpeg" alt="AMMAN DELIVERY">
-    <div class="kicker">MOVE • TRACK • SETTLE</div>
+    <div class="kicker">AMMAN • DELIVERY • CONTROL</div>
     <h1>AMMAN DELIVERY</h1>
     <p>مركز التحكم والمتابعة المباشرة</p>
     <input class="input" id="loginUser" value="admin" placeholder="اسم المستخدم">
@@ -273,7 +259,7 @@ tr:hover td{background:rgba(255,255,255,.012)}
   <aside class="sidebar">
     <div class="brand">
       <img src="/assets/amman-logo.jpeg" alt="">
-      <div><div class="brand-name">Click <b>Plus</b></div><small>MOVE • TRACK • SETTLE</small></div>
+      <div><div class="brand-name">AMMAN <b>DELIVERY</b></div><small>MOVE • TRACK • SETTLE</small></div>
     </div>
     <nav class="nav">
       <button class="active" data-section="home" onclick="go('home',this)"><span class="icon">⌂</span>الرئيسية</button>
@@ -300,7 +286,7 @@ tr:hover td{background:rgba(255,255,255,.012)}
       <div class="top-actions">
         <button class="icon-btn" title="تحديث" onclick="loadAll()">↻</button>
         <button class="icon-btn" title="ترتيب الواجهة" onclick="openLayoutCustomizer()">☷</button><button class="icon-btn" title="الوضع الليلي">☾</button>
-        <div class="user-chip"><div class="avatar">Y</div><div><b>Yahya Saeed</b><small>المدير العام</small></div></div>
+        <div class="user-chip"><div class="avatar">A</div><div><b>مسؤول النظام</b><small>المدير العام</small></div></div>
         <button class="btn btn-danger" onclick="logout()">تسجيل خروج</button>
       </div>
     </header>
@@ -314,9 +300,9 @@ tr:hover td{background:rgba(255,255,255,.012)}
             <h1>مرحباً بك في <span>AMMAN DELIVERY</span> 👋</h1>
             <p>مركز تحكم واحد لمتابعة الطلبات، الكباتن، الجرد والحركات بشكل مباشر وسريع.</p>
             <div class="hero-meta">
-              <span><span class="dot"></span>GREEN-API متصل</span>
-              <span><span class="dot"></span>Worker يعمل</span>
-              <span><span class="dot"></span>PostgreSQL متصل</span>
+              <span><span class="dot"></span>القنوات حسب إعدادات النظام</span>
+              <span><span class="dot"></span>تفعيل المعالجة من الإدارة</span>
+              <span><span class="dot"></span>قاعدة بيانات AMMAN</span>
               <span id="heroUpdated">آخر تحديث الآن</span>
             </div>
           </div>
@@ -573,16 +559,7 @@ function resetLayout(){localStorage.removeItem('amman_accountant_layout');docume
 
 </script>
 
-<footer class="dropcode-promo" aria-label="Drop Code">
-  <a class="dropcode-logo-link" href="https://wa.me/962791579870" target="_blank" rel="noopener" aria-label="تواصل مع Drop Code عبر واتساب">
-    <img class="dropcode-logo" src="/assets/drop-code-logo.webp" alt="Drop Code" loading="lazy">
-  </a>
-  <div class="dropcode-copy">
-    <strong><span class="dropcode-name">Drop Code</span> — صمم موقعك الإلكتروني</strong>
-    <small>اضغط على الصورة أو الرقم للتواصل</small>
-    <a class="dropcode-phone" href="https://wa.me/962791579870" target="_blank" rel="noopener" aria-label="التواصل مع Drop Code عبر واتساب">💬 0791579870</a>
-  </div>
-</footer>
+<footer class="amman-footer"><strong>AMMAN DELIVERY</strong> <span aria-hidden="true">•</span> نظام إدارة التوصيل والحسابات</footer>
 
 </body>
 </html>
