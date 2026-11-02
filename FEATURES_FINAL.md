@@ -1,28 +1,28 @@
 # AMMAN DELIVERY FINAL V6 — Signature OS
 
 ## الهوية والتجربة الجديدة
-- Click Pulse: نبضة أزرق → برتقالي من مكان الضغط.
-- Signature Ring: علامة CP الدائرية عند الدخول والانتقالات المهمة.
+- تفاعلات هادئة عند الضغط والتنقل.
+- Signature Ring: علامة AMMAN عند الدخول والانتقالات المهمة.
 - Startup Animation خاص بـ AMMAN DELIVERY.
-- Sound Identity بثلاث نغمات: Click / Success / Warning مع زر إيقاف.
-- Black Graphite + Electric Blue + Burnt Orange، مع Glass محدود وخطوط رفيعة.
+- Sound Identity بثلاث نغمات: تفاعل / نجاح / تنبيه مع زر إيقاف.
+- Graphite + AMMAN Red + Silver، وبطاقات محددة وحدود واضحة.
 - Loading Skeletons ودعم Reduce Motion.
 
 ## الكابتن
 - 4 أقسام سفلية فقط: الرئيسية، الحركات، التسوية، حسابي.
-- Captain Card رقمية وهوية CP خاصة بالكابتن.
+- Captain Card رقمية وهوية AMMAN خاصة بالكابتن.
 - Balance Orb يوضح إلك/عليك بصرياً مع الإنتاج مقابل الالتزامات.
 - Smart Movement Timeline بدل قائمة الكروت التقليدية.
 - Reaction Animation للرياكشنات وتعديلات العمولة.
 - Weekly Close Scene كإيصال رسمي عند ظهور أسبوع مقفل جديد.
 - الأرشيف والتنبيهات والأمان موجودة كأدوات ثانوية داخل التطبيق بدون ازدحام الـDock.
-- كل وظائف Tiger المحاسبية السابقة محفوظة.
+- قواعد الجرد والمحاسبة الحالية محفوظة دون تغيير.
 
 ## الإدارة
 - Admin Command Center بتصميم أغمق وأنظف.
 - Live Status Strip: WhatsApp / DB / Worker / Groups / Queue.
 - Group Radar يعرض القروبات، الفعالين، الموقوفين، وغير المسجلين بصرياً.
-- Runtime endpoint جديد مع فحص DB، Worker heartbeat، Green API state وعدد القروبات والطابور.
+- Runtime endpoint جديد مع فحص DB، Worker heartbeat، DropConnect state وعدد القروبات والطابور.
 
 ## البنية
 - runtime_status table لنبض الـWorker.
