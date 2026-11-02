@@ -25,7 +25,7 @@ function registrationUpload(req,res,next){registrationFields(req,res,err=>{if(!e
 app.use(express.static(path.join(__dirname,'..','public'),{index:false}));
 
 
-function clickPlusNumber(name=''){
+function ammanOrderNumber(name=''){
   const m=String(name||'').match(/\bT\s*0*(\d+)\b/i);return m?Number(m[1]):Number.MAX_SAFE_INTEGER;
 }
 function normalizeCaptainName(name=''){
@@ -649,7 +649,7 @@ app.post('/api/admin/import-captains-sheet',auth,async(req,res)=>{
     const sheetName=String(process.env.GOOGLE_CAPTAINS_SHEET || 'الكباتن').trim();
     const url=`https://docs.google.com/spreadsheets/d/${encodeURIComponent(spreadsheetId)}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheetName)}`;
 
-    const response=await fetch(url,{headers:{'user-agent':'ClickPlus/1.0'}});
+    const response=await fetch(url,{headers:{'user-agent':'AmmanDelivery/1.0'}});
     if(!response.ok){
       return res.status(502).json({ok:false,error:`SHEET_HTTP_${response.status}`});
     }
@@ -1703,7 +1703,7 @@ app.get('/api/admin/negative-carry-candidates',auth,async(req,res)=>{
         active:Boolean(x.active),
         status_reason:x.status_reason||''
       }))
-      .sort((a,b)=>clickPlusNumber(a.name)-clickPlusNumber(b.name)||String(a.name||'').localeCompare(String(b.name||''),'ar'));
+      .sort((a,b)=>ammanOrderNumber(a.name)-ammanOrderNumber(b.name)||String(a.name||'').localeCompare(String(b.name||''),'ar'));
     res.set('Cache-Control','no-store');
     res.json({ok:true,week:{id:w.id,starts_at:w.starts_at},count:candidates.length,rows:candidates});
   }catch(e){

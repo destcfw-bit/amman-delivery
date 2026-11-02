@@ -8,6 +8,6 @@
 ولتشغيل معالجة واتساب شغّل Worker من نفس المستودع أو Service منفصلة بالأمر:
 `npm run worker`
 
-المتغيرات الأساسية: `DATABASE_URL`, `JWT_SECRET`, ومتغيرات Green API عند الربط.
+المتغيرات الأساسية: `DATABASE_URL`, `JWT_SECRET`, ومتغيرات DropConnect عند الربط.
 الفحص: `/health`، وحالة الإدارة الداخلية: `/api/admin/runtime-status`.
 

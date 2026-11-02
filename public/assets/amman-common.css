@@ -23,7 +23,7 @@ body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opac
 .money.plus,.plus{color:#57eab0!important}.money.minus,.minus{color:#ff8898!important}.money.floor,.floor{color:#ffd176!important}.callout{background:linear-gradient(135deg,rgba(12,44,72,.86),rgba(24,34,50,.86))!important;border:1px solid rgba(36,167,255,.22)!important;color:#d9efff!important;border-radius:16px!important}.dangerbox{background:rgba(80,20,32,.45)!important;border-color:rgba(255,101,119,.35)!important;color:#ffc2ca!important}
 .toast{background:rgba(5,24,40,.94)!important;border:1px solid rgba(36,167,255,.24)!important;border-radius:16px!important;backdrop-filter:blur(18px)!important;box-shadow:var(--cp-shadow)!important}.spinner{border-top-color:var(--cp-blue)!important}
 /* Disable legacy visual layer */
-#clawFX,.claw,.slash,.sound-toggle{display:none!important}.brand img.click-signature{filter:none!important;transform:none!important}
+.sound-toggle{display:none!important}.brand img.amman-signature{filter:none!important;transform:none!important}
 
 /* AMMAN DELIVERY Final v4 common polish */
 ::selection{background:rgba(36,167,255,.34);color:#fff}.yahya-rights{border-top-color:rgba(74,157,214,.14)!important}.yahya-rights-phone{border-color:rgba(36,167,255,.25)!important;background:rgba(36,167,255,.08)!important;color:#9bdcff!important}

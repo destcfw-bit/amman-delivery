@@ -1,7 +1,7 @@
 # AMMAN DELIVERY — Official Coolify deployment
 
 Production source: `destcfw-bit/amman-delivery`, branch `main` (after the release is merged).
-Use a **new Coolify application**, not an existing TiGER/Click Plus/Abshir/Safeer resource.
+Use a **new Coolify application**, not an existing accounting resource.
 
 ## Create the official app
 
@@ -23,7 +23,7 @@ Use a **new Coolify application**, not an existing TiGER/Click Plus/Abshir/Safee
 
 Only after the website and database pass checks:
 
-1. Obtain the real **AMMAN WhatsApp group ID** and its **independent DropConnect session ID**. Do **not** reuse a TiGER or Click Plus group/session by guesswork.
+1. Obtain the real **AMMAN WhatsApp group ID** and its **independent DropConnect session ID**. Do **not** reuse any other group's session by guesswork.
 2. In Coolify set `WHATSAPP_PROVIDER=dropcode`, `DROPCODE_API_URL`, `DROPCODE_API_TOKEN` (or the credential expected by your DropConnect integration), `DROPCODE_SESSION_ID`, and a **unique** `DROPCODE_WEBHOOK_SECRET`.
 3. Subscribe exactly the AMMAN session/group to `https://YOUR_APPROVED_HOSTNAME/webhooks/dropcode` with the shared signing secret. Confirm webhook HMAC and review signed event log.
 4. Add the AMMAN group through the admin panel, set the explicitly approved commission/floor rules, and authorize the correct supervisors.
