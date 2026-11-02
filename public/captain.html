@@ -41,15 +41,42 @@ body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opac
 <link rel="stylesheet" href="/assets/amman-captain.css?v=70">
 <link rel="stylesheet" href="/assets/amman-v6.css?v=70">
 <link rel="stylesheet" href="/assets/amman-theme.css"><meta name="color-scheme" content="dark"><link rel="stylesheet" href="/assets/amman-standalone.css?v=1">
+<link rel="stylesheet" href="/assets/amman-captain-v7.css?v=1">
 </head>
-<body class="amman-captain">
-<button id="soundToggle" class="sound-toggle" type="button" onclick="toggleClickSound()" aria-label="الصوت" title="إيقاف أصوات الواجهة">🔊</button>
+<body class="amman-captain am-v2">
+<button id="soundToggle" class="sound-toggle" type="button" onclick="toggleClickSound()" aria-label="تبديل صوت الواجهة" title="صوت الواجهة">🔊</button>
 <div id="login" class="login">
- <div class="login-card"><div class="login-badge">AMMAN DELIVERY ACCESS</div><img class="logo" src="/assets/amman-logo.jpeg"><div class="kicker">CAPTAIN PORTAL</div><h1>AMMAN DELIVERY</h1><p class="login-sub">بوابة الكابتن الذكية ⚡</p>
-  <div class="stack"><input id="phone" class="input" inputmode="tel" autocomplete="username" placeholder="رقم الهاتف"><input id="password" class="input" type="password" autocomplete="current-password" placeholder="كلمة السر"><button class="btn btn-primary login-btn" onclick="loginCaptain()">دخول</button></div><div id="loginMsg" class="msg"></div><div class="login-foot">AMMAN DELIVERY • AMMAN • DELIVERY • CONTROL</div>
- </div>
+  <div class="am-auth-shell">
+    <aside class="am-auth-story">
+      <div class="am-auth-kicker"><span class="am-live-mark"></span> AMMAN DELIVERY</div>
+      <div class="am-auth-story-inner">
+        <div class="am-auth-emblem"><img src="/assets/amman-logo.jpeg" alt="شعار AMMAN DELIVERY"></div>
+        <div class="am-eyebrow">CAPTAIN EXPERIENCE</div>
+        <h2>شغلك أوضح.<br><span>حسابك بيدك.</span></h2>
+        <p>رصيدك، حركاتك، تسويتك وكشوفاتك في مساحة واحدة مصممة إلك.</p>
+        <div class="am-auth-features"><span>◈ متابعة الرصيد</span><span>◎ تفاصيل الحركات</span><span>▤ كشف الأسابيع</span></div>
+      </div>
+      <div class="am-auth-bottom">AMMAN DELIVERY <span>•</span> CAPTAIN PORTAL</div>
+    </aside>
+    <div class="am-auth-form-area">
+      <div class="login-card">
+        <div class="am-mobile-brand"><img src="/assets/amman-logo.jpeg" alt=""><b>AMMAN DELIVERY</b></div>
+        <div class="am-eyebrow">حساب الكابتن</div>
+        <h1>أهلًا برجعتك</h1>
+        <p class="login-sub">سجّل دخولك لمتابعة حسابك والتسويات.</p>
+        <div class="stack">
+          <label class="am-field-label" for="phone">رقم الهاتف</label>
+          <input id="phone" class="input" inputmode="tel" autocomplete="username" placeholder="07XXXXXXXX">
+          <label class="am-field-label" for="password">كلمة المرور</label>
+          <input id="password" class="input" type="password" autocomplete="current-password" placeholder="أدخل كلمة المرور">
+          <button class="btn btn-primary login-btn" onclick="loginCaptain()">تسجيل الدخول <span aria-hidden="true">←</span></button>
+        </div>
+        <div id="loginMsg" class="msg" role="status" aria-live="polite"></div>
+        <div class="am-login-secure">⌑ بيانات الحساب خاصة بك ومحميّة بتسجيل الدخول</div>
+      </div>
+    </div>
+  </div>
 </div>
-
 
 <div id="onboarding" class="onboarding"><div class="onboard-card">
  <div class="kicker">FIRST SETUP</div><h2 style="margin:5px 0">تجهيز حسابك لأول مرة ✦</h2><div class="muted" style="font-size:12px">لا يوجد تخطي. لازم تغيّر كلمة السر وتحدد طريقة تحويل الأموال.</div>
@@ -60,16 +87,77 @@ body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opac
 </div></div>
 
 <div id="app" class="app">
-<header class="top"><div class="brand"><img src="/assets/amman-logo.jpeg"><span>AMMAN <b>DELIVERY</b></span></div><div class="spacer"></div><button class="iconbtn" onclick="go('notifications',document.querySelector('[data-tab=notifications]'))">🔔<span id="notifDot" class="dot hidden"></span></button><button class="iconbtn" onclick="loadAll()">↻</button></header>
-<div class="wrap">
- <section id="s-home" class="section active"><div id="announcementBanner"></div><div class="quick"><button onclick="goByName('orders')">📦<b>طلباتي</b></button><button onclick="goByName('settlement')">💰<b>التسوية</b></button><button onclick="go('history',this)">🧾<b>كشف الحساب</b></button><button onclick="goByName('profile')">💳<b>التحويل</b></button></div><button class="btn" style="width:100%;margin:-4px 0 14px;border-color:#2d6f98;background:linear-gradient(135deg,#071923,#0b1118)" onclick="openPreviousWeekStatement()">📅 كشف الأسبوع السابق — بالتفصيل</button>
-  <div class="hero"><div class="hello">أهلاً كابتن 👋</div><h1 id="capName">—</h1><div id="statusBadge" class="status ok">—</div><div id="stoppedBanner" class="callout dangerbox hidden" style="margin-top:12px"></div></div>
-  <div class="hero-grid" style="margin-top:12px"><div class="balance-card"><div class="balance-label">الصافي الحالي</div><div id="balanceText" class="balance">0.00 د.أ</div><div id="balanceMeaning" class="formula">—</div><button class="btn" style="margin-top:10px" onclick="showFormula()">🧮 كيف انحسب رصيدي؟</button></div><div class="balance-card"><div class="balance-label">الأسبوع الحالي</div><div id="weekTitle" style="font-size:20px;font-weight:950;margin:8px 0">—</div><div id="weekTime" class="formula">—</div><div id="weekCount" class="formula" style="margin-top:8px">—</div></div></div>
-  <div class="stats"><div class="stat"><span>🟢 الإنتاج</span><b id="prod" class="plus">0.00</b></div><div class="stat"><span>🔴 الاستهلاك</span><b id="cons" class="minus">0.00</b></div><div class="stat"><span>🟠 الأرضية</span><b id="floor" class="floor">0.00</b></div><div class="stat"><span>📦 نشاط الأسبوع</span><b id="orderCount">0</b></div></div>
-  <div class="grid2"><div class="panel"><div class="ph"><div><h3>💸 آخر تسوية</h3><small>حالة الأسبوع المقفل الأخير</small></div></div><div class="pb" id="settlementHome"></div></div><div class="panel"><div class="ph"><div><h3>📊 ملخص نشاطك</h3><small>للعرض فقط — لا يغير الحساب</small></div></div><div class="pb" id="activitySummary"></div></div></div>
- </section>
+  <div class="am-app-frame">
+    <aside class="am-side" aria-label="قائمة حساب الكابتن">
+      <div class="am-side-brand"><img src="/assets/amman-logo.jpeg" alt=""><div><strong>AMMAN</strong><span>DELIVERY</span></div></div>
+      <div class="am-side-caption">بوابة الكابتن</div>
+      <nav class="am-side-links">
+        <button class="is-current" data-am-nav="home" onclick="adNavigate('home')"><span class="am-nav-glyph">⌂</span> نظرة عامة</button>
+        <button data-am-nav="orders" onclick="adNavigate('orders')"><span class="am-nav-glyph">⇆</span> حركاتي وطلباتي</button>
+        <button data-am-nav="settlement" onclick="adNavigate('settlement')"><span class="am-nav-glyph">◎</span> التسويات</button>
+        <button data-am-nav="history" onclick="adNavigate('history')"><span class="am-nav-glyph">▤</span> كشوف الحساب</button>
+        <button data-am-nav="notifications" onclick="adNavigate('notifications')"><span class="am-nav-glyph">♧</span> الإشعارات</button>
+        <button data-am-nav="profile" onclick="adNavigate('profile')"><span class="am-nav-glyph">◉</span> حسابي</button>
+      </nav>
+      <div class="am-side-bottom"><div class="am-side-status"><span class="am-status-dot"></span><span>مساحتك الخاصة</span></div><small>AMMAN DELIVERY © 2026</small></div>
+    </aside>
+    <div class="am-app-workspace">
+      <header class="top am-top">
+        <div class="am-top-title"><div class="am-eyebrow">AMMAN DELIVERY / CAPTAIN</div><strong id="amPageTitle">نظرة عامة</strong></div>
+        <div class="am-top-actions">
+          <button class="iconbtn" onclick="adNavigate('notifications')" aria-label="الإشعارات" title="الإشعارات">♧<span id="notifDot" class="dot hidden"></span></button>
+          <button class="iconbtn" onclick="loadAll()" aria-label="تحديث الحساب" title="تحديث الحساب">↻</button>
+        </div>
+      </header>
+      <div class="wrap am-workspace">
+        <section id="s-home" class="section active">
+          <div class="am-page-heading"><div><div class="am-eyebrow">ملخص الحساب / THIS WEEK</div><h1>مساء النشاط <span aria-hidden="true">✦</span></h1><p>كل تفاصيل شغلك، مرتبة وواضحة.</p></div><button class="am-subtle-link" onclick="adNavigate('history')">كل الكشوفات <span aria-hidden="true">←</span></button></div>
+          <div id="announcementBanner"></div>
+          <div class="am-identity-band">
+            <div class="am-id-avatar"><img src="/assets/amman-logo.jpeg" alt="AMMAN DELIVERY"></div>
+            <div class="am-id-text"><span>حساب الكابتن</span><h2 id="capName">—</h2><div id="statusBadge" class="status ok">—</div></div>
+            <div class="am-id-icon" aria-hidden="true">AD</div>
+          </div>
+          <div id="stoppedBanner" class="callout dangerbox hidden"></div>
+          <div class="am-account-grid">
+            <article class="am-money-card">
+              <div class="am-card-head"><span>رصيدك الحالي</span><span class="am-card-symbol" aria-hidden="true">◈</span></div>
+              <div class="am-money-amount" id="balanceText">0.00 د.أ</div>
+              <div id="balanceMeaning" class="formula">—</div>
+              <div class="am-card-actions"><button class="am-strong-btn" onclick="adNavigate('history')">كشف الحساب <span aria-hidden="true">←</span></button><button class="am-card-quiet" onclick="showFormula()">كيف انحسب؟</button></div>
+              <span class="am-watermark" aria-hidden="true">JD</span>
+            </article>
+            <article class="am-week-card">
+              <div class="am-card-head"><span>الأسبوع المحاسبي</span><span class="am-card-symbol" aria-hidden="true">▦</span></div>
+              <div class="am-week-label" id="weekTitle">—</div>
+              <div class="am-week-line" id="weekTime">—</div>
+              <div class="am-week-footer"><span>تفاصيل الأسبوع</span><b id="weekCount">—</b></div>
+              <button class="am-week-action" onclick="adNavigate('settlement')">عرض التسوية <span aria-hidden="true">←</span></button>
+            </article>
+          </div>
+          <div class="am-block-heading"><div><div class="am-eyebrow">الأرقام المباشرة</div><h2>ملخص الأسبوع</h2></div><span>تُحدّث من حسابك</span></div>
+          <div class="stats am-metrics">
+            <div class="stat"><span class="am-metric-icon am-green">↗</span><span>الإنتاج</span><b id="prod" class="plus">0.00</b><small>د.أ</small></div>
+            <div class="stat"><span class="am-metric-icon am-red">↙</span><span>الاستهلاك</span><b id="cons" class="minus">0.00</b><small>د.أ</small></div>
+            <div class="stat"><span class="am-metric-icon am-amber">◒</span><span>الأرضية</span><b id="floor" class="floor">0.00</b><small>د.أ</small></div>
+            <div class="stat"><span class="am-metric-icon am-blue">▣</span><span>حركات الأسبوع</span><b id="orderCount">0</b><small>حركة</small></div>
+          </div>
+          <div class="am-block-heading am-shortcuts-heading"><div><div class="am-eyebrow">وصول سريع</div><h2>شو بدك تعمل؟</h2></div></div>
+          <div class="quick am-quick">
+            <button onclick="adNavigate('orders')"><span class="am-shortcut-icon">⇆</span><b>طلباتي</b><small>كل الحركات</small></button>
+            <button onclick="adNavigate('settlement')"><span class="am-shortcut-icon">◎</span><b>التسوية</b><small>مستحقات الأسبوع</small></button>
+            <button onclick="adNavigate('history')"><span class="am-shortcut-icon">▤</span><b>كشف الحساب</b><small>الحالي والقديم</small></button>
+            <button onclick="adNavigate('profile')"><span class="am-shortcut-icon">◉</span><b>حسابي</b><small>البيانات والتحويل</small></button>
+          </div>
+          <div class="am-block-heading"><div><div class="am-eyebrow">حركة الحساب</div><h2>تفاصيل تهمك</h2></div></div>
+          <div class="grid2 am-info-grid">
+            <div class="panel"><div class="ph"><div><h3>آخر تسوية</h3><small>آخر أسبوع مقفل</small></div></div><div class="pb" id="settlementHome"></div></div>
+            <div class="panel"><div class="ph"><div><h3>نشاطك</h3><small>ملخص للعرض فقط</small></div></div><div class="pb" id="activitySummary"></div></div>
+          </div>
+          <button class="am-last-week-btn" onclick="openPreviousWeekStatement()"><span>▤</span><span>كشف الأسبوع السابق بالتفصيل</span><span aria-hidden="true">←</span></button>
+        </section>
 
- <section id="s-orders" class="section"><div class="panel"><div class="ph"><div><h3>📦 تفاصيل طلباتي</h3><small>من مين أخذت — ولمين أعطيت</small></div></div><div class="pb"><div class="toolbar"><input id="orderSearch" class="input" placeholder="بحث باسم / رقم / طلب / قروب" oninput="renderOrders()"><select id="orderType" class="select" onchange="renderOrders()"><option value="all">الكل</option><option value="consumption">📥 أخذتها</option><option value="production">📤 أنتجتها</option></select><select id="orderStatus" class="select" onchange="renderOrders()"><option value="all">كل الحالات</option><option value="active">محسوب</option><option value="modified">تعديل</option><option value="cancelled">ملغي</option></select></div><div class="chips" style="margin:10px 0"><button class="chip active" onclick="quickFilter('all',this)">الكل</button><button class="chip" onclick="quickFilter('consumption',this)">📥 أخذتها</button><button class="chip" onclick="quickFilter('production',this)">📤 أنتجتها</button></div><div id="ordersList" class="order-list"></div></div></div></section>
+<section id="s-orders" class="section"><div class="panel"><div class="ph"><div><h3>📦 تفاصيل طلباتي</h3><small>من مين أخذت — ولمين أعطيت</small></div></div><div class="pb"><div class="toolbar"><input id="orderSearch" class="input" placeholder="بحث باسم / رقم / طلب / قروب" oninput="renderOrders()"><select id="orderType" class="select" onchange="renderOrders()"><option value="all">الكل</option><option value="consumption">📥 أخذتها</option><option value="production">📤 أنتجتها</option></select><select id="orderStatus" class="select" onchange="renderOrders()"><option value="all">كل الحالات</option><option value="active">محسوب</option><option value="modified">تعديل</option><option value="cancelled">ملغي</option></select></div><div class="chips" style="margin:10px 0"><button class="chip active" onclick="quickFilter('all',this)">الكل</button><button class="chip" onclick="quickFilter('consumption',this)">📥 أخذتها</button><button class="chip" onclick="quickFilter('production',this)">📤 أنتجتها</button></div><div id="ordersList" class="order-list"></div></div></div></section>
 
  <section id="s-settlement" class="section"><div class="panel"><div class="ph"><div><h3>💰 مركز التسوية</h3><small>حوالتك أو حوالة الإدارة</small></div></div><div class="pb" id="settlementBox"></div></div></section>
 
@@ -79,8 +167,10 @@ body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opac
 <section id="s-profile" class="section"><div class="grid2"><div class="panel"><div class="ph"><div><h3>🪪 بطاقة الكابتن</h3><small>AMMAN DELIVERY</small></div></div><div class="pb"><div class="profile-card"><img src="/assets/amman-logo.jpeg"><div><h2 id="profileName" style="margin:0 0 5px">—</h2><div id="profilePhone" class="muted" dir="ltr">—</div><div id="profileStatus" style="margin-top:8px"></div></div></div><div class="kv" style="margin-top:15px"><div class="row"><span>سبب الحالة</span><b id="profileReason">—</b></div><div class="row"><span>آخر ظهور بالقروبات</span><b id="profileSeen">—</b></div><div class="row"><span>آخر دخول</span><b id="profileLogin">—</b></div></div></div></div><div class="panel"><div class="ph"><div><h3>💳 بيانات التحويل</h3><small>تظهر للإدارة عند التسوية</small></div></div><div class="pb"><div id="paymentCurrent" class="callout"></div><button class="btn" style="width:100%;margin-top:10px" onclick="editPayment()">✏️ تعديل طريقة التحويل</button></div></div><div class="panel"><div class="ph"><div><h3>💸 التحويل للنظام</h3><small>بيانات التحويل المعتمدة للكباتن من الإدارة</small></div></div><div class="pb"><div class="callout"><div style="display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap"><div><div id="systemTransferMethod" class="muted" style="font-size:11px">—</div><b id="systemTransferName" style="font-size:18px">—</b><div id="systemTransferNumber" dir="ltr" style="font-size:20px;font-weight:900;margin-top:6px">—</div><div id="systemTransferNote" class="muted" style="font-size:10px;margin-top:5px;display:none"></div></div><button class="btn btn-primary" type="button" onclick="copySystemWallet()">📋 نسخ بيانات التحويل</button></div></div></div></div></div>
   <div class="panel"><div class="ph"><div><h3>🔐 كلمة السر</h3><small>تغيير كلمة سر الحساب</small></div></div><div class="pb"><div class="grid2"><input id="oldPw" class="input" type="password" placeholder="كلمة السر الحالية"><input id="changePw" class="input" type="password" placeholder="كلمة السر الجديدة"></div><button class="btn btn-primary" style="margin-top:10px" onclick="changePassword()">حفظ كلمة السر الجديدة</button><button class="btn btn-danger" style="margin-top:10px;margin-right:6px" onclick="logout()">تسجيل خروج</button></div></div>
  </section>
-</div>
-<nav class="tabs"><button class="active" data-tab="home" onclick="go('home',this)"><span>⌂</span>الرئيسية</button><button data-tab="orders" onclick="go('orders',this)"><span>↕</span>الحركات</button><button data-tab="settlement" onclick="go('settlement',this)"><span>◎</span>التسوية</button><button data-tab="profile" onclick="go('profile',this)"><span>◉</span>حسابي</button></nav>
+</div><!-- end am-workspace -->
+    </div><!-- end am-app-workspace -->
+  </div><!-- end am-app-frame -->
+  <nav class="tabs am-mobile-tabs" aria-label="تنقل الكابتن"><button class="active" data-tab="home" onclick="adNavigate('home')"><span>⌂</span>الرئيسية</button><button data-tab="orders" onclick="adNavigate('orders')"><span>⇆</span>الحركات</button><button data-tab="settlement" onclick="adNavigate('settlement')"><span>◎</span>التسوية</button><button data-tab="history" onclick="adNavigate('history')"><span>▤</span>الكشوفات</button><button data-tab="profile" onclick="adNavigate('profile')"><span>◉</span>حسابي</button></nav>
 </div>
 <div id="modal" class="modal"><div class="modal-card"><div class="modal-head"><b id="modalTitle">تفاصيل</b><button class="btn" onclick="hideModal()">×</button></div><div id="modalBody" class="modal-body"></div></div></div><div id="toast" class="toast"></div>
 <button id="installBtn" class="install-fab">📲 تثبيت AMMAN DELIVERY</button>
@@ -278,7 +368,7 @@ function renderAnnouncements(){announcementBanner.innerHTML=(state.announcements
 function renderSecurity(){const p=document.getElementById('securityBox');if(!p)return;p.innerHTML=(state.security||[]).slice(0,3).map(x=>`<div class="row"><span>${dt(x.created_at)}</span><b>${esc((x.user_agent||'جهاز').split(' ')[0])}</b></div>`).join('')||'—'}
 async function logoutAllDevices(){if(!confirm('تسجيل خروج حسابك من جميع الأجهزة؟'))return;const j=await api('/api/captain-auth/logout-all',{method:'POST',body:'{}'});if(j.ok){localStorage.removeItem('amman_captain_token');location.reload()}}
 function weeklyCinema(){const s=state.settlements?.[0];if(!s)return;const key='ammanWeekSeen:'+s.id;if(localStorage.getItem(key))return;localStorage.setItem(key,'1');setTimeout(()=>{clickFX('login');const n=Number(s.net);showModal('✦ تم إغلاق جرد الأسبوع',`<div style="text-align:center;padding:10px"><div style="font-size:13px;color:#aaa">نتيجة الأسبوع</div><div style="font-size:34px;font-weight:1000;margin:12px;color:${n>=0?'#55e39b':'#ff6767'}">${n>0?'إلك ':n<0?'عليك ':''}${money(Math.abs(n))} د.أ</div><button class="btn btn-primary" onclick="hideModal();goByName('settlement')">فتح التسوية 💰</button></div>`);},700)}
-function digitalReceipt(s){return `CP-W${s.week_id}-${String(s.id).padStart(4,'0')}`}
+function digitalReceipt(s){return `AD-W${s.week_id}-${String(s.id).padStart(4,'0')}`}
 // augment the existing all-data load without changing accounting
 const _loadAll=loadAll;loadAll=async function(){const ok=await _loadAll();if(!ok)return false;await loadExperience();weeklyCinema();document.querySelectorAll('.settlement').forEach((el,i)=>{const s=state.settlements?.[i]||state.settlements?.[0];if(s&&!el.querySelector('.receipt'))el.insertAdjacentHTML('beforeend',`<div class="week-meta receipt">🧾 رقم التسوية: ${digitalReceipt(s)}</div>`)});return true};
 // connectivity state
@@ -296,9 +386,7 @@ setTimeout(bindClickSignature,200);
 
 <footer class="amman-footer"><strong>AMMAN DELIVERY</strong> <span aria-hidden="true">•</span> نظام إدارة التوصيل والحسابات</footer>
 
-<script src="/assets/amman-v6.js?v=70"></script>
+<script src="/assets/amman-captain-v7.js?v=1"></script>
 
-<style id="cp-v62-brand-cleanup-style">.cp-support-fab,.support-fab,.support-btn,.ads-support-btn,[data-support-ads]{display:none!important}</style>
-<script id="cp-v62-brand-cleanup">(function(){const official='/assets/amman-logo.jpeg';function clean(){document.querySelectorAll('button,a,[role="button"]').forEach(function(el){const t=(el.textContent||'').replace(/\s+/g,' ').trim();if(t.includes('الدعم والإعلانات')||t.includes('الدعم والاعلانات'))el.remove();});document.querySelectorAll('img[src*="amman-mark"],.brand img,.login-card .logo').forEach(function(img){if(img.getAttribute('src')!==official)img.setAttribute('src',official);});}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',clean,{once:true});else clean();new MutationObserver(clean).observe(document.documentElement,{childList:true,subtree:true,attributes:true,attributeFilter:['src']});})();</script>
 </body></html>
 
