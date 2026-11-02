@@ -1,0 +1,40 @@
+/* AMMAN DELIVERY captain refresh — visual only; accounting and login logic unchanged */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap');
+html:has(body.amman-captain.am-v2){background:#4b4d56!important}
+body.amman-captain.am-v2{font-family:'Cairo',Tahoma,Arial,sans-serif!important;--ad-bg:#4b4d56;--ad-white:#30323c;--ad-ink:#f7f7fa;--ad-sub:#b9bac6;--ad-line:#676875;--ad-red:#ed254b;--ad-dark:#20212a;--text:#f7f7fa;--muted:#c2c2cd;--panel:#30323c;--panel2:#383944;--line:#62636e;--orange:#ef2e53;--orange2:#ff5c78;--cp-text:#f7f7fa;--cp-muted:#b8b8c6;background:#4b4d56!important;color:#f7f7fa!important}
+body.amman-captain.am-v2 :is(button,input,select,textarea){font-family:'Cairo',Tahoma,Arial,sans-serif!important}
+body.amman-captain.am-v2 .app{background:linear-gradient(160deg,#50525c 0%,#44464f 62%,#41434c 100%)!important;color:#f7f7fa!important}
+body.amman-captain.am-v2 :is(.am-app-frame,.am-app-workspace,.am-workspace,.wrap){background:transparent!important}
+body.amman-captain.am-v2 :is(.top,.am-topbar,.am-workspace-header){background:#292b35!important;color:#f5f5f8!important;border-color:#666875!important}
+body.amman-captain.am-v2 :is(.am-side,.am-sidebar,.am-mobile-tabs,.tabs){background:#282a34!important;color:#e9e9f0!important;border-color:#626470!important;box-shadow:0 10px 32px #13141c30!important}
+body.amman-captain.am-v2 .tabs button{color:#c4c6d0!important}
+body.amman-captain.am-v2 .tabs button.active{background:linear-gradient(135deg,#ff4663,#c5163b)!important;color:#fff!important;border-radius:14px!important}
+body.amman-captain.am-v2 .am-page-heading{padding:12px 2px!important}
+body.amman-captain.am-v2 .am-page-heading h1{color:#fff!important;font-weight:900!important;letter-spacing:-.5px}
+body.amman-captain.am-v2 .am-page-heading h1 span,body.amman-captain.am-v2 .am-eyebrow{color:#ff496a!important}
+body.amman-captain.am-v2 :is(.am-page-heading p,.am-block-heading>span,.am-section-intro p,.muted){color:#c6c6d0!important}
+body.amman-captain.am-v2 :is(.am-subtle-link,.am-last-week-btn,.am-week-action){background:#343641!important;color:#ff637d!important;border:1px solid #72727b!important}
+body.amman-captain.am-v2 :is(.am-identity-band,.am-week-card,.panel,.am-info-grid .panel){background:linear-gradient(145deg,#373944,#30323b)!important;color:#f7f7fa!important;border:1px solid #666875!important;box-shadow:0 9px 25px #11131b21!important}
+body.amman-captain.am-v2 .am-money-card{background:linear-gradient(132deg,#272833,#1e2029 77%,#562332)!important;color:#fff!important;border:1px solid #965163!important;box-shadow:0 14px 32px #23212b44!important;position:relative;overflow:hidden}
+body.amman-captain.am-v2 .am-money-card:after{content:"";position:absolute;inset:auto 0 0;height:3px;background:linear-gradient(90deg,#b51335,#fa355b,#ff6d86)}
+body.amman-captain.am-v2 :is(.am-money-card .am-card-head,.am-week-card .am-card-head,.am-week-line,.am-week-footer,.am-id-text>span,.am-block-heading .am-eyebrow){color:#c8c8d3!important}
+body.amman-captain.am-v2 :is(.am-money-amount,.am-week-label,.am-id-text h2,.am-block-heading h2,.panel h3){color:#fff!important}
+body.amman-captain.am-v2 .am-strong-btn{background:linear-gradient(130deg,#ff4566,#c61d42)!important;color:white!important;border:1px solid #ff8094!important;box-shadow:0 8px 18px #d51e453f!important}
+body.amman-captain.am-v2 .am-card-quiet{color:#e5c5cb!important}
+body.amman-captain.am-v2 .am-metrics{gap:10px!important}
+body.amman-captain.am-v2 .am-metrics .stat{background:#30323c!important;border:1px solid #696b77!important;border-radius:17px!important;box-shadow:0 6px 18px #1b1d2524!important;color:#eee!important}
+body.amman-captain.am-v2 .am-metrics .stat span:not(.am-metric-icon),body.amman-captain.am-v2 .am-metrics .stat small{color:#c7c7d1!important}
+body.amman-captain.am-v2 .am-metrics .stat b{font-weight:900!important}
+body.amman-captain.am-v2 .am-metrics .am-red{color:#ff5773!important;background:#ff496322!important}
+body.amman-captain.am-v2 .am-info-grid :is(.ph,.pb){background:transparent!important;color:#eaeaf1!important;border-color:#666875!important}
+body.amman-captain.am-v2 :is(.am-info-grid small,.am-week-footer span,.formula){color:#bdbecb!important}
+body.amman-captain.am-v2 .am-section-intro h1{color:#fff!important}
+body.amman-captain.am-v2 :is(.input,.select,.textarea){background:#292b35!important;color:#fff!important;border-color:#747581!important}
+body.amman-captain.am-v2 :is(.am-account-grid,.am-info-grid){gap:12px!important}
+body.amman-captain.am-v2 .am-mobile-tabs{backdrop-filter:blur(18px);padding:8px!important}
+body.amman-captain.am-v2 .am-mobile-tabs button{transition:transform .22s,background .22s}
+body.amman-captain.am-v2 .am-mobile-tabs button:active{transform:scale(.95)}
+body.amman-captain.am-v2 .am-money-card,body.amman-captain.am-v2 .am-week-card,body.amman-captain.am-v2 .am-metrics .stat{animation:adDashUp .48s ease both}
+@keyframes adDashUp{from{opacity:.4;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media(max-width:700px){body.amman-captain.am-v2 #s-home .am-page-heading{gap:8px!important}body.amman-captain.am-v2 .am-metrics{grid-template-columns:repeat(2,minmax(0,1fr))!important}body.amman-captain.am-v2 #s-home{padding-bottom:16px}}
+@media(prefers-reduced-motion:reduce){body.amman-captain.am-v2 .am-money-card,body.amman-captain.am-v2 .am-week-card,body.amman-captain.am-v2 .am-metrics .stat{animation:none!important}}
