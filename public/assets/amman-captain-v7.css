@@ -279,7 +279,7 @@ body.am-v2 .am-mobile-brand small{color:#959baa;font-size:9px;letter-spacing:1.5
 body.am-v2 .am-mobile-brand-dot{margin-right:auto;width:8px;height:8px;border-radius:50%;background:#e13e57;box-shadow:0 0 0 5px #fbe8ec}
 body.am-v2 .am-password-wrap{position:relative;width:100%}
 body.am-v2 .am-password-wrap input{display:block;width:100%;padding-left:86px!important}
-body.am-v2 .am-password-eye{
+body.amman-captain.am-v2 .login-card .stack .am-password-wrap input{padding-left:84px!important}\nbody.am-v2 .am-password-eye{
  position:absolute;left:9px;top:50%;transform:translateY(-50%);min-height:35px;min-width:65px;
  border:0;border-radius:9px;background:#f5f2f4;color:#ae344e;font-size:11px;
  font-weight:900;padding:6px 10px;cursor:pointer;z-index:2;
