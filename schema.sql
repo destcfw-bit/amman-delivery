@@ -499,3 +499,6 @@ CREATE INDEX IF NOT EXISTS idx_whatsapp_media_message
 
 ALTER TABLE accounting_weeks ADD COLUMN IF NOT EXISTS trashed_at TIMESTAMPTZ;
 CREATE INDEX IF NOT EXISTS idx_accounting_weeks_trashed ON accounting_weeks(trashed_at) WHERE trashed_at IS NOT NULL;
+
+-- Future accounting weeks use the new floor; never rewrite historical deductions.
+ALTER TABLE accounting_weeks ALTER COLUMN floor_amount SET DEFAULT 0.500;
