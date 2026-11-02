@@ -89,7 +89,7 @@ body.amman-captain #login .msg{color:#ffc2cf}
 @media(max-width:540px){body.amman-captain #login.ad-login{padding:24px 14px 38px;align-items:flex-start;overflow-y:auto}body.amman-captain .ad-brandmark img{width:78px;height:78px}body.amman-captain .ad-brandmark strong{font-size:28px}body.amman-captain .ad-login-chip{margin-bottom:14px}body.amman-captain #login .login-card.ad-login-card{padding:28px 20px 23px;border-radius:27px}body.amman-captain .ad-auth-head p{margin-bottom:20px}}
 @media(prefers-reduced-motion:reduce){body.amman-captain #login.ad-login:before,body.amman-captain #login .login-card.ad-login-card:before,body.amman-captain .ad-brandmark img,body.amman-captain .ad-auth-wrap,body.amman-captain #login .login-card.ad-login-card{animation:none!important}}
 </style>
-<link rel="stylesheet" href="/assets/amman-captain-refresh.css?v=5">
+<link rel="stylesheet" href="/assets/amman-captain-refresh.css?v=6">
 <link rel="stylesheet" href="/assets/amman-premium.css?v=5">
 </head>
 <body class="amman-captain am-v2">
@@ -102,9 +102,9 @@ body.amman-captain #login .msg{color:#ffc2cf}
       <div class="ad-card-glow" aria-hidden="true"></div>
       <div class="ad-auth-head"><h1>تسجيل دخول <em>الكابتن</em></h1><p>أدخل بيانات حسابك للوصول إلى لوحة الكابتن</p></div>
       <div class="stack ad-auth-fields">
-        <label class="am-field-label" for="phone">رقم الهاتف <span aria-hidden="true">♧</span></label>
+        <label class="am-field-label" for="phone">رقم الهاتف <svg class="ad-login-field-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M11 18h2"/></svg></label>
         <input id="phone" class="input" type="tel" inputmode="tel" autocomplete="username" placeholder="07XXXXXXXX">
-        <label class="am-field-label" for="password">كلمة المرور <span aria-hidden="true">♙</span></label>
+        <label class="am-field-label" for="password">كلمة المرور <svg class="ad-login-field-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><path d="M12 15v2"/></svg></label>
         <div class="am-password-wrap"><input id="password" class="input" type="password" autocomplete="current-password" placeholder="أدخل كلمة المرور"><button class="am-password-eye" type="button" aria-label="إظهار كلمة المرور" aria-pressed="false" onclick="adTogglePassword(this)">إظهار</button></div>
         <button class="btn btn-primary login-btn" onclick="loginCaptain()">تسجيل الدخول <span aria-hidden="true">←</span></button>
       </div>
