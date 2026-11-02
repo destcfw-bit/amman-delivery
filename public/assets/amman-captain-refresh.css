@@ -151,3 +151,10 @@ body.amman-captain.am-v2 #login .msg{color:#ffc5d0!important}
  body.amman-captain.am-v2 #login.ad-login{padding:24px 15px 40px!important}
  body.amman-captain.am-v2 #login .login-card.ad-login-card{padding:27px 20px 25px!important}
 }
+
+/* DropCode attribution / contact */
+body.amman-captain.am-v2 .ad-dropcode-credit{display:flex;justify-content:center;align-items:center;gap:7px 10px;flex-wrap:wrap;text-align:center;color:#c3c5d0;font:700 11px/1.9 'Cairo',Tahoma,sans-serif;letter-spacing:0;margin:22px auto 14px;padding:11px 12px;max-width:100%;border-top:1px solid #7b7d894d}
+body.amman-captain.am-v2 .ad-dropcode-credit strong{color:#fff;font-weight:900}
+body.amman-captain.am-v2 .ad-dropcode-credit a{color:#ff7891!important;text-decoration:none!important;padding:2px 9px;border:1px solid #a84a645e;border-radius:999px;background:#ed365111;font-size:11px}
+body.amman-captain.am-v2 .ad-dropcode-credit a:hover{background:#e82c5040;color:#fff!important}
+@media(max-width:700px){body.amman-captain.am-v2 .am-workspace>.ad-dropcode-credit{margin-bottom:30px}}
