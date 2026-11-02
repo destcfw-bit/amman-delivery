@@ -42,49 +42,72 @@ body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opac
 <link rel="stylesheet" href="/assets/amman-v6.css?v=71">
 <link rel="stylesheet" href="/assets/amman-theme.css?v=2"><meta name="color-scheme" content="light"><link rel="stylesheet" href="/assets/amman-standalone.css?v=2">
 <link rel="stylesheet" href="/assets/amman-captain-v7.css?v=2">
+<style id="ad-captain-login-redesign">
+/* AMMAN DELIVERY — isolated login redesign. Dashboard remains untouched. */
+body.amman-captain:has(#login:not(.hidden)){background:#f6f5f8!important}
+body.amman-captain #login.ad-login{min-height:100svh;min-height:100dvh;display:flex!important;align-items:center;justify-content:center;padding:35px 17px 48px;background:radial-gradient(ellipse at 104% 0%,#ffe2e9 0,transparent 32%),radial-gradient(ellipse at -10% 100%,#fce1e9 0,transparent 30%),#f6f5f8!important;position:relative;isolation:isolate;overflow:hidden;color:#fff}
+body.amman-captain #login.ad-login:before{content:"";position:absolute;inset:-50%;background:conic-gradient(from 0deg,transparent 0deg,#ef455709 75deg,transparent 115deg);animation:adAmbient 18s linear infinite;pointer-events:none}
+body.amman-captain #login.ad-login:after{content:"";position:absolute;width:540px;height:540px;left:calc(50% - 270px);top:-380px;border:1px solid #e94b6a22;border-radius:50%;background:none!important;filter:none}
+body.amman-captain .ad-auth-wrap{width:min(100%,480px);position:relative;z-index:2;text-align:center;animation:adRise .8s cubic-bezier(.2,.8,.2,1) both}
+body.amman-captain .ad-brandmark{display:flex;flex-direction:column;align-items:center;gap:7px;margin:0 auto 18px;color:#202637;animation:adRise .75s both}
+body.amman-captain .ad-brandmark img{width:95px;height:95px;object-fit:contain;border-radius:20px;filter:drop-shadow(0 10px 18px #ef455720);animation:adFloat 5s ease-in-out infinite}
+body.amman-captain .ad-brandmark strong{display:block;font:900 clamp(29px,7vw,39px)/1 Arial,sans-serif;letter-spacing:3px}
+body.amman-captain .ad-brandmark span{display:block;color:#e94764;font:800 13px Arial,sans-serif;letter-spacing:6px;margin-top:4px}
+body.amman-captain .ad-login-chip{display:inline-flex;justify-content:center;align-items:center;background:#f9dce3;color:#e44161;border:1px solid #f9cbd6;border-radius:40px;padding:9px 22px;font-weight:900;font-size:13px;margin-bottom:18px}
+body.amman-captain #login .login-card.ad-login-card{width:100%;padding:35px 25px 28px;border:1px solid #3e4558!important;border-radius:32px;background:linear-gradient(145deg,#272d3d 0%,#191f2e 70%,#282537 100%)!important;box-shadow:0 24px 55px #23283b2d,0 0 0 1px #ffffff0c inset!important;overflow:hidden;text-align:right;animation:adCardIn .85s .12s both}
+body.amman-captain #login .login-card.ad-login-card:before{content:"";position:absolute;inset:-2px;background:linear-gradient(115deg,transparent 15%,#ff7c9830 47%,transparent 67%);transform:translateX(160%);animation:adShimmer 6.5s 1.6s infinite;z-index:0;pointer-events:none}
+body.amman-captain #login .login-card.ad-login-card:after{content:"";position:absolute;top:0;right:8%;left:8%;height:1px;background:linear-gradient(90deg,transparent,#fc7691,transparent)}
+body.amman-captain .ad-card-glow{position:absolute;right:-100px;top:-120px;width:270px;height:250px;border-radius:50%;background:#fa527221;filter:blur(55px);pointer-events:none}
+body.amman-captain .ad-auth-head,body.amman-captain .ad-auth-fields,body.amman-captain .ad-safe-note,body.amman-captain #loginMsg{position:relative;z-index:1}
+body.amman-captain #login .ad-auth-head h1{font-size:clamp(28px,7vw,38px);line-height:1.5;margin:0 0 8px;font-weight:900;color:#fff;letter-spacing:-.7px;text-align:center}
+body.amman-captain .ad-auth-head h1 em{color:#ff718c;font-style:normal}
+body.amman-captain .ad-auth-head p{text-align:center;color:#b7becd;font-size:13px;margin:0 0 29px}
+body.amman-captain #login .ad-auth-fields{display:grid;gap:11px}
+body.amman-captain #login .am-field-label{color:#f1f1f7!important;font-size:14px;font-weight:800;margin:6px 0 0;display:flex;justify-content:space-between;align-items:center}
+body.amman-captain #login .am-field-label span{color:#fc819a;font-size:20px}
+body.amman-captain #login .input{background:#ffffff0b!important;border:1px solid #727a8d!important;border-radius:16px!important;height:59px!important;color:white!important;padding:0 18px!important;font-size:16px!important;transition:border .2s,box-shadow .2s,background .2s,transform .2s}
+body.amman-captain #login .input::placeholder{color:#a1aaba!important}
+body.amman-captain #login .input:focus{outline:0!important;border-color:#ff7894!important;box-shadow:0 0 0 4px #ff648521!important;background:#ffffff12!important;transform:translateY(-1px)}
+body.amman-captain #login .am-password-wrap{position:relative}
+body.amman-captain #login .am-password-wrap .input{width:100%;padding-left:90px!important}
+body.amman-captain #login .am-password-eye{position:absolute;left:8px;top:50%;transform:translateY(-50%);border:1px solid #ffffff22!important;color:#f0f1f7!important;background:#ffffff14!important;padding:9px 11px;border-radius:11px;font-size:12px;z-index:2}
+body.amman-captain #login .login-btn{height:61px!important;width:100%;border:1px solid #ff9aae!important;border-radius:17px!important;background:linear-gradient(130deg,#ff637d,#e6385b)!important;color:white!important;box-shadow:0 12px 30px #e9355877,0 1px 0 #fff7 inset!important;font-size:19px!important;font-weight:900!important;display:flex;align-items:center;justify-content:center;gap:18px;margin-top:25px;transition:transform .2s,box-shadow .2s,filter .2s}
+body.amman-captain #login .login-btn:hover{transform:translateY(-3px);filter:brightness(1.07);box-shadow:0 17px 34px #e9355890!important}
+body.amman-captain #login .login-btn:active{transform:scale(.985)}
+body.amman-captain #login .login-btn span{font-size:24px}
+body.amman-captain .ad-safe-note{text-align:center;color:#a8b1c1;font-size:11px;margin-top:17px}
+body.amman-captain .ad-auth-footer{color:#818597;font:700 10px Arial,sans-serif;letter-spacing:2px;margin-top:24px}
+body.amman-captain .ad-auth-footer span{color:#e34e6b}
+body.amman-captain #login .msg{color:#ffc2cf}
+@keyframes adRise{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes adCardIn{from{opacity:0;transform:translateY(22px) scale(.975)}to{opacity:1;transform:none}}
+@keyframes adFloat{50%{transform:translateY(-6px)}}
+@keyframes adAmbient{to{transform:rotate(360deg)}}
+@keyframes adShimmer{0%,65%{transform:translateX(160%)}85%,100%{transform:translateX(-160%)}}
+@media(max-width:540px){body.amman-captain #login.ad-login{padding:24px 14px 38px;align-items:flex-start;overflow-y:auto}body.amman-captain .ad-brandmark img{width:78px;height:78px}body.amman-captain .ad-brandmark strong{font-size:28px}body.amman-captain .ad-login-chip{margin-bottom:14px}body.amman-captain #login .login-card.ad-login-card{padding:28px 20px 23px;border-radius:27px}body.amman-captain .ad-auth-head p{margin-bottom:20px}}
+@media(prefers-reduced-motion:reduce){body.amman-captain #login.ad-login:before,body.amman-captain #login .login-card.ad-login-card:before,body.amman-captain .ad-brandmark img,body.amman-captain .ad-auth-wrap,body.amman-captain #login .login-card.ad-login-card{animation:none!important}}
+</style>
 </head>
 <body class="amman-captain am-v2">
 <button id="soundToggle" class="sound-toggle" type="button" onclick="toggleClickSound()" aria-label="تبديل صوت الواجهة" title="صوت الواجهة">🔊</button>
-<div id="login" class="login">
-  <div class="am-auth-shell">
-    <aside class="am-auth-story">
-      <div class="am-auth-kicker"><span class="am-live-mark"></span> AMMAN DELIVERY</div>
-      <div class="am-auth-story-inner">
-        <div class="am-auth-emblem"><img src="/assets/amman-logo.jpeg" alt="شعار AMMAN DELIVERY"></div>
-        <div class="am-eyebrow">CAPTAIN EXPERIENCE</div>
-        <h2>شغلك أوضح.<br><span>حسابك بيدك.</span></h2>
-        <p>رصيدك، حركاتك، تسويتك وكشوفاتك في مساحة واحدة مصممة إلك.</p>
-        <div class="am-auth-features"><span>◈ متابعة الرصيد</span><span>◎ تفاصيل الحركات</span><span>▤ كشف الأسابيع</span></div>
+<div id="login" class="login ad-login">
+  <div class="ad-auth-wrap">
+    <div class="ad-brandmark"><img src="/assets/amman-logo.jpeg" alt="AMMAN DELIVERY"><div><strong>AMMAN</strong><span>DELIVERY</span></div></div>
+    <div class="ad-login-chip">✦ مساحة الكابتن</div>
+    <section class="login-card ad-login-card" aria-label="تسجيل دخول الكابتن">
+      <div class="ad-card-glow" aria-hidden="true"></div>
+      <div class="ad-auth-head"><h1>تسجيل دخول <em>الكابتن</em></h1><p>أدخل بيانات حسابك للوصول إلى لوحة الكابتن</p></div>
+      <div class="stack ad-auth-fields">
+        <label class="am-field-label" for="phone">رقم الهاتف <span aria-hidden="true">♧</span></label>
+        <input id="phone" class="input" type="tel" inputmode="tel" autocomplete="username" placeholder="07XXXXXXXX">
+        <label class="am-field-label" for="password">كلمة المرور <span aria-hidden="true">♙</span></label>
+        <div class="am-password-wrap"><input id="password" class="input" type="password" autocomplete="current-password" placeholder="أدخل كلمة المرور"><button class="am-password-eye" type="button" aria-label="إظهار كلمة المرور" aria-pressed="false" onclick="adTogglePassword(this)">إظهار</button></div>
+        <button class="btn btn-primary login-btn" onclick="loginCaptain()">تسجيل الدخول <span aria-hidden="true">←</span></button>
       </div>
-      <div class="am-auth-bottom">AMMAN DELIVERY <span>•</span> CAPTAIN PORTAL</div>
-    </aside>
-    <div class="am-auth-form-area">
-      <div class="login-card">
-        <div class="am-mobile-brand"><div class="am-mobile-brand-logo"><img src="/assets/amman-logo.jpeg" alt="شعار AMMAN DELIVERY"></div><div><b>AMMAN DELIVERY</b><small>CAPTAIN PORTAL</small></div><span class="am-mobile-brand-dot" aria-hidden="true"></span></div>
-        <div class="am-mobile-intro">
-          <div class="am-mobile-intro-top"><span class="am-mobile-overline">مساحة الكابتن</span><span class="am-mobile-intro-symbol" aria-hidden="true">◈</span></div>
-          <h2>حسابك أوضح.<br><span>وشغلك أسهل.</span></h2>
-          <p>تابع رصيدك وحركاتك وكشوفاتك من تلفونك بكل سهولة.</p>
-          <div class="am-mobile-features" aria-label="مميزات حساب الكابتن">
-            <span><i aria-hidden="true">↗</i> رصيدك</span>
-            <span><i aria-hidden="true">▤</i> كشوفاتك</span>
-            <span><i aria-hidden="true">◎</i> تسوياتك</span>
-          </div>
-        </div>
-        <div class="am-eyebrow">دخول حساب الكابتن</div>
-        <h1>أهلًا برجعتك</h1>
-        <p class="login-sub">أدخل بيانات حسابك للوصول إلى رصيدك وجميع التفاصيل.</p>
-        <div class="stack">
-          <label class="am-field-label" for="phone">رقم الهاتف</label>
-          <input id="phone" class="input" inputmode="tel" autocomplete="username" placeholder="07XXXXXXXX">
-          <label class="am-field-label" for="password">كلمة المرور</label>
-          <div class="am-password-wrap"><input id="password" class="input" type="password" autocomplete="current-password" placeholder="أدخل كلمة المرور"><button class="am-password-eye" type="button" aria-label="إظهار كلمة المرور" aria-pressed="false" onclick="adTogglePassword(this)">إظهار</button></div>
-          <button class="btn btn-primary login-btn" onclick="loginCaptain()">تسجيل الدخول <span aria-hidden="true">←</span></button>
-        </div>
-        <div id="loginMsg" class="msg" role="status" aria-live="polite"></div>
-        <div class="am-login-secure">⌑ بيانات الحساب خاصة بك ومحميّة بتسجيل الدخول</div>
-      </div>
-    </div>
+      <div id="loginMsg" class="msg" role="status" aria-live="polite"></div>
+      <div class="ad-safe-note">🔒 حسابك وبياناتك محمية</div>
+    </section>
+    <div class="ad-auth-footer">AMMAN DELIVERY <span>•</span> CAPTAIN PORTAL</div>
   </div>
 </div>
 
