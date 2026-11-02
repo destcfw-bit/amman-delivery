@@ -1,0 +1,44 @@
+/* AMMAN MOTION 2026 — functional interface enhancement, no accounting mutations */
+:root{--am-motion-red:#e01919;--am-motion-red-bright:#ff3535;--am-motion-charcoal:#252831;--am-motion-gray:#454850}
+body.amman-captain.am-v2 .section.active{animation:amSceneIn .38s cubic-bezier(.2,.75,.2,1) both}
+@keyframes amSceneIn{from{opacity:.4;transform:translateY(11px)}to{opacity:1;transform:translateY(0)}}
+body.amman-captain.am-v2 .section.active :is(.am-money-card,.am-week-card,.stat,.panel,.cp-move-card){animation:amCascade .46s ease both}
+body.amman-captain.am-v2 .section.active :is(.am-money-card,.am-week-card,.stat,.panel,.cp-move-card):nth-child(2){animation-delay:70ms}
+body.amman-captain.am-v2 .section.active :is(.am-money-card,.am-week-card,.stat,.panel,.cp-move-card):nth-child(3){animation-delay:120ms}
+@keyframes amCascade{from{opacity:.25;transform:translateY(14px)}to{opacity:1;transform:none}}
+body.amman-captain.am-v2 :is(.btn,.chip,.am-strong-btn,.am-mobile-tabs button){transition:transform .18s,filter .18s,box-shadow .18s!important}
+body.amman-captain.am-v2 :is(.btn,.chip,.am-strong-btn,.am-mobile-tabs button):active{transform:scale(.96)!important;filter:brightness(1.12)}
+body.amman-captain.am-v2 .tabs.am-mobile-tabs button.active{box-shadow:inset 0 1px 0 #ff7777,0 6px 18px #9e060633!important}
+body.amman-captain.am-v2 .tabs.am-mobile-tabs .ad-nav-icon svg{transition:transform .2s}
+body.amman-captain.am-v2 .tabs.am-mobile-tabs button.active .ad-nav-icon svg{transform:scale(1.16) translateY(-1px)}
+body.amman-captain.am-v2 .am-money-card{position:relative}
+body.amman-captain.am-v2 .am-money-card:focus-within{box-shadow:0 0 0 2px #ee2929,0 15px 35px #0005!important}
+body.amman-captain.am-v2 .cp-move-card.am-swipe-ready{touch-action:pan-y;transition:translate .16s ease;cursor:pointer}
+body.amman-captain.am-v2 .cp-move-card.am-swipe-ready.am-swiped{translate:-44px 0}
+.am-activity-ring{display:flex;align-items:center;gap:14px;background:linear-gradient(140deg,#30333d,#292d35);border:1px solid #6f737b;border-radius:19px;padding:15px;margin:15px 0;color:#f5f5f5}
+.am-activity-ring svg{flex:none;width:88px;height:88px;transform:rotate(-90deg)}
+.am-activity-ring .am-ring-track{stroke:#62666e}
+.am-activity-ring .am-ring-fill{stroke:#e01919;stroke-dasharray:0 251.2;transition:stroke-dasharray .8s ease}
+.am-activity-ring strong{font-size:20px;color:#fff}
+.am-activity-ring small{display:block;color:#c8cbd1}
+.am-connection{display:inline-flex;align-items:center;gap:7px;background:#30343c;border:1px solid #636872;color:#e7eaef;border-radius:99px;font-size:11px;font-weight:800;padding:5px 9px}
+.am-connection i{height:8px;width:8px;display:block;background:#a6abb6;border-radius:50%}
+.am-connection.online i{background:#28d68c;animation:amPulse 1.8s infinite}
+.am-connection.offline i{background:#ff4545}
+@keyframes amPulse{50%{box-shadow:0 0 0 6px #28d68c14}}
+.am-movement-expander{display:block;width:100%;margin-top:8px;background:#353943;border:1px solid #656b77;color:#e9ecf0;border-radius:11px;padding:8px;text-align:center;font:800 12px Cairo,Tahoma,sans-serif}
+.am-movement-details{display:none;margin:10px 0 0;padding:11px;border-radius:12px;border:1px solid #6c707b;background:#242730;color:#e7e9ef;font-size:12px}
+.am-movement-details.open{display:block;animation:amSceneIn .22s ease}
+.am-empty-state{padding:28px 14px;text-align:center;color:#d2d5dc}
+.am-empty-state svg{width:40px;height:40px;stroke:#f03030;display:block;margin:0 auto 12px}
+.am-empty-state strong{display:block;font-size:15px;margin-bottom:5px;color:#fff}
+.am-mobile-gesture-note{font-size:10px;color:#bec2cc;margin:5px 0;text-align:center}
+.am-command-hero{display:flex;gap:12px;align-items:center;justify-content:space-between;background:linear-gradient(135deg,#282b34,#3b3439);border:1px solid #7d5354;border-radius:20px;padding:18px;margin:14px 0;color:#fff}
+.am-command-hero h2{font-size:19px;color:#fff;margin:0 0 5px}
+.am-command-hero p{font-size:12px;color:#ccd0d9;margin:0}
+.am-command-hero span{display:flex;align-items:center;gap:8px;font-size:12px;color:#ff7777}
+.am-command-hero i{background:#e01919;border-radius:50%;width:8px;height:8px;animation:amPulse 1.8s infinite}
+.am-report-print{font-family:Cairo,Tahoma,Arial,sans-serif}
+@media print{.am-report-print{background:white!important;color:#171717!important}.am-report-print table{width:100%;border-collapse:collapse}.am-report-print td,.am-report-print th{border:1px solid #aaa;padding:8px}.am-report-print h2{color:#ba0000!important}}
+@media(max-width:700px){.am-command-hero{flex-wrap:wrap}.am-activity-ring svg{width:70px;height:70px}body.amman-captain.am-v2 .tabs.am-mobile-tabs{bottom:max(8px,env(safe-area-inset-bottom))!important}}
+@media(prefers-reduced-motion:reduce){body.amman-captain.am-v2 .section.active,body.amman-captain.am-v2 .section.active :is(.am-money-card,.am-week-card,.stat,.panel,.cp-move-card){animation:none!important}.am-connection.online i,.am-command-hero i{animation:none}}
