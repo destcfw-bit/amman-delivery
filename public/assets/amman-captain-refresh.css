@@ -1,31 +1,31 @@
 /* AMMAN DELIVERY captain refresh — visual only; accounting and login logic unchanged */
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap');
 html:has(body.amman-captain.am-v2){background:#4b4d56!important}
-body.amman-captain.am-v2{font-family:'Cairo',Tahoma,Arial,sans-serif!important;--ad-bg:#4b4d56;--ad-white:#30323c;--ad-ink:#f7f7fa;--ad-sub:#b9bac6;--ad-line:#676875;--ad-red:#ed254b;--ad-dark:#20212a;--text:#f7f7fa;--muted:#c2c2cd;--panel:#30323c;--panel2:#383944;--line:#62636e;--orange:#ef2e53;--orange2:#ff5c78;--cp-text:#f7f7fa;--cp-muted:#b8b8c6;background:#4b4d56!important;color:#f7f7fa!important}
+body.amman-captain.am-v2{font-family:'Cairo',Tahoma,Arial,sans-serif!important;--ad-bg:#4b4d56;--ad-white:#30323c;--ad-ink:#f7f7fa;--ad-sub:#b9bac6;--ad-line:#676875;--ad-red:#f22020;--ad-dark:#20212a;--text:#f7f7fa;--muted:#c2c2cd;--panel:#30323c;--panel2:#383944;--line:#62636e;--orange:#f32a2a;--orange2:#f66565;--cp-text:#f7f7fa;--cp-muted:#b8b8c6;background:#4b4d56!important;color:#f7f7fa!important}
 body.amman-captain.am-v2 :is(button,input,select,textarea){font-family:'Cairo',Tahoma,Arial,sans-serif!important}
 body.amman-captain.am-v2 .app{background:linear-gradient(160deg,#50525c 0%,#44464f 62%,#41434c 100%)!important;color:#f7f7fa!important}
 body.amman-captain.am-v2 :is(.am-app-frame,.am-app-workspace,.am-workspace,.wrap){background:transparent!important}
 body.amman-captain.am-v2 :is(.top,.am-topbar,.am-workspace-header){background:#292b35!important;color:#f5f5f8!important;border-color:#666875!important}
 body.amman-captain.am-v2 :is(.am-side,.am-sidebar,.am-mobile-tabs,.tabs){background:#282a34!important;color:#e9e9f0!important;border-color:#626470!important;box-shadow:0 10px 32px #13141c30!important}
 body.amman-captain.am-v2 .tabs button{color:#c4c6d0!important}
-body.amman-captain.am-v2 .tabs button.active{background:linear-gradient(135deg,#ff4663,#c5163b)!important;color:#fff!important;border-radius:14px!important}
+body.amman-captain.am-v2 .tabs button.active{background:linear-gradient(135deg,#f55050,#cf0c0c)!important;color:#fff!important;border-radius:14px!important}
 body.amman-captain.am-v2 .am-page-heading{padding:12px 2px!important}
 body.amman-captain.am-v2 .am-page-heading h1{color:#fff!important;font-weight:900!important;letter-spacing:-.5px}
-body.amman-captain.am-v2 .am-page-heading h1 span,body.amman-captain.am-v2 .am-eyebrow{color:#ff496a!important}
+body.amman-captain.am-v2 .am-page-heading h1 span,body.amman-captain.am-v2 .am-eyebrow{color:#f55353!important}
 body.amman-captain.am-v2 :is(.am-page-heading p,.am-block-heading>span,.am-section-intro p,.muted){color:#c6c6d0!important}
-body.amman-captain.am-v2 :is(.am-subtle-link,.am-last-week-btn,.am-week-action){background:#343641!important;color:#ff637d!important;border:1px solid #72727b!important}
+body.amman-captain.am-v2 :is(.am-subtle-link,.am-last-week-btn,.am-week-action){background:#343641!important;color:#f66c6c!important;border:1px solid #72727b!important}
 body.amman-captain.am-v2 :is(.am-identity-band,.am-week-card,.panel,.am-info-grid .panel){background:linear-gradient(145deg,#373944,#30323b)!important;color:#f7f7fa!important;border:1px solid #666875!important;box-shadow:0 9px 25px #11131b21!important}
-body.amman-captain.am-v2 .am-money-card{background:linear-gradient(132deg,#272833,#1e2029 77%,#562332)!important;color:#fff!important;border:1px solid #965163!important;box-shadow:0 14px 32px #23212b44!important;position:relative;overflow:hidden}
-body.amman-captain.am-v2 .am-money-card:after{content:"";position:absolute;inset:auto 0 0;height:3px;background:linear-gradient(90deg,#b51335,#fa355b,#ff6d86)}
+body.amman-captain.am-v2 .am-money-card{background:linear-gradient(132deg,#272833,#1e2029 77%,#562332)!important;color:#fff!important;border:1px solid #da0d0d!important;box-shadow:0 14px 32px #23212b44!important;position:relative;overflow:hidden}
+body.amman-captain.am-v2 .am-money-card:after{content:"";position:absolute;inset:auto 0 0;height:3px;background:linear-gradient(90deg,#bd0b0b,#f43b3b,#f77575)}
 body.amman-captain.am-v2 :is(.am-money-card .am-card-head,.am-week-card .am-card-head,.am-week-line,.am-week-footer,.am-id-text>span,.am-block-heading .am-eyebrow){color:#c8c8d3!important}
 body.amman-captain.am-v2 :is(.am-money-amount,.am-week-label,.am-id-text h2,.am-block-heading h2,.panel h3){color:#fff!important}
-body.amman-captain.am-v2 .am-strong-btn{background:linear-gradient(130deg,#ff4566,#c61d42)!important;color:white!important;border:1px solid #ff8094!important;box-shadow:0 8px 18px #d51e453f!important}
+body.amman-captain.am-v2 .am-strong-btn{background:linear-gradient(130deg,#f54f4f,#d70c0c)!important;color:white!important;border:1px solid #f88787!important;box-shadow:0 8px 18px #e60d0d3f!important}
 body.amman-captain.am-v2 .am-card-quiet{color:#e5c5cb!important}
 body.amman-captain.am-v2 .am-metrics{gap:10px!important}
 body.amman-captain.am-v2 .am-metrics .stat{background:#30323c!important;border:1px solid #696b77!important;border-radius:17px!important;box-shadow:0 6px 18px #1b1d2524!important;color:#eee!important}
 body.amman-captain.am-v2 .am-metrics .stat span:not(.am-metric-icon),body.amman-captain.am-v2 .am-metrics .stat small{color:#c7c7d1!important}
 body.amman-captain.am-v2 .am-metrics .stat b{font-weight:900!important}
-body.amman-captain.am-v2 .am-metrics .am-red{color:#ff5773!important;background:#ff496322!important}
+body.amman-captain.am-v2 .am-metrics .am-red{color:#f66060!important;background:#f5535322!important}
 body.amman-captain.am-v2 .am-info-grid :is(.ph,.pb){background:transparent!important;color:#eaeaf1!important;border-color:#666875!important}
 body.amman-captain.am-v2 :is(.am-info-grid small,.am-week-footer span,.formula){color:#bdbecb!important}
 body.amman-captain.am-v2 .am-section-intro h1{color:#fff!important}
@@ -59,12 +59,12 @@ body.amman-captain.am-v2 .am-page-heading h1,body.amman-captain.am-v2 .am-block-
 body.amman-captain.am-v2 .am-page-heading p,body.amman-captain.am-v2 .am-block-heading>span,body.amman-captain.am-v2 .am-section-intro p{color:#c3c6d0!important}
 body.amman-captain.am-v2 .am-subtle-link{background:#343743!important;color:#f7f7fb!important;border-color:#6f7180!important}
 body.amman-captain.am-v2 .am-identity-band,body.amman-captain.am-v2 .am-week-card,body.amman-captain.am-v2 .am-section-intro{background:linear-gradient(140deg,#373a46,#30323c)!important;color:#f7f7fb!important;border:1px solid #686b79!important;box-shadow:0 9px 20px #1517221c!important}
-body.amman-captain.am-v2 .am-id-avatar{background:#44404b!important;border-color:#7e5262!important}
-body.amman-captain.am-v2 .am-id-icon{color:#f6648019!important}
+body.amman-captain.am-v2 .am-id-avatar{background:#44404b!important;border-color:#c50b0b!important}
+body.amman-captain.am-v2 .am-id-icon{color:#f6646419!important}
 body.amman-captain.am-v2 .am-id-text h2,body.amman-captain.am-v2 .am-week-label,body.amman-captain.am-v2 .am-week-footer b{color:#fff!important}
 body.amman-captain.am-v2 .am-week-card .am-card-head,body.amman-captain.am-v2 .am-week-line,body.amman-captain.am-v2 .am-week-footer{color:#c4c6d1!important}
-body.amman-captain.am-v2 .am-week-action{background:transparent!important;border:0!important;border-top:1px solid #666978!important;color:#ff738b!important}
-body.amman-captain.am-v2 .am-money-card{background:linear-gradient(140deg,#292c37,#1e2029 75%,#46242f)!important;border-color:#92546a!important}
+body.amman-captain.am-v2 .am-week-action{background:transparent!important;border:0!important;border-top:1px solid #666978!important;color:#f77b7b!important}
+body.amman-captain.am-v2 .am-money-card{background:linear-gradient(140deg,#292c37,#1e2029 75%,#46242f)!important;border-color:#d90d0d!important}
 body.amman-captain.am-v2 .am-money-amount{color:#fff!important}
 body.amman-captain.am-v2 .stats.am-metrics .stat{background:#30333f!important;border:1px solid #6b6e7b!important;color:#f7f7fb!important;box-shadow:0 6px 19px #17192125!important}
 body.amman-captain.am-v2 .am-metrics .stat b{color:#fff!important}
@@ -78,16 +78,16 @@ body.amman-captain.am-v2 .row{border-bottom-color:#60636f!important}
 body.amman-captain.am-v2 .row span{color:#bfc3ce!important}
 body.amman-captain.am-v2 .row b{color:#f8f8fc!important}
 body.amman-captain.am-v2 .callout{background:#373b46!important;border:1px solid #737784!important;color:#eef0f5!important}
-body.amman-captain.am-v2 .dangerbox{background:#4e303c!important;color:#ffd6e0!important;border-color:#aa5069!important}
-body.amman-captain.am-v2 .am-last-week-btn{background:#30333e!important;color:#f3f3f7!important;border:1px dashed #a25870!important}
+body.amman-captain.am-v2 .dangerbox{background:#4e303c!important;color:#ffd6e0!important;border-color:#ec0e0e!important}
+body.amman-captain.am-v2 .am-last-week-btn{background:#30333e!important;color:#f3f3f7!important;border:1px dashed #ec0e0e!important}
 body.amman-captain.am-v2 .btn:not(.btn-primary):not(.btn-danger):not(.btn-green):not(.btn-blue),body.amman-captain.am-v2 .cp-account-tools button{background:#3c3f4c!important;color:#fafafd!important;border-color:#757886!important}
-body.amman-captain.am-v2 .btn-danger{background:#622c40!important;color:#ffe2e7!important;border-color:#c14f68!important}
+body.amman-captain.am-v2 .btn-danger{background:#622c40!important;color:#ffe2e7!important;border-color:#f21e1e!important}
 body.amman-captain.am-v2 :is(.input,.select,.textarea,input:not([type="checkbox"]):not([type="radio"]),select,textarea){background:#272b35!important;color:#fff!important;border-color:#757988!important;box-shadow:none!important}
 body.amman-captain.am-v2 :is(input,textarea)::placeholder{color:#aeb4c1!important;opacity:1}
-body.amman-captain.am-v2 :is(.input,.select,.textarea):focus-visible{border-color:#ff5879!important;outline:2px solid #ff59793b!important}
+body.amman-captain.am-v2 :is(.input,.select,.textarea):focus-visible{border-color:#f66161!important;outline:2px solid #f662623b!important}
 body.amman-captain.am-v2 :is(select option){background:#292c38;color:#fff}
 body.amman-captain.am-v2 .chips .chip{background:#383b47!important;border-color:#727584!important;color:#d8dbe5!important}
-body.amman-captain.am-v2 .chips .chip.active{background:#df2951!important;color:#fff!important;border-color:#ff5874!important}
+body.amman-captain.am-v2 .chips .chip.active{background:#f11717!important;color:#fff!important;border-color:#f66161!important}
 body.amman-captain.am-v2 .sound-toggle{background:#373b47!important;color:#fff!important;border:1px solid #787c89!important}
 body.amman-captain.am-v2 #securityBox{color:#dce0e9!important}
 body.amman-captain.am-v2 #modal .modal-card{background:#30333e!important;color:#fafafe!important;border-color:#777b87!important}
@@ -102,7 +102,7 @@ body.amman-captain.am-v2 #login.ad-login{color:#f8f8fa!important}
 @media(max-width:980px){
  body.amman-captain.am-v2 .tabs.am-mobile-tabs{background:#272a34!important;border-top:1px solid #666978!important;box-shadow:0 -7px 25px #1b1d2747!important}
  body.amman-captain.am-v2 .tabs.am-mobile-tabs button{color:#c9ccd7!important;background:transparent!important}
- body.amman-captain.am-v2 .tabs.am-mobile-tabs button.active{color:#fff!important;background:linear-gradient(130deg,#ef3659,#b81a3b)!important;border-radius:13px!important}
+ body.amman-captain.am-v2 .tabs.am-mobile-tabs button.active{color:#fff!important;background:linear-gradient(130deg,#f33232,#c60c0c)!important;border-radius:13px!important}
 }
 @media(max-width:700px){
  body.amman-captain.am-v2 .stats.am-metrics{grid-template-columns:repeat(2,minmax(0,1fr))!important}
@@ -112,21 +112,21 @@ body.amman-captain.am-v2 #login.ad-login{color:#f8f8fa!important}
 /* Login page — same charcoal/grey/red design as the full captain portal */
 html:has(body.amman-captain #login.ad-login:not([style*="display: none"])){background:#474952!important}
 body.amman-captain.am-v2 #login.ad-login{
- background:radial-gradient(circle at 90% 8%,#a8294638,transparent 38%),radial-gradient(circle at 4% 94%,#282a3477,transparent 42%),linear-gradient(145deg,#555761,#41434d)!important;
+ background:radial-gradient(circle at 90% 8%,#c60b0b38,transparent 38%),radial-gradient(circle at 4% 94%,#282a3477,transparent 42%),linear-gradient(145deg,#555761,#41434d)!important;
  color:#f6f6fa!important;
 }
-body.amman-captain.am-v2 #login.ad-login:after{border-color:#ef36592c!important}
+body.amman-captain.am-v2 #login.ad-login:after{border-color:#f332322c!important}
 body.amman-captain.am-v2 #login .ad-brandmark{color:#f7f7fb!important}
 body.amman-captain.am-v2 #login .ad-brandmark strong{color:#fafaff!important}
-body.amman-captain.am-v2 #login .ad-brandmark span{color:#ff5575!important}
-body.amman-captain.am-v2 #login .ad-login-chip{background:#652e40!important;color:#ffe2ea!important;border-color:#a44d65!important}
+body.amman-captain.am-v2 #login .ad-brandmark span{color:#f65e5e!important}
+body.amman-captain.am-v2 #login .ad-login-chip{background:#652e40!important;color:#ffe2ea!important;border-color:#e40d0d!important}
 body.amman-captain.am-v2 #login .login-card.ad-login-card{
  background:linear-gradient(145deg,#292c36,#1e212b 72%,#332532)!important;
  border:1px solid #6d5968!important;box-shadow:0 22px 45px #1a1b2655,0 0 0 1px #ffffff0d inset!important;
  color:#f8f8fa!important;
 }
 body.amman-captain.am-v2 #login .ad-auth-head h1{color:#fff!important}
-body.amman-captain.am-v2 #login .ad-auth-head h1 em{color:#ff6685!important}
+body.amman-captain.am-v2 #login .ad-auth-head h1 em{color:#f76e6e!important}
 body.amman-captain.am-v2 #login .ad-auth-head p{color:#c5c8d2!important}
 body.amman-captain.am-v2 #login .ad-auth-fields{background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important}
 body.amman-captain.am-v2 #login .am-field-label{color:#f3f4f7!important}
@@ -136,13 +136,13 @@ body.amman-captain.am-v2 #login :is(#phone,#password){
 }
 body.amman-captain.am-v2 #login :is(#phone,#password)::placeholder{color:#b9bfca!important}
 body.amman-captain.am-v2 #login :is(#phone,#password):focus{
- border-color:#ff5f7b!important;box-shadow:0 0 0 3px #ff58792d!important;
+ border-color:#f66868!important;box-shadow:0 0 0 3px #f661612d!important;
 }
 body.amman-captain.am-v2 #login .am-password-eye{background:#494c58!important;color:#fff!important;border:1px solid #787d8b!important}
 body.amman-captain.am-v2 #login .login-btn{
- background:linear-gradient(115deg,#f63c60,#bd193c)!important;color:#fff!important;
- border:1px solid #ff829b!important;border-radius:14px!important;
- box-shadow:0 10px 25px #e3264f57!important;
+ background:linear-gradient(115deg,#f43e3e,#ca0c0c)!important;color:#fff!important;
+ border:1px solid #f88787!important;border-radius:14px!important;
+ box-shadow:0 10px 25px #f2171757!important;
 }
 body.amman-captain.am-v2 #login .ad-safe-note{color:#c6cad5!important}
 body.amman-captain.am-v2 #login .ad-auth-footer{color:#b7bac5!important}
@@ -155,6 +155,6 @@ body.amman-captain.am-v2 #login .msg{color:#ffc5d0!important}
 /* DropCode attribution / contact */
 body.amman-captain.am-v2 .ad-dropcode-credit{display:flex;justify-content:center;align-items:center;gap:7px 10px;flex-wrap:wrap;text-align:center;color:#c3c5d0;font:700 11px/1.9 'Cairo',Tahoma,sans-serif;letter-spacing:0;margin:22px auto 14px;padding:11px 12px;max-width:100%;border-top:1px solid #7b7d894d}
 body.amman-captain.am-v2 .ad-dropcode-credit strong{color:#fff;font-weight:900}
-body.amman-captain.am-v2 .ad-dropcode-credit a{color:#ff7891!important;text-decoration:none!important;padding:2px 9px;border:1px solid #a84a645e;border-radius:999px;background:#ed365111;font-size:11px}
-body.amman-captain.am-v2 .ad-dropcode-credit a:hover{background:#e82c5040;color:#fff!important}
+body.amman-captain.am-v2 .ad-dropcode-credit a{color:#f87f7f!important;text-decoration:none!important;padding:2px 9px;border:1px solid #e50d0d5e;border-radius:999px;background:#f3303011;font-size:11px}
+body.amman-captain.am-v2 .ad-dropcode-credit a:hover{background:#f2222240;color:#fff!important}
 @media(max-width:700px){body.amman-captain.am-v2 .am-workspace>.ad-dropcode-credit{margin-bottom:30px}}
