@@ -1,0 +1,36 @@
+/* AMMAN login deluxe — true red / charcoal / gray */
+body.amman-captain #login.ad-login{isolation:isolate;overflow:hidden}
+body.amman-captain #login .ad-auth-wrap{z-index:2}
+body.amman-captain #login .ad-login-card{position:relative;isolation:isolate}
+body.amman-captain #login .ad-login-card::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;background:conic-gradient(from var(--ad-angle,0deg),transparent 0deg,#e21919 85deg,transparent 148deg,transparent 360deg);-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;animation:adRotateBorder 8s linear infinite}
+@property --ad-angle{syntax:"<angle>";initial-value:0deg;inherits:false}
+@keyframes adRotateBorder{to{--ad-angle:360deg}}
+body.amman-captain #login .ad-brandmark{animation:adMarkArrival .75s ease both}
+body.amman-captain #login .ad-auth-head{animation:adItemArrival .65s .12s both}
+body.amman-captain #login .ad-auth-fields>label:first-child{animation:adItemArrival .55s .2s both}
+body.amman-captain #login .ad-auth-fields>input{animation:adItemArrival .55s .28s both}
+body.amman-captain #login .ad-auth-fields>label:nth-of-type(2){animation:adItemArrival .55s .34s both}
+body.amman-captain #login .ad-password-wrap{animation:adItemArrival .55s .4s both}
+body.amman-captain #login .login-btn{animation:adItemArrival .55s .48s both;position:relative;overflow:hidden}
+body.amman-captain #login .login-btn:after{content:"";position:absolute;inset:-80% auto -80% -45%;width:18%;background:linear-gradient(90deg,transparent,#ffffff50,transparent);transform:rotate(20deg);animation:adBtnShine 5s 2s infinite;pointer-events:none}
+@keyframes adBtnShine{0%,75%{left:-40%}100%{left:130%}}
+@keyframes adMarkArrival{from{opacity:0;transform:translateY(-18px) scale(.9)}to{opacity:1;transform:none}}
+@keyframes adItemArrival{from{opacity:0;transform:translateY(13px)}to{opacity:1;transform:none}}
+body.amman-captain #login .input:focus{border-color:#e01b1b!important;box-shadow:0 0 0 3px #e018182b!important}
+body.amman-captain #login .ad-particles{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+body.amman-captain #login .ad-particle{position:absolute;width:5px;height:5px;border-radius:50%;background:#da1717;opacity:.35;left:var(--x);top:var(--y);animation:adParticleFloat var(--d) ease-in-out infinite alternate}
+@keyframes adParticleFloat{to{transform:translate(12px,-22px);opacity:.12}}
+body.amman-captain #login .ad-login-card.ad-shake{animation:adErrorShake .38s ease!important}
+@keyframes adErrorShake{0%,100%{translate:0}20%,60%{translate:7px}40%,80%{translate:-7px}}
+body.amman-captain #login .login-btn:disabled{opacity:.76;cursor:wait;filter:saturate(.7)}
+body.amman-captain #login .ad-field-hint{color:#ffbbbb;font-size:11px;margin:-4px 2px 5px}
+body.amman-captain #login .ad-caps-warning{color:#ffb3b3;font-size:11px;display:none}
+body.amman-captain #login .ad-caps-warning.visible{display:block}
+body.amman-captain #login .ad-biometric-note{display:flex;align-items:center;justify-content:center;gap:8px;font-size:11px;color:#cbd0d8;margin-top:10px}
+body.amman-captain #login .ad-biometric-note svg{width:19px;height:19px;stroke:#ff3434}
+body.amman-captain #login .ad-login-card.ad-login-success{filter:drop-shadow(0 0 16px #d320207a);transition:opacity .35s,transform .35s;transform:scale(.99)}
+body.amman-captain #login .ad-remember{display:flex;align-items:center;gap:8px;color:#cbd0db;font-size:12px;margin:2px 0;cursor:pointer}
+body.amman-captain #login .ad-remember input{accent-color:#df1515;width:17px;height:17px}
+body.amman-captain #login .ad-login-status{text-align:center;font-size:11px;color:#d0d3dc;min-height:16px}
+@media(max-width:700px){body.amman-captain #login .ad-login-card{max-width:470px;margin-inline:auto}}
+@media(prefers-reduced-motion:reduce){body.amman-captain #login .ad-login-card::after,body.amman-captain #login .ad-particle,body.amman-captain #login .login-btn:after,body.amman-captain #login .ad-auth-head,body.amman-captain #login .ad-auth-fields>*,body.amman-captain #login .ad-brandmark{animation:none!important}}
