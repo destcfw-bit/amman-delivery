@@ -35,6 +35,15 @@
   }
   const oldGo=window.go;window.go=function(n,b){reflectNav(n);return oldGo(n,b)};
   window.adNavigate=function(n){const tab=q('.am-mobile-tabs [data-tab="'+n+'"]');reflectNav(n);window.go(n,tab||null)};
+  window.adTogglePassword=function(button){
+    const field=document.getElementById('password');
+    if(!field||!button)return;
+    const visible=field.type==='password';
+    field.type=visible?'text':'password';
+    button.textContent=visible?'إخفاء':'إظهار';
+    button.setAttribute('aria-label',visible?'إخفاء كلمة المرور':'إظهار كلمة المرور');
+    button.setAttribute('aria-pressed',String(visible));
+  };
   reflectNav('home');
   const oldRenderAll=window.renderAll;window.renderAll=function(){const r=oldRenderAll();updateOrb();setTimeout(()=>{timeline();weekScene()},40);return r};
   window.renderOrders=timeline;
