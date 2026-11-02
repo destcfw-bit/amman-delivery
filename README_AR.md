@@ -1,6 +1,6 @@
 # AMMAN DELIVERY FINAL V6 — Signature OS
 
-هذه النسخة تجمع وظائف TiGER X25 المطلوبة مع هوية AMMAN DELIVERY مستقلة بالكامل. التصميم لم يعد نسخة من Tiger: AMMAN DELIVERY يملك Signature Ring، Click Pulse، Balance Orb، Movement Timeline، Group Radar وCommand Center خاص به.
+هذا نظام جرد وتوصيل مستقل بهوية AMMAN DELIVERY، ويقدم لوحة إدارة وبوابة كابتن وأرشيف حسابات بواجهات خاصة به.
 
 ## AMMAN DELIVERY V5 — Signature Mark Design
 
@@ -17,7 +17,7 @@
 - `/health` — فحص الخدمة وقاعدة البيانات.
 
 ## الوظائف التشغيلية
-- قراءة ومعالجة طلبات WhatsApp / GREEN API والرياكشنات.
+- قراءة ومعالجة طلبات WhatsApp / DropConnect والرياكشنات.
 - 👍 تثبيت العمولة، إزالة 👍 تعكسها، و 🚫 من الأرقام المخولة يلغي الطلب المعني فقط.
 - إنتاج / استهلاك / حركات / انتظار تسجيل الأرقام غير المسجلة.
 - إدارة الكباتن: إضافة، تعديل، إيقاف، حذف، كلمات السر، طرق التحويل، تسجيل دخول أول مرة.
@@ -32,11 +32,11 @@
 - Google Sheets mirror اختياري، وليس أساس المحاسبة.
 
 ## تصميم AMMAN DELIVERY النهائي
-- هوية كحلي ليلي + أزرق كهربائي + برتقالي/ذهبي.
+- هوية فحمية داكنة + أحمر + فضي.
 - الشعار الرسمي الجديد في جميع الواجهات.
 - انتقالات سلسة بين صفحات الكابتن والإدارة.
-- حركة Click Flow خاصة بدل مؤثرات Tiger.
-- واجهات Glass / Neon خفيفة ومناسبة للموبايل.
+- انتقالات هادئة وبطاقات معلومات واضحة تحت هوية AMMAN DELIVERY.
+- تصميم تحكم منفصل للإدارة، وبوابة رصيد أولاً للكابتن، مناسب للهاتف.
 - زر صوت اختياري بأصوات UI هادئة بدون مؤثرات مخالب.
 - Bottom navigation محسن للكابتن وموبايل الإدارة.
 
@@ -63,7 +63,7 @@
 - Start command: `npm run worker`
 
 ### المتغيرات المطلوبة
-راجع `.env.example`. أهمها: `DATABASE_URL`, `JWT_SECRET`, `ADMIN_USERNAME`, `ADMIN_PASSWORD`, `CAPTAIN_PASSWORD_KEY` وبيانات GREEN API عند الربط.
+راجع `.env.example`. أهمها: `DATABASE_URL`, `JWT_SECRET`, `ADMIN_USERNAME`, `ADMIN_PASSWORD`, `CAPTAIN_PASSWORD_KEY` وبيانات DropConnect عند الربط.
 
 > ملاحظة أمنية: لا ترفع ملف `.env` الحقيقي إلى GitHub. استخدم Railway Variables للأسرار.
 
