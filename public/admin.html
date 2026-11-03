@@ -142,7 +142,7 @@
 </div>
 <div class="grid2">
 <div class="panel"><div class="ph"><div><h3>💰 ملخص التسوية الحالية</h3><small>قبل إغلاق الأسبوع</small></div></div><div class="pb" id="overviewSettlement"></div></div>
-<div class="panel"><div class="ph"><div><h3>⚡ إجراءات سريعة</h3><small>كلها يدوية وتحت سيطرتك</small></div></div><div class="pb grid2"><button class="btn btn-primary" onclick="openAddCaptain()">➕ إضافة كابتن</button><button class="btn" onclick="go('registrations')">🆕 طلبات التسجيل</button><button class="btn" onclick="previewClose()">👁️ معاينة التسكير</button><button class="btn" onclick="applyFloor()">🧾 إضافة أرضية 0.50</button><button class="btn" onclick="completeFloor()">🧾 استكمال الأرضيات</button><button class="btn" onclick="scanGroups()">🔍 فحص القروبات</button><button class="btn" onclick="go('archive')">📚 الأرشيف</button></div></div>
+<div class="panel"><div class="ph"><div><h3>⚡ إجراءات سريعة</h3><small>كلها يدوية وتحت سيطرتك</small></div></div><div class="pb grid2"><button class="btn btn-primary" onclick="openAddCaptain()">➕ إضافة كابتن</button><button class="btn" onclick="go('registrations')">🆕 طلبات التسجيل</button><button class="btn" onclick="previewClose()">👁️ معاينة التسكير</button><button class="btn" onclick="applyFloor()">🧾 إضافة أرضية 0.50</button><button class="btn" onclick="completeFloor()">🧾 استكمال الأرضيات</button><button class="btn" onclick="scanGroups()">🔍 فحص القروبات</button><button class="btn" onclick="refreshWhatsappNames()">🔄 تحديث أسماء واتساب</button><button class="btn" onclick="go('archive')">📚 الأرشيف</button></div></div>
 </div>
 <div class="panel" style="margin-top:12px" id="oldBalancesPanel">
   <div class="ph">
@@ -580,6 +580,13 @@ function openAdjustment(){const opts=state.captains.map(c=>`<option value="${esc
 async function saveAdjustment(){const j=await api('/api/admin/weekly/adjustments',{method:'POST',body:JSON.stringify({phone:adjPhone.value,direction:adjDir.value,amount:Number(adjAmount.value),note:adjNote.value})});if(j.ok){hideModal();tell('✅ تم حفظ التصحيح');loadAll()}else tell('❌ '+(j.error||'فشل'))}
 async function deleteAdjustment(id){if(!confirm('حذف هذا التصحيح؟'))return;const j=await api('/api/admin/weekly/adjustments/'+id,{method:'DELETE'});if(j.ok){tell('تم الحذف');loadAll()}}
 
+async function refreshWhatsappNames(){
+  const j=await api('/api/admin/refresh-whatsapp-names',{method:'POST',body:'{}'});
+  if(j.ok){
+    tell('✅ تحديث أسماء واتساب: '+j.updated+' اسم، غير متاح: '+j.unavailable);
+    await loadAll();
+  }else tell('❌ تعذر تحديث الأسماء: '+(j.message||j.error||'خطأ'));
+}
 async function scanGroups(){scanResult.innerHTML='<span class="spinner"></span> جاري فحص أعضاء القروبات...';const j=await api('/api/admin/check-group-members',{method:'POST',body:'{}'});if(j.ok){scanResult.innerHTML=`<div class="callout">✅ تم الفحص: <b>${j.groups}</b> قروبات — فعالين <b>${j.active}</b> — موقوفين <b>${j.stopped}</b></div>`;tell('✅ اكتمل فحص القروبات');loadAll()}else{const m=j.error==='GREEN_GROUP_CHECK_NOT_CONFIGURED'?'يلزم إضافة متغيرات GREEN API الخاصة بالفحص في Railway.':(j.message||j.error||'فشل الفحص');scanResult.innerHTML=`<div class="callout dangerbox">❌ ${esc(m)}</div>`;tell('❌ فشل فحص القروبات')}}
 function openAddCaptain(){
  showModal('➕ إضافة كابتن',`<div class="form-grid add-captain-form">
