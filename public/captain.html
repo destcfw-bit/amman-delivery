@@ -99,6 +99,98 @@ body.amman-captain #login .msg{color:#ffc2cf}
 <link rel="stylesheet" href="/assets/amman-black-white.css?v=4">
 <link rel="stylesheet" href="/assets/amman-intro.css?v=1">
 <link rel="stylesheet" href="/assets/amman-roman-login.css?v=1">
+
+<style id="amman-captain-clean-palette">
+/* Screenshot-led cleanup: black canvas, white hierarchy, red for actions only. */
+html body.amman-captain.am-v2 #app{
+ --panel:#000;--panel2:#000;--line:rgba(255,255,255,.16);--muted:#fff;
+ background:#000!important;color:#fff!important;
+}
+html body.amman-captain.am-v2 #app :is(.am-app-workspace,.am-workspace,.am-app-frame,.section,.pb){background:#000!important}
+html body.amman-captain.am-v2 #app :is(.panel,.stat,.am-week-card,.am-money-card,.am-identity-band,.profile-card,.order,.cp-move-card,.settlement,.week-card){
+ background:#000!important;background-image:none!important;
+ border:1px solid rgba(255,255,255,.18)!important;border-radius:18px!important;
+ box-shadow:none!important;
+}
+html body.amman-captain.am-v2 #app :is(.ph,.callout,.mini,.week-values>div,.am-id-avatar,.cp-account-tools button){
+ background:#000!important;background-image:none!important;color:#fff!important;
+ border-color:rgba(255,255,255,.18)!important;box-shadow:none!important;
+}
+html body.amman-captain.am-v2 #app .ph{padding:16px!important;border-bottom:1px solid rgba(255,255,255,.14)!important}
+html body.amman-captain.am-v2 #app .ph h3{font-size:16px!important;line-height:1.6}
+html body.amman-captain.am-v2 #app .ph small{font-size:12px!important;line-height:1.8}
+html body.amman-captain.am-v2 #app .pb{padding:16px!important}
+html body.amman-captain.am-v2 #app :is(.btn,.am-week-action,.am-subtle-link,.am-last-week-btn,.iconbtn){
+ background:#000!important;background-image:none!important;color:#fff!important;
+ border:1px solid rgba(255,255,255,.25)!important;box-shadow:none!important;
+ border-radius:12px!important;min-height:44px;font-size:13px!important;
+}
+html body.amman-captain.am-v2 #app :is(.btn-primary,.am-strong-btn){
+ background:#f00!important;background-image:none!important;color:#fff!important;
+ border:1px solid #f00!important;box-shadow:none!important;border-radius:12px!important;
+}
+html body.amman-captain.am-v2 #app .btn-danger{border-color:#f00!important;color:#fff!important}
+html body.amman-captain.am-v2 #app :is(.input,.select,.textarea,input:not([type=checkbox]),select,textarea){
+ background:#000!important;color:#fff!important;border:1px solid rgba(255,255,255,.35)!important;
+ box-shadow:none!important;font-size:16px!important;border-radius:12px!important;
+}
+html body.amman-captain.am-v2 #app :is(.row,.am-week-line,.am-week-footer){border-color:rgba(255,255,255,.15)!important}
+html body.amman-captain.am-v2 #app :is(.am-id-icon,.am-watermark){display:none!important}
+html body.amman-captain.am-v2 #app .am-money-card::after{display:none!important}
+html body.amman-captain.am-v2 #app :is(.am-top,.am-side){
+ background:#000!important;border-color:rgba(255,255,255,.16)!important;box-shadow:none!important;
+}
+html body.amman-captain.am-v2 #app .am-top-title{min-width:0}
+html body.amman-captain.am-v2 #app .am-top-title .am-eyebrow{font-size:9px!important;letter-spacing:1px!important;white-space:nowrap}
+html body.amman-captain.am-v2 #app .am-top-title strong{font-size:20px!important;line-height:1.5}
+html body.amman-captain.am-v2 #app .am-top-actions{display:flex;align-items:center;gap:8px}
+html body.amman-captain.am-v2 #app .am-connection{white-space:nowrap;font-size:10px!important;padding:6px 8px!important;border:0!important;background:#000!important;box-shadow:none!important}
+html body.amman-captain.am-v2 #app .am-connection span{box-shadow:none!important}
+html body.amman-captain.am-v2 #app .am-page-heading h1{font-size:28px!important;line-height:1.5}
+html body.amman-captain.am-v2 #app .am-page-heading p{font-size:13px!important;line-height:1.8}
+html body.amman-captain.am-v2 #app .am-identity-band{padding:16px!important}
+html body.amman-captain.am-v2 #app .am-money-amount{font-size:clamp(28px,7vw,40px)!important}
+html body.amman-captain.am-v2 #app .status{background:#000!important;border:1px solid rgba(255,255,255,.25)!important;color:#fff!important}
+html body.amman-captain.am-v2 #app .am-last-week-btn{border-style:solid!important;padding:14px!important}
+html body.amman-captain.am-v2 #app .ad-dropcode-credit{border-color:rgba(255,255,255,.14)!important;padding:18px 0!important;margin:24px 0!important}
+html body.amman-captain.am-v2 #app .ad-dropcode-credit a{background:#000!important;color:#fff!important;border-color:rgba(255,255,255,.22)!important}
+html body.amman-captain.am-v2 #app :is(button,a,input,select,textarea):focus-visible{outline:2px solid #fff!important;outline-offset:3px}
+@media(max-width:980px){
+ html body.amman-captain.am-v2 #app .tabs.am-mobile-tabs{
+ bottom:0!important;left:0!important;right:0!important;width:100%!important;max-width:none!important;
+ transform:none!important;margin:0!important;border:0!important;border-top:1px solid rgba(255,255,255,.2)!important;
+ border-radius:0!important;background:#000!important;box-shadow:none!important;
+ height:calc(70px + env(safe-area-inset-bottom))!important;
+ padding:6px 8px calc(6px + env(safe-area-inset-bottom))!important;
+ display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:4px!important;overflow:visible!important;
+ }
+ html body.amman-captain.am-v2 #app .tabs.am-mobile-tabs button{
+ background:#000!important;color:#fff!important;border:0!important;border-radius:12px!important;
+ padding:5px 2px!important;min-width:0!important;font-size:10px!important;line-height:1.4!important;
+ box-shadow:none!important;transform:none!important;
+ }
+ html body.amman-captain.am-v2 #app .tabs.am-mobile-tabs button.active{background:#f00!important;color:#fff!important}
+ html body.amman-captain.am-v2 #app .tabs.am-mobile-tabs button::after{display:none!important}
+ html body.amman-captain.am-v2 #app .tabs.am-mobile-tabs svg{width:22px!important;height:22px!important}
+ html body.amman-captain.am-v2 #app .am-workspace{padding:16px 14px calc(104px + env(safe-area-inset-bottom))!important}
+ html body.amman-captain.am-v2 #app .top.am-top{height:auto!important;min-height:76px!important;padding:10px 14px!important;gap:10px!important;align-items:center!important}
+ html body.amman-captain.am-v2 #app .top.am-top .iconbtn{width:38px!important;height:40px!important;min-height:40px!important;flex:0 0 38px!important}
+ html body.amman-captain.am-v2 #app .am-header-svg{width:20px!important;height:20px!important}
+ html body.amman-captain.am-v2 #app .am-account-grid{gap:16px!important}
+ html body.amman-captain.am-v2 #app .am-page-heading{flex-wrap:wrap!important;gap:10px!important}
+}
+@media(max-width:380px){
+ html body.amman-captain.am-v2 #app .am-top-title .am-eyebrow{font-size:8px!important;letter-spacing:0!important}
+ html body.amman-captain.am-v2 #app .am-connection{font-size:9px!important}
+ html body.amman-captain.am-v2 #app .am-top-actions{gap:4px!important}
+}
+/* Keep the requested borderless login and remove legacy red field outlines. */
+html body.amman-captain.am-v2 div#login.ad-login section.login-card.ad-login-card{border:0!important;box-shadow:none!important;background:transparent!important}
+html body.amman-captain.am-v2 div#login.ad-login :is(input#phone,input#password){background:#000!important;border:1px solid rgba(255,255,255,.5)!important;border-radius:14px!important}
+html body.amman-captain.am-v2 div#login.ad-login .am-password-eye{border:0!important;border-right:1px solid rgba(255,255,255,.3)!important;background:#000!important;border-radius:0!important}
+html body.amman-captain.am-v2 div#login.ad-login .ad-dropcode-credit a{background:#000!important;color:#fff!important;border-color:rgba(255,255,255,.25)!important}
+</style>
+
 </head>
 <body class="amman-captain am-v2">
 <div id="amCinematicIntro" role="status" aria-label="جاري فتح AMMAN DELIVERY">
