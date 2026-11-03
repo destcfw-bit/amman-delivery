@@ -1,0 +1,21 @@
+{
+  "id": "/admin",
+  "name": "AMMAN DELIVERY — الإدارة",
+  "short_name": "AMMAN ADMIN",
+  "description": "لوحة إدارة ومحاسبة AMMAN DELIVERY",
+  "start_url": "/admin",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "dir": "rtl",
+  "lang": "ar",
+  "icons": [
+    {
+      "src": "/assets/amman-logo.jpeg",
+      "sizes": "640x640",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ]
+}
