@@ -24,6 +24,23 @@ async function getWahaContactName(phone){
   return name;
 }
 
+// Bulk WhatsApp names from the native DropConnect contacts cache.
+async function getDropcodeContactNames(){
+  if(!process.env.DROPCODE_API_URL)return new Map();
+  const cfg=wahaConfig(),names=new Map();
+  const data=await wahaRequest(`/api/${encodeURIComponent(cfg.session)}/contacts`,{timeout:10000});
+  const contacts=Array.isArray(data)?data:Array.isArray(data?.contacts)?data.contacts:[];
+  for(const c of contacts){
+    const raw=String(c?.phoneJid||c?.phoneNumber||c?.id||c?.jid||'');
+    if(!/@s\.whatsapp\.net$|@c\.us$/i.test(raw))continue; // never treat LIDs as phone numbers
+    const phone=normalizePhone(raw);
+    if(!/^\d{10,15}$/.test(phone))continue;
+    const n=cleanDisplayName(c?.notify||c?.pushName||c?.pushname||c?.verifiedName||c?.name||'');
+    if(n&&!/^كابتن\s+0?7\d{8}$/u.test(n)&&n!==phone)names.set(phone,n);
+  }
+  return names;
+}
+
 function wahaConfig(){
   return {
     // DROPCODE Connect is the primary WhatsApp provider for AMMAN DELIVERY.
@@ -356,5 +373,5 @@ async function sendWahaText(phone,message){
   return wahaRequest('/api/sendText',{method:'POST',body:{session:cfg.session,chatId,text:String(message||'')},timeout:7000});
 }
 
-module.exports={wahaConfig,wahaRequest,resolveWahaJid,normalizeWahaWebhook,ensureWahaSession,getWahaSessionStatus,getWahaGroupParticipants,getWahaContactName,downloadWahaMedia,getWahaMessageById,sendWahaText};
+module.exports={wahaConfig,wahaRequest,resolveWahaJid,normalizeWahaWebhook,ensureWahaSession,getWahaSessionStatus,getWahaGroupParticipants,getWahaContactName,getDropcodeContactNames,downloadWahaMedia,getWahaMessageById,sendWahaText};
 
