@@ -25,9 +25,34 @@ function normalize(envelope, expectedSession) {
     senderData: {chatId:groupId,sender,senderName:String(envelope.sender?.whatsappName||'')},
     messageData: reaction
       ? {typeMessage:'reactionMessage',extendedTextMessageData:{text:action==='reaction_removed'?'':String(envelope.reaction?.emoji||'')},quotedMessage:{stanzaId:target}}
-      : {typeMessage:envelope.message?.quotedMessageId?'extendedTextMessage':'textMessage',
-        textMessageData:{textMessage:String(envelope.message?.text||'')},
-        extendedTextMessageData:{text:String(envelope.message?.text||''),stanzaId:String(envelope.message?.quotedMessageId||'')}}
+      : (() => {
+          const msg=envelope.message||{};
+          const media=msg.media||{};
+          const kind=String(msg.type||'').toLowerCase();
+          const mime=String(media.mimetype||media.mimeType||'');
+          const url=String(media.url||'');
+          const quoted=String(msg.quotedMessageId||'');
+          const text=String(msg.text||'');
+          const isAudio=/audio|voice|ptt/.test(kind)||/^audio\//i.test(mime);
+          const isImage=/image/.test(kind)||/^image\//i.test(mime);
+          const isVideo=/video/.test(kind)||/^video\//i.test(mime);
+          const isDocument=/document|file/.test(kind)||/^(application|text)\//i.test(mime);
+          if(isAudio||isImage||isVideo||isDocument){
+            return {
+              typeMessage:isAudio?'audioMessage':isImage?'imageMessage':isVideo?'videoMessage':'documentMessage',
+              ...(quoted?{quotedMessage:{stanzaId:quoted},extendedTextMessageData:{text,stanzaId:quoted}}:{}),
+              fileMessageData:{
+                caption:text,downloadUrl:url,mimeType:mime,
+                fileName:String(media.filename||'')
+              }
+            };
+          }
+          return {
+            typeMessage:quoted?'extendedTextMessage':'textMessage',
+            textMessageData:{textMessage:text},
+            extendedTextMessageData:{text,stanzaId:quoted}
+          };
+        })()
   };
   return [payload];
 }
