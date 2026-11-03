@@ -12,11 +12,8 @@
   }
   function signature(ms=520){return}
   function pulse(x,y){return}
-  function sound(kind='click'){
-    if(typeof clickSoundOn!=='undefined'&&!clickSoundOn)return;
-    try{const C=AudioContext||webkitAudioContext,ctx=new C(),o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);const n=ctx.currentTime;const f=kind==='success'?[510,760]:kind==='warning'?[230,160]:[330,470];o.type=kind==='warning'?'triangle':'sine';o.frequency.setValueAtTime(f[0],n);o.frequency.exponentialRampToValueAtTime(f[1],n+.1);g.gain.setValueAtTime(.0001,n);g.gain.exponentialRampToValueAtTime(.022,n+.015);g.gain.exponentialRampToValueAtTime(.0001,n+.16);o.start(n);o.stop(n+.18);setTimeout(()=>ctx.close().catch(()=>{}),260)}catch(e){}
-  }
-  function updateOrb(){const d=(typeof state!=='undefined'?state.me:null);if(!d)return;const prod=Math.max(0,Number(d.production||0)),due=Math.max(0,Number(d.consumption||0)+Number(d.floor_fee||0)+Math.max(0,Number(d.old_balance||0))),sum=prod+due||1,share=Math.max(5,Math.min(95,prod/sum*100)),net=Number(d.net||0);const orb=q('#cpBalanceOrb');if(orb)orb.style.setProperty('--share',share+'%');if(q('#cpOrbNet'))q('#cpOrbNet').textContent=(net>0?'+':'')+money6(net);if(q('#cpOrbProd'))q('#cpOrbProd').textContent=money6(prod);if(q('#cpOrbDue'))q('#cpOrbDue').textContent=money6(due);if(q('#cpOrbMeaning')){q('#cpOrbMeaning').textContent=net>0?'إلك':net<0?'عليك':'متعادل';q('#cpOrbMeaning').className=net>0?'plus':net<0?'minus':''}if(q('#cpCaptainCode'))q('#cpCaptainCode').textContent=markCode()}
+  function sound(kind='click'){window.ammanPlaySound?.(kind)}
+    function updateOrb(){const d=(typeof state!=='undefined'?state.me:null);if(!d)return;const prod=Math.max(0,Number(d.production||0)),due=Math.max(0,Number(d.consumption||0)+Number(d.floor_fee||0)+Math.max(0,Number(d.old_balance||0))),sum=prod+due||1,share=Math.max(5,Math.min(95,prod/sum*100)),net=Number(d.net||0);const orb=q('#cpBalanceOrb');if(orb)orb.style.setProperty('--share',share+'%');if(q('#cpOrbNet'))q('#cpOrbNet').textContent=(net>0?'+':'')+money6(net);if(q('#cpOrbProd'))q('#cpOrbProd').textContent=money6(prod);if(q('#cpOrbDue'))q('#cpOrbDue').textContent=money6(due);if(q('#cpOrbMeaning')){q('#cpOrbMeaning').textContent=net>0?'إلك':net<0?'عليك':'متعادل';q('#cpOrbMeaning').className=net>0?'plus':net<0?'minus':''}if(q('#cpCaptainCode'))q('#cpCaptainCode').textContent=markCode()}
   function timeline(){
     if(typeof state==='undefined'||!document.getElementById('ordersList')||typeof counterpart!=='function')return;
     const qv=(window.orderSearch?.value||'').trim().toLowerCase(),t=window.orderType?.value||'all',st=window.orderStatus?.value||'all';
