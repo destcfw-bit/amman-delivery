@@ -10,7 +10,7 @@ const { pool, initDb } = require('./db');
 const { translate: translateDropcode } = require('./dropcode-events');
 const { dedupKey, normalizePhone } = require('./utils');
 const { reconcilePendingClaimsForPhone, enqueueSheetSync } = require('./accounting');
-const { wahaConfig, wahaRequest, normalizeWahaWebhook, ensureWahaSession, getWahaSessionStatus, getWahaGroupParticipants, downloadWahaMedia, getWahaMessageById, sendWahaText } = require('./waha');
+const { wahaConfig, wahaRequest, normalizeWahaWebhook, ensureWahaSession, getWahaSessionStatus, getWahaGroupParticipants, getDropcodeContactNames, downloadWahaMedia, getWahaMessageById, sendWahaText } = require('./waha');
 
 const app = express();
 const SITE_MODE=String(process.env.SITE_MODE||'all').trim().toLowerCase();
@@ -225,6 +225,28 @@ async function setCaptainPresenceFromPhones(present,source='WAHA_AUTO'){
   return {activated,stopped,changed};
 }
 
+// Restore actual WhatsApp names only for auto-created placeholder captains.
+async function refreshCaptainWhatsappNames(){
+  const cfg=wahaConfig();
+  if(!cfg.baseUrl)throw new Error('DROPCODE_API_URL_MISSING');
+  const cached=await getDropcodeContactNames().catch(e=>{console.warn('DropConnect names unavailable',e.message);return new Map();});
+  const rows=await pool.query("SELECT phone,name FROM captains WHERE name LIKE 'كابتن %' OR name=phone OR COALESCE(name,'')=''");
+  let updated=0,unavailable=0;
+  for(const row of rows.rows){
+    const phone=normalizePhone(row.phone);
+    const placeholder=String(row.name||'').trim();
+    if(placeholder && placeholder!==phone && !/^كابتن\s+0?7\d{8}$/u.test(placeholder))continue;
+    let name=cached.get(phone)||'';
+    if(!name){
+      const q=await pool.query("SELECT sender_name FROM whatsapp_messages WHERE sender_phone=$1 AND NULLIF(TRIM(sender_name),'') IS NOT NULL ORDER BY created_at DESC LIMIT 1",[phone]);
+      name=String(q.rows[0]?.sender_name||'').trim().slice(0,120);
+    }
+    if(!name || name===phone || /^كابتن\s+0?7\d{8}$/u.test(name)){unavailable++;continue;}
+    const result=await pool.query("UPDATE captains SET name=$2,whatsapp_name=$2,whatsapp_name_updated_at=now(),updated_at=now() WHERE phone=$1 AND (name=$3 OR name=phone)",[phone,name,row.name]);
+    updated+=result.rowCount;
+  }
+  return {checked:rows.rowCount,updated,unavailable,contact_names:cached.size};
+}
 async function registerResolvedGroupMembers(members=[],source='WAHA_AUTO'){
   const unique=new Map();
   for(const m of members||[]){
@@ -1984,12 +2006,19 @@ app.post('/api/admin/negative-carry-restore',auth,async(req,res)=>{
   }
 });
 
+app.post('/api/admin/refresh-whatsapp-names',auth,async(req,res)=>{
+  try{
+    const data=await refreshCaptainWhatsappNames();
+    res.json({ok:true,...data});
+  }catch(e){res.status(502).json({ok:false,error:'WHATSAPP_NAMES_REFRESH_FAILED',message:e.message});}
+});
 app.post('/api/admin/check-group-members',auth,async(req,res)=>{
   try{
     const provider=String(process.env.WHATSAPP_PROVIDER||'dropcode').trim().toLowerCase();
     const g=await pool.query(`SELECT group_id,name,auto_register_members FROM groups WHERE active=true ORDER BY id`);
     if(!g.rowCount)return res.status(400).json({ok:false,error:'NO_ACTIVE_GROUPS'});
     const present=new Set(),details=[],resolvedMembers=new Map();
+    const contactNames=provider==='dropcode' ? await getDropcodeContactNames().catch(()=>new Map()) : new Map();
     if(provider==='dropcode'){
       const wc=wahaConfig(); if(!wc.baseUrl)return res.status(400).json({ok:false,error:'WAHA_NOT_CONFIGURED'});
       for(const group of g.rows){
@@ -2000,7 +2029,7 @@ app.post('/api/admin/check-group-members',auth,async(req,res)=>{
         }
         for(const ph of data.phones) if(ph) present.add(ph);
         if(group.auto_register_members){
-          for(const m of (data.members||[])){const ph=normalizePhone(m?.phone||'');if(ph&&!resolvedMembers.has(ph))resolvedMembers.set(ph,{phone:ph,name:String(m?.name||'')});}
+          for(const m of (data.members||[])){const ph=normalizePhone(m?.phone||'');if(ph&&(!resolvedMembers.has(ph)||!resolvedMembers.get(ph).name))resolvedMembers.set(ph,{phone:ph,name:String(m?.name||contactNames.get(ph)||'')});}
         }
         details.push({group_id:group.group_id,name:group.name||data.name||'',participants:data.total,auto_register_members:!!group.auto_register_members,lids_resolved:data.lidsResolved,lids_unresolved:data.lidsUnresolved});
       }
