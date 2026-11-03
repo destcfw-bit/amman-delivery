@@ -42,3 +42,18 @@ body.amman-captain.am-v2 #login .ad-dropcode-credit a{display:block;color:#fff!i
 @media(max-width:540px){body.amman-captain.am-v2 #login.ad-login{padding:36px 18px 180px;align-items:flex-start}body.amman-captain.am-v2 #login .am-roman-scene{height:320px}body.amman-captain.am-v2 #login .ad-brandmark img{width:82px;height:82px}body.amman-captain.am-v2 #login .ad-brandmark strong{font-size:29px}body.amman-captain.am-v2 #login .login-card.ad-login-card{padding:24px 20px 18px}body.amman-captain.am-v2 #login .ad-auth-head h1{font-size:25px}}
 @media(max-width:360px){body.amman-captain.am-v2 #login.ad-login{padding-inline:12px}body.amman-captain.am-v2 #login .login-card.ad-login-card{padding-inline:16px}body.amman-captain.am-v2 #login .ad-auth-head h1{font-size:22px}}
 @media(prefers-reduced-motion:reduce){body.amman-captain.am-v2 #login *,body.amman-captain.am-v2 #login *::after{animation:none!important;transition:none!important}}
+
+/* Seamless frosted login: no outline, no opaque rectangular surface. */
+html body.amman-captain.am-v2 div#login.ad-login section.login-card.ad-login-card{
+ border:0!important;outline:0!important;background:transparent!important;
+ background-image:none!important;box-shadow:none!important;overflow:visible!important;
+ isolation:isolate;
+}
+html body.amman-captain.am-v2 div#login.ad-login section.login-card.ad-login-card::before{
+ content:"";display:block!important;position:absolute;inset:-18px;z-index:-1;
+ border:0!important;border-radius:32px;background:rgba(0,0,0,.38)!important;
+ -webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);
+ -webkit-mask-image:radial-gradient(ellipse at center,#000 55%,transparent 75%);
+ mask-image:radial-gradient(ellipse at center,#000 55%,transparent 75%);
+ transform:none!important;animation:none!important;pointer-events:none;
+}
