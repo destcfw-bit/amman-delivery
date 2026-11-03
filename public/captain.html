@@ -96,9 +96,22 @@ body.amman-captain #login .msg{color:#ffc2cf}
 <link rel="stylesheet" href="/assets/amman-motion-v3.css?v=1">
 <link rel="stylesheet" href="/assets/amman-motion-real.css?v=2">
 <link rel="stylesheet" href="/assets/amman-login-loading.css?v=1">
-<link rel="stylesheet" href="/assets/amman-black-white.css?v=1">
+<link rel="stylesheet" href="/assets/amman-black-white.css?v=3">
+<link rel="stylesheet" href="/assets/amman-intro.css?v=1">
 </head>
 <body class="amman-captain am-v2">
+<div id="amCinematicIntro" role="status" aria-label="جاري فتح AMMAN DELIVERY">
+  <div class="am-intro-grid" aria-hidden="true"></div>
+  <div class="am-intro-glow" aria-hidden="true"></div>
+  <div class="am-intro-line" aria-hidden="true"></div>
+  <div class="am-intro-center">
+    <div class="am-intro-orbit"><img class="am-intro-logo" src="/assets/amman-logo.jpeg" alt="شعار AMMAN DELIVERY"></div>
+    <div class="am-intro-brand">AMMAN <strong>DELIVERY</strong></div>
+    <div class="am-intro-sub">جاهزين ننطلق معك</div>
+    <div class="am-intro-progress" aria-hidden="true"><span></span></div>
+  </div>
+  <button class="am-intro-skip" type="button">تخطي المقدمة</button>
+</div>
 <button id="soundToggle" class="sound-toggle" type="button" onclick="toggleClickSound()" aria-label="تبديل صوت الواجهة" title="صوت الواجهة">🔊</button>
 <div id="login" class="login ad-login">
   <div class="ad-auth-wrap">
@@ -220,12 +233,64 @@ function showApp(){document.body.classList.remove('captain-onboarding');document
 function showOnboarding(){document.body.classList.remove('captain-app-ready');document.body.classList.add('captain-onboarding');if(soundToggle&&soundToggle.parentElement!==document.body)document.body.appendChild(soundToggle);if(login)login.style.display='none';if(app)app.style.display='none';if(onboarding)onboarding.style.display='grid'}
 function tell(t){toast.textContent=t;toast.style.display='block';clearTimeout(toast._t);toast._t=setTimeout(()=>toast.style.display='none',3000)}function showModal(t,h){modalTitle.textContent=t;modalBody.innerHTML=h;modal.classList.add('show')}function hideModal(){modal.classList.remove('show')}
 let clickSoundOn=localStorage.getItem('amman_sound')!=='off';
-function paintSoundToggle(){if(!window.soundToggle)return;soundToggle.textContent=clickSoundOn?'🔊':'🔇';soundToggle.title=clickSoundOn?'إيقاف أصوات الواجهة':'تشغيل أصوات الواجهة';soundToggle.classList.toggle('off',!clickSoundOn)}
-function clickTone(kind='transition'){
-  if(!clickSoundOn)return;
-  try{const C=window.AudioContext||window.webkitAudioContext,ctx=new C(),o=ctx.createOscillator(),g=ctx.createGain();o.connect(g);g.connect(ctx.destination);const n=ctx.currentTime;o.type='sine';const a=kind==='login'?280:kind==='notify'?560:360,b=kind==='login'?520:kind==='notify'?760:520;o.frequency.setValueAtTime(a,n);o.frequency.exponentialRampToValueAtTime(b,n+.12);g.gain.setValueAtTime(.0001,n);g.gain.exponentialRampToValueAtTime(kind==='login'?.032:.022,n+.018);g.gain.exponentialRampToValueAtTime(.0001,n+.19);o.start(n);o.stop(n+.21);setTimeout(()=>ctx.close().catch(()=>{}),350)}catch(e){}
+const ammanAudio=(()=>{
+  let ctx=null,resuming=null,lastPlay=0;
+  function getCtx(){
+    const C=window.AudioContext||window.webkitAudioContext;
+    if(!C)return null;
+    if(!ctx||ctx.state==='closed')ctx=new C();
+    return ctx;
+  }
+  function unlock(){
+    if(!clickSoundOn)return;
+    try{
+      const c=getCtx();if(!c||c.state==='running')return;
+      if(!resuming)resuming=Promise.resolve(c.resume()).catch(()=>{}).finally(()=>{resuming=null});
+      return resuming;
+    }catch(e){}
+  }
+  function play(kind='click'){
+    if(!clickSoundOn)return;
+    const stamp=Date.now();if(stamp-lastPlay<90)return;lastPlay=stamp;
+    try{
+      const c=getCtx();if(!c)return;
+      const emit=()=>{
+        if(!clickSoundOn||c.state!=='running')return;
+        const o=c.createOscillator(),g=c.createGain(),t=c.currentTime;
+        const tones={click:[390,510],transition:[370,510],login:[330,600],notify:[550,700],success:[530,740],warning:[260,180]};
+        const [low,high]=tones[kind]||tones.click;
+        o.type=kind==='warning'?'triangle':'sine';
+        o.frequency.setValueAtTime(low,t);
+        o.frequency.exponentialRampToValueAtTime(high,t+.095);
+        g.gain.setValueAtTime(.0001,t);
+        g.gain.exponentialRampToValueAtTime(.028,t+.018);
+        g.gain.exponentialRampToValueAtTime(.0001,t+.155);
+        o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+.17);
+        o.onended=()=>{o.disconnect();g.disconnect()};
+      };
+      if(c.state==='running')emit();
+      else Promise.resolve(unlock()).then(emit);
+    }catch(e){}
+  }
+  return {play,unlock};
+})();
+window.ammanPlaySound=ammanAudio.play;
+document.addEventListener('pointerdown',()=>ammanAudio.unlock(),{passive:true});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' ')ammanAudio.unlock()});
+function paintSoundToggle(){
+  if(!soundToggle)return;
+  soundToggle.textContent=clickSoundOn?'🔊':'🔇';
+  soundToggle.title=clickSoundOn?'إيقاف أصوات الواجهة':'تشغيل أصوات الواجهة';
+  soundToggle.setAttribute('aria-pressed',String(clickSoundOn));
+  soundToggle.classList.toggle('off',!clickSoundOn);
 }
-function toggleClickSound(){clickSoundOn=!clickSoundOn;localStorage.setItem('amman_sound',clickSoundOn?'on':'off');paintSoundToggle();if(clickSoundOn)clickTone('notify')}
+function clickTone(kind='transition'){ammanAudio.play(kind)}
+function toggleClickSound(){
+  clickSoundOn=!clickSoundOn;
+  localStorage.setItem('amman_sound',clickSoundOn?'on':'off');
+  paintSoundToggle();
+  if(clickSoundOn){ammanAudio.unlock();setTimeout(()=>ammanAudio.play('notify'),70)}
+}
 function clickFX(kind='transition',direction='forward'){
   if(flowFX){
     flowFX.classList.remove('go','login','back');
@@ -440,7 +505,7 @@ setTimeout(bindClickSignature,200);
 
 <footer class="amman-footer"><strong>AMMAN DELIVERY</strong> <span aria-hidden="true">•</span> نظام إدارة التوصيل والحسابات</footer>
 
-<script src="/assets/amman-captain-v7.js?v=2"></script>
+<script src="/assets/amman-captain-v7.js?v=4"></script>
 
 <script defer src="/assets/amman-premium.js?v=4"></script>
 <script defer src="/assets/amman-motion.js?v=2"></script>
@@ -485,5 +550,6 @@ setTimeout(bindClickSignature,200);
   window.addEventListener('focus',sync);
 })();
 </script>
+<script src="/assets/amman-intro.js?v=1"></script>
 </body></html>
 
