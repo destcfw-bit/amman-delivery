@@ -115,3 +115,146 @@ body.amman-admin :is(.panel,.stat,.card,.login-card,.modal-card,.side){border-co
 body.amman-captain .am-money-card,body.amman-captain #login .ad-login-card{background:#000!important}
 body.amman-captain #login .ad-wait-panel,body.amman-captain #login .ad-login-wait{background:#000!important}
 body.amman-captain .am-liquid-nav,body.amman-captain .btn-primary,body.amman-admin .btn-primary{background:linear-gradient(135deg,#fa2222,#c30000)!important;color:#fff!important}
+
+/* FINAL MOBILE UI CONTRACT • Black #000, Red #ef2424, White #fff.
+   Use higher specificity than legacy premium/refresh !important declarations. */
+html:has(body.amman-captain.am-v2),html:has(body.amman-admin){
+ background:#000!important;
+}
+body.amman-captain.am-v2,body.amman-admin{
+ background:#000!important;background-image:none!important;color:#fff!important;
+ --bg:#000!important;--panel:#000!important;--panel2:#000!important;
+ --muted:#fff!important;--text:#fff!important;--premium-gray:#000;
+ --premium-surface:#000;--premium-border:#d52323;
+ --cp6-graphite:#000;--cp6-panel:#000;--cp6-muted:#fff;
+ --a6-panel:#000;--a6-muted:#fff;
+}
+body.amman-captain.am-v2 :is(#app,#login,#onboarding,.am-app-frame,.am-workspace,.wrap,.section,.am-page-heading,.am-account-grid,.am-metrics,.stats,.grid2,.am-info-grid,.am-section-intro,.am-block-heading,.am-side,.am-top,.top,.tabs,.am-mobile-tabs,.am-side-links,.panel,.stat,.week,.profile-card,.ad-premium-chart,.am-activity-ring,.am-identity-band,.am-money-card,.am-week-card,.am-week-footer,.am-week-action,.cp-move-card,.order,.week-card,.receipt,.login-card,.modal-card,.onboard-card,.am-bottom-sheet,.am-last-week-btn),
+body.amman-admin :is(#app,#login,.app,.wrap,.section,.top,.side,.nav,.tabs,.panel,.stat,.card,.week,.week-card,.table,.modal-card,.login-card,.main,.content,.dashboard,.widget){
+ background-color:#000!important;
+ background-image:none!important;
+ color:#fff!important;
+}
+body.amman-captain.am-v2 #s-home :is(.am-money-card,.am-week-card,.am-identity-band,.am-metrics .stat,.am-info-grid .panel,.profile-card,.ad-premium-chart,.am-activity-ring),
+body.amman-captain.am-v2 :is(#s-orders,#s-history,#s-profile,#s-settlement,#s-notifications) :is(.panel,.week-card,.profile-card,.cp-move-card,.order,.receipt,.stat,.card),
+body.amman-admin :is(.stats .stat,.panel,.card,.week-card,.table,.login-card,.modal-card){
+ background:#000!important;
+ background-image:none!important;
+ border:1px solid #d52323!important;
+ box-shadow:0 5px 18px #0009!important;
+ color:#fff!important;
+}
+body.amman-captain.am-v2 #s-home .am-money-card{
+ background:#000!important;
+ border:1.5px solid #f02727!important;
+ box-shadow:0 0 0 1px #ab000040,0 8px 28px #000a!important;
+}
+body.amman-captain.am-v2 #s-home .am-money-card .am-money-amount,
+body.amman-captain.am-v2 #s-home .am-money-card .formula,
+body.amman-captain.am-v2 #s-home .am-week-card :is(.am-week-label,.am-week-line,.am-week-footer,.am-week-footer span,.am-week-footer b),
+body.amman-captain.am-v2 #s-home .am-metrics .stat :is(span,b,small),
+body.amman-captain.am-v2 #s-home .am-identity-band :is(span,h2,.am-id-icon),
+body.amman-captain.am-v2 #s-home .am-block-heading :is(h2,span,div),
+body.amman-captain.am-v2 #s-home .am-page-heading :is(h1,p,span,div){
+ color:#fff!important;
+}
+body.amman-captain.am-v2 :is(.am-side,.top,.am-top,.tabs.am-mobile-tabs,.am-mobile-tabs,.am-side-links){
+ background:#000!important;
+ background-image:none!important;
+ border-color:#c32020!important;
+ box-shadow:0 7px 26px #000b!important;
+}
+body.amman-captain.am-v2 .tabs.am-mobile-tabs button:not(.active),
+body.amman-captain.am-v2 .am-side-links button,
+body.amman-captain.am-v2 .am-top-actions .iconbtn,
+body.amman-captain.am-v2 .am-week-card .am-week-action,
+body.amman-captain.am-v2 .am-money-card .am-card-quiet{
+ background:#000!important;
+ background-image:none!important;
+ color:#fff!important;
+ border-color:#bc2222!important;
+}
+body.amman-captain.am-v2 .tabs.am-mobile-tabs button.active,
+body.amman-captain.am-v2 .tabs.am-mobile-tabs button.active :is(.ad-nav-icon,.ad-nav-label,svg){
+ color:#fff!important;stroke:#fff!important;
+}
+body.amman-captain.am-v2 .tabs.am-mobile-tabs .am-liquid-nav{
+ background:linear-gradient(135deg,#ff3535,#c00)!important;
+ box-shadow:0 0 18px #d116164d!important;
+}
+body.amman-captain.am-v2 .tabs.am-mobile-tabs button.active{
+ background-color:#d81515!important;
+ border-radius:17px!important;
+}
+body.amman-captain.am-v2 .am-top-actions .iconbtn .am-header-svg{stroke:#fff!important}
+body.amman-captain.am-v2 :is(input,textarea,select,.input,.select,.am-password-wrap,.am-password-eye,.toolbar,.chip:not(.active)),
+body.amman-admin :is(input,textarea,select,.input,.select,.toolbar,.chip:not(.active)){
+ background:#000!important;
+ background-image:none!important;
+ color:#fff!important;
+ border-color:#c12525!important;
+}
+body.amman-captain.am-v2 :is(input,textarea)::placeholder,
+body.amman-admin :is(input,textarea)::placeholder{color:#fff!important;opacity:.78!important}
+body.amman-captain.am-v2 :is(.am-subtle-link,.am-card-quiet,.am-week-action,.am-last-week-btn,.btn:not(.btn-primary):not(.btn-danger)),
+body.amman-admin :is(.btn:not(.btn-primary):not(.btn-danger),.iconbtn){
+ color:#fff!important;background-color:#000!important;
+}
+body.amman-captain.am-v2 #s-home .am-metrics .stat :is(.am-metric-icon,.am-green,.am-red,.am-blue,.am-amber){
+ background:#190000!important;color:#ff4040!important;border-color:#e22b2b!important;
+}
+body.amman-captain.am-v2 #s-home .ad-premium-chart{
+ margin:14px 0!important;padding:17px!important;min-height:0!important;
+}
+body.amman-captain.am-v2 #s-home .ad-premium-chart .ad-premium-bars{
+ height:118px!important;min-height:0!important;border-color:#dc2727!important;
+}
+body.amman-captain.am-v2 #s-home .ad-premium-chart .ad-premium-bar.production{
+ background:linear-gradient(0deg,#a40b0b,#ff4747)!important;
+}
+body.amman-captain.am-v2 #s-home .ad-premium-chart .ad-premium-bar.consumption{
+ background:linear-gradient(0deg,#fff,#ededed)!important;
+}
+body.amman-captain.am-v2 #s-home .ad-premium-chart :is(.ad-premium-legend,.ad-premium-legend strong,h3){
+ color:#fff!important;
+}
+body.amman-captain.am-v2 .am-activity-ring{
+ margin:12px 0!important;padding:12px!important;gap:12px!important;
+}
+body.amman-captain.am-v2 .am-activity-ring .am-ring-track{stroke:#fff!important;opacity:.28}
+body.amman-captain.am-v2 .am-activity-ring .am-ring-fill{stroke:#f12626!important}
+body.amman-captain.am-v2 .am-activity-ring :is(strong,small){color:#fff!important}
+body.amman-captain.am-v2 #login.ad-login,
+body.amman-captain.am-v2 #login .login-card.ad-login-card,
+body.amman-admin #login,.amman-admin .login-card{
+ background:#000!important;background-image:none!important;
+ color:#fff!important;
+}
+body.amman-captain.am-v2 #login :is(#phone,#password,.am-password-eye){
+ background:#000!important;color:#fff!important;border:1px solid #bd2222!important;
+}
+body.amman-captain.am-v2 #login :is(.ad-auth-head p,.am-field-label,.ad-safe-note,.ad-biometric-note,.ad-dropcode-credit,.ad-login-status){
+ color:#fff!important;
+}
+body.amman-captain.am-v2 :is(.muted,small,.formula,.am-eyebrow,.am-week-line,.am-identity-band span,.am-card-head span,.am-card-quiet,.am-info-grid small,.am-block-heading span,.am-section-intro p),
+body.amman-admin :is(.muted,small,.help,.caption,.subtitle,.hint){
+ color:#fff!important;opacity:1!important;
+}
+body.amman-captain.am-v2 :is(.status.ok,.status.off,.status.wait,.badge,.chip.active){
+ background:#000!important;color:#fff!important;border:1px solid #db2929!important;
+}
+body.amman-captain.am-v2 :is(.btn-primary,.am-strong-btn,.login-btn),
+body.amman-admin .btn-primary{
+ background:linear-gradient(135deg,#fa2929,#c30000)!important;
+ color:#fff!important;border:1px solid #ff3939!important;
+}
+body.amman-captain.am-v2 :is(.am-week-card,.am-money-card) .am-card-symbol{color:#f12828!important}
+body.amman-captain.am-v2 .am-watermark{color:#ac14142b!important}
+body.amman-admin :is(thead,th,tr:nth-child(even),tbody tr:hover){background:#000!important;color:#fff!important}
+body.amman-captain.am-v2 :is(.am-page-heading,.am-block-heading,.am-section-intro){padding-inline:0}
+@media(max-width:700px){
+ body.amman-captain.am-v2 #s-home .am-account-grid{gap:13px!important}
+ body.amman-captain.am-v2 #s-home .am-metrics{gap:12px!important}
+ body.amman-captain.am-v2 .tabs.am-mobile-tabs{background:#000!important}
+ body.amman-captain.am-v2 #s-home .am-block-heading{margin-top:15px!important}
+}
