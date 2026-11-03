@@ -130,6 +130,39 @@ function captainAutoName(phone,whatsappName=''){
 }
 let autoGroupSyncRunning=false;
 
+// Re-identify recordings received before the DropConnect media adapter update.
+// This is read-only and never changes accounting rows or commission calculations.
+async function reidentifyLegacyMedia(row){
+  const cfg=wahaConfig();
+  const mid=String(row.original_stored_message_id||row.original_message_id||'');
+  const groupId=String(row.group_id||'');
+  if(!cfg.baseUrl||!mid||!groupId)return row;
+  try{
+    const qs=new URLSearchParams({session:cfg.session,groupId,messageId:mid,limit:'1'});
+    const data=await wahaRequest('/api/search/messages?'+qs.toString(),{timeout:3500});
+    const entry=(data?.results||[]).find(x=>
+      String(x?.unified?.message?.id||x?.payload?.id||'')===mid &&
+      String(x?.unified?.group?.id||x?.payload?.chatId||'')===groupId
+    );
+    const msg=entry?.unified?.message||{};
+    const media=msg.media||entry?.payload?.media||{};
+    const kind=String(msg.type||media.type||'').toLowerCase();
+    const mime=String(media.mimetype||media.mimeType||'').toLowerCase();
+    const isAudio=/audio|voice|ptt/.test(kind)||mime.startsWith('audio/');
+    const isImage=/image/.test(kind)||mime.startsWith('image/');
+    const isVideo=/video/.test(kind)||mime.startsWith('video/');
+    if(!isAudio&&!isImage&&!isVideo)return row;
+    const typeMessage=isAudio?'audioMessage':isImage?'imageMessage':'videoMessage';
+    const old=row.original_raw||{};
+    return {...row,original_type:typeMessage,media_mime:mime,
+      original_raw:{...old,messageData:{...old.messageData,typeMessage,
+        fileMessageData:{...(old.messageData?.fileMessageData||{}),
+          downloadUrl:String(media.url||''),mimeType:mime}}}};
+  }catch(e){
+    console.warn('Legacy media metadata lookup unavailable:',e.message);
+    return row;
+  }
+}
 async function recoverWhatsappMedia(groupId,messageId){
   const gid=String(groupId||'').trim(),mid=String(messageId||'').trim();
   if(!gid||!mid)return null;
@@ -2288,7 +2321,18 @@ app.get('/api/captain-auth/movements',captainAuth,captainReady,async(req,res)=>{
       LEFT JOIN whatsapp_media med ON med.group_id=cl.group_id AND med.message_id=om.message_id
       LEFT JOIN groups g ON g.group_id=cl.group_id
       WHERE m.captain_phone=$1 AND cl.week_id=$2 ORDER BY m.created_at DESC,m.id DESC LIMIT 500`,[p,weekId]);
-    const rows=r.rows.map(row=>{
+    // Only probe up to 12 older, textless message records per request.
+    // Normal records are served without extra DropConnect API calls.
+    const probes=r.rows.filter(row=>row.original_raw && !row.original_text &&
+      !/audio|image|video|document|file/i.test(String(row.original_type||'')) &&
+      !row.media_mime).slice(0,12);
+    const recovered=new Map();
+    await Promise.all(probes.map(async row=>{
+      const fixed=await reidentifyLegacyMedia(row);
+      recovered.set(row.id,fixed);
+    }));
+    const rows=r.rows.map(original=>{
+      const row=recovered.get(original.id)||original;
       const messageId=String(row.original_stored_message_id||row.original_message_id||'');
       const typ=String(row.original_type||row.original_raw?.messageData?.typeMessage||'').toLowerCase();
       const mime=String(row.media_mime||row.original_raw?.messageData?.audioMessageData?.mimeType||row.original_raw?.messageData?.audioMessageData?.mimetype||row.original_raw?.messageData?.fileMessageData?.mimeType||row.original_raw?.messageData?.fileMessageData?.mimetype||'').toLowerCase();
