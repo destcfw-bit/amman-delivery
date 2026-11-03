@@ -136,13 +136,27 @@ async function recoverWhatsappMedia(groupId,messageId){
   let q=await pool.query(`SELECT * FROM whatsapp_media WHERE group_id=$1 AND message_id=$2 LIMIT 1`,[gid,mid]);
   if(q.rowCount)return q.rows[0];
   try{
-    const msg=await getWahaMessageById(gid,mid,{downloadMedia:true});
-    const media=msg?.media||{};
+    let media={};
+    // DropConnect's native engine exposes indexed media through search/events,
+    // not the legacy WAHA single-message endpoint.
+    if(process.env.DROPCODE_API_URL){
+      const cfg=wahaConfig();
+      const params=new URLSearchParams({session:cfg.session,groupId:gid,messageId:mid,limit:'1'});
+      const found=await wahaRequest('/api/search/messages?'+params.toString(),{timeout:10000});
+      const entry=(found?.results||[]).find(x=>
+        String(x?.unified?.message?.id||x?.payload?.id||'')===mid &&
+        String(x?.unified?.group?.id||x?.payload?.chatId||'')===gid
+      );
+      media=entry?.unified?.message?.media||entry?.payload?.media||{};
+    }else{
+      const msg=await getWahaMessageById(gid,mid,{downloadMedia:true});
+      media=msg?.media||{};
+    }
     const url=String(media.url||'').trim();
     if(!url)return null;
     const d=await downloadWahaMedia(url,{timeout:15000,maxBytes:16*1024*1024});
-    const mime=String(media.mimetype||d.mimeType||'application/octet-stream').slice(0,160);
-    const fileName=String(media.filename||'').slice(0,255);
+    const mime=String(media.mimetype||media.mimeType||d.mimeType||'application/octet-stream').slice(0,160);
+    const fileName=String(media.filename||media.fileName||'').slice(0,255);
     q=await pool.query(`
       INSERT INTO whatsapp_media(group_id,message_id,mime_type,file_name,file_data,source_url,updated_at)
       VALUES($1,$2,$3,$4,$5,$6,now())
