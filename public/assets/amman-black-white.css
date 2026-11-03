@@ -2,47 +2,47 @@
    Loaded after all legacy styles for both Captain and Admin.
    Decorative only; accounting/status colors and functionality are preserved. */
 :root{
- --bg:#050505;--panel:#0d0d0d;--panel2:#131313;--line:#292929;
- --text:#fff;--muted:#fff;--am-motion-charcoal:#090909;--am-motion-gray:#111;
+ --bg:#000;--panel:#000;--panel2:#000;--line:#000;
+ --text:#fff;--muted:#fff;--am-motion-charcoal:#000;--am-motion-gray:#000;
  --ad-angle:0deg;
 }
-html{background:#050505!important;color-scheme:dark}
+html{background:#000!important;color-scheme:dark}
 body.amman-captain,body.amman-admin{
- background:#050505!important;color:#fff!important;
- --bg:#050505!important;--panel:#0c0c0c!important;--panel2:#131313!important;
- --text:#fff!important;--muted:#fff!important;--line:#292929!important;
+ background:#000!important;color:#fff!important;
+ --bg:#000!important;--panel:#000!important;--panel2:#000!important;
+ --text:#fff!important;--muted:#fff!important;--line:#000!important;
 }
 body.amman-captain :is(.app,.am-app-frame,.am-workspace,.am-side,.am-top,.top,.wrap,.section),
 body.amman-admin :is(.app,.app-shell,.side,.top,.wrap,.main,.content,.section){
- background-color:#050505;
+ background-color:#000;
  color:#fff;
 }
 body.amman-captain :is(.am-money-card,.am-week-card,.panel,.stat,.profile-card,.cp-move-card,.am-activity-ring,.ad-premium-chart,.am-command-hero,.login-card,.onboard-card,.modal-card,.am-identity-band,.am-side,.am-top),
 body.amman-admin :is(.panel,.stat,.card,.week-card,.login-card,.modal-card,.side,.top,.week,.table){
- background:#101010!important;
+ background:#000!important;
  background-image:none!important;
  color:#fff!important;
- border-color:#292929!important;
+ border-color:#000!important;
  box-shadow:0 12px 32px #0008!important;
 }
 body.amman-captain .am-money-card{
- background:radial-gradient(circle at 6% 0%,#230606,#080808 60%)!important;
+ background:radial-gradient(circle at 6% 0%,#000,#000 60%)!important;
  border:1px solid #db1515!important;
 }
 body.amman-captain :is(.am-week-card,.am-activity-ring,.am-identity-band,.ad-premium-chart){
- background:#0d0d0d!important;
+ background:#000!important;
 }
 body.amman-captain :is(.tabs.am-mobile-tabs,.am-mobile-tabs,.am-side-links),
 body.amman-admin :is(.nav,.side .nav){
- background:#090909!important;border-color:#292929!important;
+ background:#000!important;border-color:#000!important;
 }
 body.amman-captain :is(.iconbtn,.am-subtle-link,.am-side-links button,.am-mobile-tabs button:not(.active),.am-week-action,.cp-move-actions button:not(.btn-primary)),
 body.amman-admin :is(.iconbtn,.nav button,.btn:not(.btn-primary):not(.btn-danger):not(.btn-green)){
- background-color:#141414!important;color:#fff!important;border-color:#303030!important;
+ background-color:#000!important;color:#fff!important;border-color:#000!important;
 }
 body.amman-captain :is(input,select,textarea,.input,.am-password-wrap),
 body.amman-admin :is(input,select,textarea,.input){
- background-color:#0a0a0a!important;color:#fff!important;border-color:#383838!important;
+ background-color:#000!important;color:#fff!important;border-color:#000!important;
 }
 body.amman-captain :is(input,textarea)::placeholder,
 body.amman-admin :is(input,textarea)::placeholder{color:#fff!important;opacity:.75!important}
@@ -60,25 +60,25 @@ body.amman-admin .btn-primary{
  border-color:#ec2424!important;
 }
 body.amman-captain .am-mobile-tabs button.active{color:#fff!important}
-body.amman-captain .am-top-actions .iconbtn{background:#111!important;color:#fff!important;border-color:#3c3c3c!important}
+body.amman-captain .am-top-actions .iconbtn{background:#000!important;color:#fff!important;border-color:#000!important}
 body.amman-captain :is(.modal,.onboarding),body.amman-admin .modal{color:#fff}
 body.amman-captain :is(.modal-card,.onboard-card),body.amman-admin .modal-card{background:#0e0e0e!important}
-body.amman-captain .ad-login{background:#050505!important}
+body.amman-captain .ad-login{background:#000!important}
 body.amman-captain #login .ad-login-card{
- background:linear-gradient(150deg,#111,#050505)!important;
- border-color:#282828!important;
+ background:linear-gradient(150deg,#000,#000)!important;
+ border-color:#000!important;
 }
 body.amman-captain #login .ad-login-wait{background:#000b!important}
-body.amman-captain #login .ad-wait-panel{background:#0b0b0b!important;color:#fff!important;border-color:#333!important}
+body.amman-captain #login .ad-wait-panel{background:#000!important;color:#fff!important;border-color:#000!important}
 body.amman-captain #login .ad-wait-sub{color:#fff!important}
-body.amman-captain .am-connection{background:#0b0b0b!important;color:#fff!important}
-body.amman-captain .am-movement-details,body.amman-captain .am-movement-expander{background:#0d0d0d!important;color:#fff!important}
-body.amman-captain .am-command-hero{background:#0c0c0c!important}
-body.amman-captain .am-actual-progress,body.amman-captain .am-load-status{background:#0b0b0b!important;color:#fff!important}
+body.amman-captain .am-connection{background:#000!important;color:#fff!important}
+body.amman-captain .am-movement-details,body.amman-captain .am-movement-expander{background:#000!important;color:#fff!important}
+body.amman-captain .am-command-hero{background:#000!important}
+body.amman-captain .am-actual-progress,body.amman-captain .am-load-status{background:#000!important;color:#fff!important}
 body.amman-captain :is(.am-money-card,.am-week-card,.panel,.stat) :is(.muted,small){color:#fff!important}
 body.amman-admin :is(table,th,td,.table){color:#fff!important}
-body.amman-admin :is(th,thead){background:#141414!important;color:#fff!important}
-body.amman-admin :is(tr:nth-child(even),tbody tr:hover){background:#0b0b0b!important}
+body.amman-admin :is(th,thead){background:#000!important;color:#fff!important}
+body.amman-admin :is(tr:nth-child(even),tbody tr:hover){background:#000!important}
 /* Logo: gentle floating movement and a restrained red glow; preserves artwork. */
 body.amman-captain :is(.ad-brandmark,.am-side-brand,.am-id-avatar) img[src*="amman-logo"],
 body.amman-admin img.logo[src*="amman-logo"],
@@ -97,3 +97,21 @@ body.amman-admin img.logo[src*="amman-logo"]:hover{animation-duration:2s!importa
 @media(prefers-reduced-motion:reduce){
  body.amman-captain img[src*="amman-logo"],body.amman-admin img[src*="amman-logo"]{animation:none!important;transform:none!important;will-change:auto!important}
 }
+
+/* Phase two: actual pure-black UI instead of charcoal surfaces. */
+body.amman-captain,body.amman-admin,body.amman-captain .app,body.amman-admin .app{background:#000!important;color:#fff!important}
+body.amman-captain :is(.login,.login-card,.ad-login-card,.ad-auth-wrap,.am-app-frame,.am-workspace,.am-side,.am-side-links,.am-top,.top,.wrap,.section,.panel,.stat,.am-week-card,.am-money-card,.am-activity-ring,.am-identity-band,.cp-move-card,.modal-card,.onboard-card,.am-mobile-tabs,.tabs,.am-command-hero,.ad-premium-chart,.am-wait-panel,.am-bottom-sheet,.profile-card,.order,.week-card,.am-connection,.am-movement-details,.am-movement-expander),
+body.amman-admin :is(.login,.login-card,.top,.side,.nav,.wrap,.main,.content,.card,.panel,.stat,.week-card,.modal-card,.table,.tab,.tabs,.dashboard,.section,.widget){
+ background-color:#000!important;background-image:none!important;color:#fff!important;
+}
+body.amman-captain :is(input,textarea,select,.input,.am-password-wrap,.iconbtn,.am-week-action,.am-side-links button,.am-mobile-tabs button:not(.active)),
+body.amman-admin :is(input,textarea,select,.input,.iconbtn,.nav button){
+ background-color:#000!important;color:#fff!important;
+}
+body.amman-captain :is(.muted,.ad-safe-note,.am-card-quiet,.am-week-footer,.am-week-label,.am-eyebrow,.am-side-caption,.am-side-bottom,.am-top-title small,.ad-auth-head p,.ad-dropcode-credit,.ad-biometric-note,small,.am-page-heading p),
+body.amman-admin :is(.muted,small,.hint,.help,.subtitle,.caption,.week-meta){color:#fff!important;opacity:1!important}
+body.amman-captain :is(.panel,.stat,.am-week-card,.am-money-card,.am-identity-band,.cp-move-card,.login-card,.modal-card,.am-side),
+body.amman-admin :is(.panel,.stat,.card,.login-card,.modal-card,.side){border-color:#171717!important}
+body.amman-captain .am-money-card,body.amman-captain #login .ad-login-card{background:#000!important}
+body.amman-captain #login .ad-wait-panel,body.amman-captain #login .ad-login-wait{background:#000!important}
+body.amman-captain .am-liquid-nav,body.amman-captain .btn-primary,body.amman-admin .btn-primary{background:linear-gradient(135deg,#fa2222,#c30000)!important;color:#fff!important}
