@@ -8,6 +8,10 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/assets/amman-logo.jpeg">
 <link rel="icon" type="image/png" sizes="48x48" href="/assets/amman-logo.jpeg">
 <link rel="apple-touch-icon" sizes="180x180" href="/assets/amman-logo.jpeg">
+<link rel="manifest" href="/admin.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="AMMAN ADMIN">
+
 
 <style>
 :root{--bg:#07090c;--panel:#10151c;--panel2:#0c1117;--line:#222c37;--text:#f6f7f9;--muted:#8e9aa8;--orange:#e13e57;--orange2:#ff7887;--green:#39d98a;--red:#ff6666;--yellow:#f1c84b}
@@ -107,7 +111,7 @@
 </div>
 
 <div id="app" class="app">
-<header class="top"><div class="brand"><img src="/assets/amman-logo.jpeg"><span>AMMAN <b>DELIVERY</b> — الإدارة</span></div><div class="top-actions"><a href="/" class="btn">🏠 الرئيسية</a><button class="btn" onclick="loadAll()">↻ تحديث</button><button class="btn btn-danger" onclick="logout()">خروج</button></div></header>
+<header class="top"><div class="brand"><img src="/assets/amman-logo.jpeg"><span>AMMAN <b>DELIVERY</b> — الإدارة</span></div><div class="top-actions"><button id="amAdminInstallBtn" type="button" class="btn am-admin-install-btn">📲 تثبيت تطبيق الإدارة</button><a href="/" class="btn">🏠 الرئيسية</a><button class="btn" onclick="loadAll()">↻ تحديث</button><button class="btn btn-danger" onclick="logout()">خروج</button></div></header>
 <div class="wrap">
 <aside class="side"><div class="nav">
 <button class="active" onclick="go('overview',this)">⌂ نظرة عامة</button>
@@ -929,5 +933,23 @@ async function exportCaptainSheet(){
 }
 </script>
 <button type="button" onclick="exportCaptainSheet()" style="position:fixed;bottom:22px;left:18px;z-index:9000;border:1px solid #29836a;background:#103b32;color:#fff;border-radius:12px;padding:10px 14px;font-weight:700;box-shadow:0 5px 18px #0004">📊 تصدير الكباتن Excel</button>
+<div id="amAdminInstallModal" class="am-admin-install-overlay" hidden role="dialog" aria-modal="true" aria-label="تعليمات تثبيت تطبيق الإدارة">
+  <div class="am-admin-install-dialog" dir="rtl">
+    <h3>📲 تثبيت تطبيق AMMAN DELIVERY — الإدارة</h3>
+    <p id="amAdminInstallHelp"></p>
+    <button type="button" class="btn btn-primary" data-am-install-close>تمام، فهمت</button>
+  </div>
+</div>
+<style>
+.am-admin-install-btn{background:#cf1515!important;color:#fff!important;border:1px solid #fa3535!important;white-space:nowrap;font-weight:800!important}
+.am-admin-install-btn[hidden],.am-admin-install-overlay[hidden]{display:none!important}
+.am-admin-install-overlay{position:fixed;inset:0;z-index:10050;background:rgba(0,0,0,.88);display:grid;place-items:center;padding:18px}
+.am-admin-install-dialog{width:min(440px,100%);padding:24px;background:#000!important;border:1px solid #e32b2b!important;color:#fff;border-radius:19px;box-shadow:0 12px 40px #000}
+.am-admin-install-dialog h3{font-size:19px;margin:0 0 13px;color:#fff}
+.am-admin-install-dialog p{color:#fff;line-height:2;font-size:14px}
+.am-admin-install-dialog button{margin-top:14px}
+@media(max-width:700px){.top-actions{flex-wrap:wrap}.am-admin-install-btn{font-size:12px!important;padding:9px 12px!important}}
+</style>
+<script defer src="/assets/amman-admin-install.js?v=1"></script>
 <script defer src="/assets/amman-motion.js?v=2"></script>
 </body></html>
