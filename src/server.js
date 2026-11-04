@@ -467,6 +467,21 @@ app.post(['/webhooks/dropcode','/webhooks/waha'], async (req,res)=>{
     const expected='sha256='+crypto.createHmac('sha256',secret).update(req.rawWebhookBody||Buffer.from('')).digest('hex');
     const a=Buffer.from(signature),b=Buffer.from(expected);
     if(a.length!==b.length||!crypto.timingSafeEqual(a,b)){console.warn('DROPCODE WEBHOOK REJECTED: INVALID_SIGNATURE',req.path);return res.status(401).json({ok:false,error:'INVALID_SIGNATURE'});}
+    // DropConnect may identify an authorized reactor using a private WhatsApp LID.
+    // Resolve via the linked WhatsApp session, never infer a phone from LID digits.
+    if(req.body?.sender && !req.body.sender.phoneJid && /@lid$/i.test(String(req.body.sender.jid||''))){
+      try{
+        const cfg=wahaConfig();
+        const result=await wahaRequest(`/api/${encodeURIComponent(cfg.session)}/check-whatsapp`,
+          {method:'POST',body:{chatId:String(req.body.sender.jid)},timeout:5000});
+        const verified=normalizePhone(result?.phoneNumber||result?.chatId||'');
+        if(!/^\d{10,15}$/.test(verified))throw new Error('LID_PHONE_NOT_VERIFIED');
+        req.body.sender.phoneJid=verified+'@s.whatsapp.net';
+      }catch(e){
+        console.warn('DROPCODE REACTION IDENTITY RESOLUTION RETRY',e.message);
+        return res.status(503).json({ok:false,error:'DROPCODE_LID_NOT_RESOLVED'});
+      }
+    }
     const events=translateDropcode(req.body,String(process.env.DROPCODE_SESSION_ID||'').trim());
     if(!events.length)console.warn('DROPCODE WEBHOOK IGNORED',{route:req.path,schema:String(req.body?.schema||''),action:String(req.body?.action||''),sessionMatch:String(req.body?.session||'')===String(process.env.DROPCODE_SESSION_ID||'').trim()});
     for(const payload of events){
