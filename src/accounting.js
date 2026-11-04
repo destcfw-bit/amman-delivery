@@ -261,6 +261,50 @@ async function enqueueSheetSync(client, claimId) {
     ON CONFLICT(sync_key) DO NOTHING`,[key,payload]);
 }
 
+// 🚫 from authorized numbers applies to a reply or all claims linked to one original request.
+// Always reverse both sides of each ACTIVE accounting movement in the same DB transaction.
+async function cancelByAuthorizedReaction(client,eventId,groupId,target,reactor,eventTs){
+  if(!(await isAuthorizedCancel(client,reactor))){
+    await logReaction(client,eventId,null,target,reactor,'🚫','rejected','الرقم غير مخول للإلغاء');
+    return {status:'rejected',message:'cancel not authorized'};
+  }
+  const replies=await client.query(`SELECT * FROM claims WHERE group_id=$1 AND
+      (reply_message_id=$2 OR right(reply_message_id,char_length($2))=$2 OR position($2 in reply_message_id)>0)
+      ORDER BY id DESC LIMIT 1 FOR UPDATE`,[groupId,target]);
+  const claims=replies.rowCount?replies.rows:(await client.query(`SELECT * FROM claims
+      WHERE group_id=$1 AND (original_message_id=$2 OR right(original_message_id,char_length($2))=$2 OR position($2 in original_message_id)>0)
+      ORDER BY id FOR UPDATE`,[groupId,target])).rows;
+  if(!claims.length){
+    await logReaction(client,eventId,null,target,reactor,'🚫','pending','الطلب لم يصل للمحاسبة بعد');
+    throw Object.assign(new Error('CLAIM_NOT_READY'),{retryable:true});
+  }
+  let cancelled=0,closed=0,duplicates=0,stale=0;
+  for(const claim of claims){
+    if(claim.week_id){
+      const w=await client.query('SELECT status FROM accounting_weeks WHERE id=$1',[claim.week_id]);
+      if(w.rows[0]?.status==='closed'){
+        closed++;await logReaction(client,eventId,claim.id,target,reactor,'🚫','rejected','WEEK_CLOSED_LOCKED');continue;
+      }
+    }
+    if(eventTs&&Number(claim.last_reaction_ts||0)>eventTs){
+      stale++;await logReaction(client,eventId,claim.id,target,reactor,'🚫','ignored','حدث إلغاء أقدم من آخر رياكشن');continue;
+    }
+    if(claim.status==='cancelled'){
+      duplicates++;await logReaction(client,eventId,claim.id,target,reactor,'🚫','duplicate','سبق إلغاء هذا الطلب');continue;
+    }
+    await reverseActiveMovements(client,claim.id);
+    await client.query(`UPDATE claims SET status='cancelled',current_reaction='🚫',current_value=0,
+       cancelled_by=$2,last_reaction_ts=GREATEST(last_reaction_ts,$3),updated_at=now() WHERE id=$1`,
+       [claim.id,reactor,eventTs||0]);
+    await logReaction(client,eventId,claim.id,target,reactor,'🚫','cancelled','إلغاء من رقم مخول');
+    await notifyCaptain(client,claim.producer_phone,'warning','تم إلغاء الطلب 🚫','أُلغي الطلب من رقم مخول ولم تعد العمولة محسوبة.',{claim_id:claim.id});
+    await notifyCaptain(client,claim.consumer_phone,'warning','تم إلغاء الطلب 🚫','أُلغي الطلب من رقم مخول ولم تعد العمولة محسوبة.',{claim_id:claim.id});
+    await enqueueSheetSync(client,claim.id);
+    cancelled++;
+  }
+  if(cancelled)return {status:'cancelled',message:'authorized cancellation',cancelled,closed,duplicates,stale};
+  return {status:closed?'rejected':'ignored',message:closed?'week already closed':'nothing to cancel',cancelled,closed,duplicates,stale};
+}
 async function processReaction(client, eventId, payload) {
   const groupId = payload.senderData?.chatId || '';
   const target = getReactionTarget(payload);
@@ -271,6 +315,8 @@ async function processReaction(client, eventId, payload) {
   if (!groupId || !target || !reactor) {
     return {status:'ignored',message:'reaction incomplete'};
   }
+
+  if(reaction==='🚫')return cancelByAuthorizedReaction(client,eventId,groupId,target,reactor,eventTs);
 
   let c = await client.query(
     `SELECT * FROM claims
