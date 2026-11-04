@@ -35,3 +35,16 @@ for(const action of ['trash','restore'])test(action+' changes only archive visib
 test('archive excludes trashed weeks',()=>{
  const part=source.slice(source.indexOf("app.get('/api/admin/weekly/archive'"));assert.match(part.split('\n});')[0],/w\.trashed_at IS NULL/);
 });
+
+test('permanent delete allows any closed week and reconciles debt before removing the week',()=>{
+ const start=source.indexOf("app.delete('/api/admin/weekly/:id/permanent'");
+ assert.ok(start>=0);
+ const body=source.slice(start,source.indexOf('\n});',start));
+ assert.doesNotMatch(body,/CARRIED_TO_CLOSED_WEEK|CONFIRMED_SETTLEMENT_EXISTS/);
+ assert.match(body,/WEEK_CARRY_RECONCILIATION_LIMIT|CARRY_RECALCULATION_LIMIT/);
+ assert.match(body,/source_settlement_id/);
+ assert.match(body,/DELETE FROM accounting_weeks WHERE id=\$1/);
+ assert.ok(body.indexOf('const outgoing=')<body.indexOf("DELETE FROM accounting_weeks WHERE id=$1"));
+ assert.match(body,/ROLLBACK/);
+ assert.match(body,/DELETE WEEK #/);
+});
