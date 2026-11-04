@@ -1684,9 +1684,12 @@ app.delete('/api/admin/weekly/:id/permanent',auth,async(req,res)=>{
   await c.query("DELETE FROM captain_notifications WHERE metadata->>'claim_id'=ANY($1::text[]) OR metadata->>'settlement_id'=ANY($2::text[])",[claimIds.map(String),settlementIds.map(String)]);
   await c.query("DELETE FROM sheet_sync_queue WHERE sync_key LIKE ANY($1::text[]) OR (kind='claim_update' AND payload->'claim'->>'id'=ANY($2::text[]))",[claimIds.map(x=>'claim:'+x+':%'),claimIds.map(String)]);
   await c.query('DELETE FROM reaction_log WHERE claim_id=ANY($1::bigint[])',[claimIds]);
+  await c.query("DELETE FROM captain_notifications WHERE metadata->>'week_id'=$1::text",[String(id)]);
   await c.query('DELETE FROM claims WHERE week_id=$1',[id]);
   // Week-scoped manual movements, charges, corrections, settlements and proof images cascade.
   await c.query('DELETE FROM accounting_weeks WHERE id=$1',[id]);
+  // Remove week-scoped audit entries from the administrative activity view.
+  await c.query("DELETE FROM audit_log WHERE details->>'week_id'=$1::text",[String(id)]);
   // Rebuild affected captains from REMAINING active movements instead of subtracting estimates.
   if(phones.length)await c.query("WITH totals AS (SELECT captain_phone,COALESCE(SUM(amount) FILTER(WHERE direction='production'),0) production,COALESCE(SUM(amount) FILTER(WHERE direction='consumption'),0) consumption FROM movements WHERE status='active' AND captain_phone=ANY($1::text[]) GROUP BY captain_phone) UPDATE captain_balances cb SET production=COALESCE(t.production,0),consumption=COALESCE(t.consumption,0),net=COALESCE(t.production,0)-COALESCE(t.consumption,0),updated_at=now() FROM (SELECT unnest($1::text[]) captain_phone) x LEFT JOIN totals t ON t.captain_phone=x.captain_phone WHERE cb.captain_phone=x.captain_phone",[phones]);
   // Remove WhatsApp copies of the deleted week's messages only when no other claim needs them.
