@@ -615,7 +615,7 @@ app.get('/api/admin/monitor-captains',auth,async(req,res)=>{
 
 app.get('/api/admin/balances',auth,async(req,res)=>{
   try{
-    const w=await getOpenWeek(); const rows=await weeklyRows(w.id);
+    const w=await getOpenWeek(); const rows=await weeklyRows(w.id); const numbering=await pool.query('SELECT COUNT(*)::int AS n FROM accounting_weeks WHERE id<=$1',[w.id]); w.display_week_no=numbering.rows[0].n;
     res.json({ok:true,week:w,rows:rows.map(x=>({
       captain_phone:x.phone,name:x.name,production:x.production,consumption:x.consumption,
       floor_fee:x.floor_fee,old_balance:x.old_balance,net:x.net,active:x.active,status_reason:x.status_reason,updated_at:w.starts_at
@@ -1441,7 +1441,7 @@ app.get('/api/admin/weekly/old-balances',auth,async(req,res)=>{
     const r=await pool.query(`
       WITH latest_payable AS (
         SELECT DISTINCT ON (s.captain_phone)
-          s.id,s.week_id,s.captain_phone,s.captain_name,s.net,s.old_balance,s.status,s.updated_at,
+          s.id,s.week_id,(SELECT COUNT(*)::int FROM accounting_weeks aw WHERE aw.id<=s.week_id) AS display_week_no,s.captain_phone,s.captain_name,s.net,s.old_balance,s.status,s.updated_at,
           w.starts_at,w.closed_at
         FROM weekly_settlements s
         JOIN accounting_weeks w ON w.id=s.week_id
@@ -1636,7 +1636,7 @@ app.post('/api/admin/weekly/close',auth,async(req,res)=>{
 });
 
 app.get('/api/admin/weekly/archive',auth,async(req,res)=>{
-  const r=await pool.query(`SELECT w.*,COUNT(s.id)::int captains,
+  const r=await pool.query(`SELECT w.*,(SELECT COUNT(*)::int FROM accounting_weeks aw WHERE aw.id<=w.id) AS display_week_no,COUNT(s.id)::int captains,
     COALESCE(SUM(CASE WHEN s.net>0 THEN s.net ELSE 0 END),0)::numeric to_captains,
     COALESCE(SUM(CASE WHEN s.net<0 THEN -s.net ELSE 0 END),0)::numeric from_captains,
     COALESCE(SUM(s.floor_fee),0)::numeric floor_total,COUNT(*) FILTER (WHERE s.status NOT IN ('settled','carried_forward'))::int pending
@@ -2397,6 +2397,7 @@ app.get('/api/captain-auth/me',captainAuth,captainReady,async(req,res)=>{
     const cq=await pool.query(`SELECT name,phone,active,status_reason,status_checked_at,last_group_seen_at,password_changed,onboarding_completed,payment_method,payment_details,payment_updated_at,last_login_at FROM captains WHERE phone=$1`,[p]);
     if(!cq.rowCount||!x)return res.status(404).json({ok:false,error:'CAPTAIN_NOT_FOUND'});
     const latest=await pool.query(`SELECT s.*,w.starts_at,w.closed_at,
+      (SELECT COUNT(*)::int FROM accounting_weeks aw WHERE aw.id<=w.id) AS display_week_no,
       EXISTS(SELECT 1 FROM settlement_proofs pr WHERE pr.settlement_id=s.id AND pr.direction='admin_to_captain') admin_proof,
       EXISTS(SELECT 1 FROM settlement_proofs pr WHERE pr.settlement_id=s.id AND pr.direction='captain_to_admin') captain_proof
       FROM weekly_settlements s JOIN accounting_weeks w ON w.id=s.week_id WHERE s.captain_phone=$1 ORDER BY w.closed_at DESC NULLS LAST,s.id DESC LIMIT 1`,[p]);
