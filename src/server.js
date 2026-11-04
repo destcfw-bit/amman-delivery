@@ -1668,18 +1668,56 @@ app.delete('/api/admin/weekly/:id/permanent',auth,async(req,res)=>{
   await c.query('SELECT pg_advisory_xact_lock(250025)');
   const w=await c.query('SELECT id,status FROM accounting_weeks WHERE id=$1 FOR UPDATE',[id]);
   if(!w.rowCount||w.rows[0].status!=='closed'){await c.query('ROLLBACK');return res.status(409).json({ok:false,error:'ONLY_CLOSED_WEEKS'});}
-  // Refuse a deletion that would silently rewrite a later CLOSED financial statement.
-  const carry=await c.query("SELECT 1 FROM weekly_charges wc JOIN weekly_settlements s ON s.id=wc.source_settlement_id JOIN accounting_weeks w ON w.id=wc.week_id WHERE s.week_id=$1 AND wc.week_id<>$1 AND w.status='closed' LIMIT 1",[id]);
-  if(carry.rowCount){await c.query('ROLLBACK');return res.status(409).json({ok:false,error:'CARRIED_TO_CLOSED_WEEK',message:'هذا الأسبوع مرتبط برصيد مرحّل لأسبوع مغلق؛ لا يمكن حذفه قبل تسوية الترابط المالي.'});}
-  const paid=await c.query('SELECT 1 FROM weekly_settlements s WHERE s.week_id=$1 AND (s.admin_confirmed_at IS NOT NULL OR s.captain_confirmed_at IS NOT NULL OR EXISTS(SELECT 1 FROM settlement_proofs p WHERE p.settlement_id=s.id)) LIMIT 1',[id]);
-  if(paid.rowCount){await c.query('ROLLBACK');return res.status(409).json({ok:false,error:'CONFIRMED_SETTLEMENT_EXISTS',message:'الأسبوع مرتبط بحوالة مؤكدة أو إثبات دفع؛ لا يمكن مسح سجلات دفع فعلية تلقائياً.'});}
+
+  // The owner may delete any CLOSED week. Reconcile carried debt in later ledgers.
+  const outgoing=await c.query(`SELECT wc.id,wc.week_id,wc.captain_phone,wc.amount FROM weekly_charges wc
+    JOIN weekly_settlements s ON s.id=wc.source_settlement_id
+    WHERE s.week_id=$1 AND wc.charge_type='old_balance' FOR UPDATE OF wc`,[id]);
+  const queue=[];
+  for(const charge of outgoing.rows){
+    await c.query('DELETE FROM weekly_charges WHERE id=$1',[charge.id]);
+    const updated=await c.query(`UPDATE weekly_settlements
+      SET old_balance=GREATEST(0,old_balance-$3::numeric),net=net+$3::numeric,updated_at=now()
+      WHERE week_id=$1 AND captain_phone=$2 RETURNING id`,[charge.week_id,charge.captain_phone,charge.amount]);
+    queue.push(...updated.rows.map(x=>x.id));
+  }
+  let iterations=0;
+  while(queue.length){
+    if(++iterations>10000)throw new Error('CARRY_RECALCULATION_LIMIT');
+    const sourceId=queue.shift();
+    const q=await c.query('SELECT id,week_id,net,status,admin_confirmed_at,captain_confirmed_at FROM weekly_settlements WHERE id=$1 FOR UPDATE',[sourceId]);
+    if(!q.rowCount)continue;
+    const src=q.rows[0];
+    const links=await c.query(`SELECT id,week_id,captain_phone,amount FROM weekly_charges
+      WHERE source_settlement_id=$1 AND charge_type='old_balance' FOR UPDATE`,[sourceId]);
+    const desired=(src.admin_confirmed_at!=null||src.captain_confirmed_at!=null)?0:Math.max(0,-Number(src.net));
+    for(const link of links.rows){
+      if(Number(link.week_id)<=Number(src.week_id))throw new Error('INVALID_CARRY_ORDER');
+      const diff=Number(link.amount)-desired;
+      if(Math.abs(diff)<0.0005)continue;
+      if(desired<0.0005)await c.query('DELETE FROM weekly_charges WHERE id=$1',[link.id]);
+      else await c.query('UPDATE weekly_charges SET amount=$2 WHERE id=$1',[link.id,desired]);
+      const next=await c.query(`UPDATE weekly_settlements SET
+        old_balance=GREATEST(0,old_balance-$3::numeric),net=net+$3::numeric,updated_at=now()
+        WHERE week_id=$1 AND captain_phone=$2 RETURNING id`,[link.week_id,link.captain_phone,diff]);
+      queue.push(...next.rows.map(x=>x.id));
+    }
+    if(src.status==='carried_forward'&&desired<0.0005)
+      await c.query(`UPDATE weekly_settlements SET status=CASE WHEN ABS(net)<0.0005 THEN 'settled' ELSE 'pending' END,updated_at=now() WHERE id=$1`,[sourceId]);
+  }
+  const incoming=await c.query(`SELECT DISTINCT source_settlement_id FROM weekly_charges WHERE week_id=$1
+    AND charge_type='old_balance' AND source_settlement_id IS NOT NULL`,[id]);
+  for(const link of incoming.rows){
+    await c.query(`UPDATE weekly_settlements s SET status='pending',updated_at=now()
+      WHERE id=$1 AND status='carried_forward' AND net<0
+      AND NOT EXISTS(SELECT 1 FROM weekly_charges wc WHERE wc.source_settlement_id=s.id AND wc.week_id<>$2)`,[link.source_settlement_id,id]);
+  }
   const claims=await c.query('SELECT id,group_id,original_message_id,reply_message_id FROM claims WHERE week_id=$1 FOR UPDATE',[id]);
   const claimIds=claims.rows.map(x=>x.id);
   const sq=await c.query('SELECT id FROM weekly_settlements WHERE week_id=$1 FOR UPDATE',[id]);
   const settlementIds=sq.rows.map(x=>x.id);
   const phones=(await c.query('SELECT DISTINCT captain_phone FROM movements WHERE claim_id=ANY($1::bigint[])',[claimIds])).rows.map(x=>x.captain_phone);
-  // A carry into a currently OPEN week is removable and is not yet settled.
-  await c.query("DELETE FROM weekly_charges WHERE charge_type='old_balance' AND source_settlement_id=ANY($1::bigint[]) AND week_id<>$2",[settlementIds,id]);
+  // Outgoing carry records were reconciled above.
   await c.query('DELETE FROM captain_objections WHERE claim_id=ANY($1::bigint[]) OR movement_id IN (SELECT id FROM movements WHERE claim_id=ANY($1::bigint[]))',[claimIds]);
   await c.query("DELETE FROM captain_notifications WHERE metadata->>'claim_id'=ANY($1::text[]) OR metadata->>'settlement_id'=ANY($2::text[])",[claimIds.map(String),settlementIds.map(String)]);
   await c.query("DELETE FROM sheet_sync_queue WHERE sync_key LIKE ANY($1::text[]) OR (kind='claim_update' AND payload->'claim'->>'id'=ANY($2::text[]))",[claimIds.map(x=>'claim:'+x+':%'),claimIds.map(String)]);
