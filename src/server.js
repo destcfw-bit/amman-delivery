@@ -469,7 +469,7 @@ app.post(['/webhooks/dropcode','/webhooks/waha'], async (req,res)=>{
     if(a.length!==b.length||!crypto.timingSafeEqual(a,b)){console.warn('DROPCODE WEBHOOK REJECTED: INVALID_SIGNATURE',req.path);return res.status(401).json({ok:false,error:'INVALID_SIGNATURE'});}
     // DropConnect may identify an authorized reactor using a private WhatsApp LID.
     // Resolve via the linked WhatsApp session, never infer a phone from LID digits.
-    if(req.body?.sender && !req.body.sender.phoneJid && /@lid$/i.test(String(req.body.sender.jid||''))){
+    if(['reaction_added','reaction_removed'].includes(String(req.body?.action||'')) && req.body?.sender && !req.body.sender.phoneJid && /@lid$/i.test(String(req.body.sender.jid||''))){
       try{
         const cfg=wahaConfig();
         const result=await wahaRequest(`/api/${encodeURIComponent(cfg.session)}/check-whatsapp`,
