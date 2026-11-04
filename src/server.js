@@ -1657,6 +1657,56 @@ app.post('/api/admin/weekly/:id/trash',auth,async(req,res)=>{
     res.json({ok:true});
   }catch(e){res.status(500).json({ok:false,error:'WEEK_TRASH_FAILED'});}
 });
+// Permanently purge a CLOSED accounting week with atomic balance reconciliation.
+app.delete('/api/admin/weekly/:id/permanent',auth,async(req,res)=>{
+ const id=Number(req.params.id);
+ if(!Number.isSafeInteger(id)||id<=0)return res.status(400).json({ok:false,error:'INVALID_WEEK'});
+ if(String(req.body?.confirmation||'')!=='DELETE WEEK #'+id)return res.status(400).json({ok:false,error:'CONFIRMATION_REQUIRED'});
+ const c=await pool.connect();
+ try{
+  await c.query('BEGIN');
+  await c.query('SELECT pg_advisory_xact_lock(250025)');
+  const w=await c.query('SELECT id,status FROM accounting_weeks WHERE id=$1 FOR UPDATE',[id]);
+  if(!w.rowCount||w.rows[0].status!=='closed'){await c.query('ROLLBACK');return res.status(409).json({ok:false,error:'ONLY_CLOSED_WEEKS'});}
+  // Refuse a deletion that would silently rewrite a later CLOSED financial statement.
+  const carry=await c.query("SELECT 1 FROM weekly_charges wc JOIN weekly_settlements s ON s.id=wc.source_settlement_id JOIN accounting_weeks w ON w.id=wc.week_id WHERE s.week_id=$1 AND wc.week_id<>$1 AND w.status='closed' LIMIT 1",[id]);
+  if(carry.rowCount){await c.query('ROLLBACK');return res.status(409).json({ok:false,error:'CARRIED_TO_CLOSED_WEEK',message:'هذا الأسبوع مرتبط برصيد مرحّل لأسبوع مغلق؛ لا يمكن حذفه قبل تسوية الترابط المالي.'});}
+  const paid=await c.query('SELECT 1 FROM weekly_settlements s WHERE s.week_id=$1 AND (s.admin_confirmed_at IS NOT NULL OR s.captain_confirmed_at IS NOT NULL OR EXISTS(SELECT 1 FROM settlement_proofs p WHERE p.settlement_id=s.id)) LIMIT 1',[id]);
+  if(paid.rowCount){await c.query('ROLLBACK');return res.status(409).json({ok:false,error:'CONFIRMED_SETTLEMENT_EXISTS',message:'الأسبوع مرتبط بحوالة مؤكدة أو إثبات دفع؛ لا يمكن مسح سجلات دفع فعلية تلقائياً.'});}
+  const claims=await c.query('SELECT id,group_id,original_message_id,reply_message_id FROM claims WHERE week_id=$1 FOR UPDATE',[id]);
+  const claimIds=claims.rows.map(x=>x.id);
+  const sq=await c.query('SELECT id FROM weekly_settlements WHERE week_id=$1 FOR UPDATE',[id]);
+  const settlementIds=sq.rows.map(x=>x.id);
+  const phones=(await c.query('SELECT DISTINCT captain_phone FROM movements WHERE claim_id=ANY($1::bigint[])',[claimIds])).rows.map(x=>x.captain_phone);
+  // A carry into a currently OPEN week is removable and is not yet settled.
+  await c.query("DELETE FROM weekly_charges WHERE charge_type='old_balance' AND source_settlement_id=ANY($1::bigint[]) AND week_id<>$2",[settlementIds,id]);
+  await c.query('DELETE FROM captain_objections WHERE claim_id=ANY($1::bigint[]) OR movement_id IN (SELECT id FROM movements WHERE claim_id=ANY($1::bigint[]))',[claimIds]);
+  await c.query("DELETE FROM captain_notifications WHERE metadata->>'claim_id'=ANY($1::text[]) OR metadata->>'settlement_id'=ANY($2::text[])",[claimIds.map(String),settlementIds.map(String)]);
+  await c.query("DELETE FROM sheet_sync_queue WHERE sync_key LIKE ANY($1::text[]) OR (kind='claim_update' AND payload->'claim'->>'id'=ANY($2::text[]))",[claimIds.map(x=>'claim:'+x+':%'),claimIds.map(String)]);
+  await c.query('DELETE FROM reaction_log WHERE claim_id=ANY($1::bigint[])',[claimIds]);
+  await c.query('DELETE FROM claims WHERE week_id=$1',[id]);
+  // Week-scoped manual movements, charges, corrections, settlements and proof images cascade.
+  await c.query('DELETE FROM accounting_weeks WHERE id=$1',[id]);
+  // Rebuild affected captains from REMAINING active movements instead of subtracting estimates.
+  if(phones.length)await c.query("WITH totals AS (SELECT captain_phone,COALESCE(SUM(amount) FILTER(WHERE direction='production'),0) production,COALESCE(SUM(amount) FILTER(WHERE direction='consumption'),0) consumption FROM movements WHERE status='active' AND captain_phone=ANY($1::text[]) GROUP BY captain_phone) UPDATE captain_balances cb SET production=COALESCE(t.production,0),consumption=COALESCE(t.consumption,0),net=COALESCE(t.production,0)-COALESCE(t.consumption,0),updated_at=now() FROM (SELECT unnest($1::text[]) captain_phone) x LEFT JOIN totals t ON t.captain_phone=x.captain_phone WHERE cb.captain_phone=x.captain_phone",[phones]);
+  // Remove WhatsApp copies of the deleted week's messages only when no other claim needs them.
+  const refs=new Map();
+  for(const row of claims.rows)for(const mid of [row.original_message_id,row.reply_message_id])if(mid)refs.set(row.group_id+'|'+mid,{group:row.group_id,id:mid});
+  for(const ref of refs.values()){
+   const shared=await c.query('SELECT 1 FROM claims WHERE group_id=$1 AND (original_message_id=$2 OR reply_message_id=$2) LIMIT 1',[ref.group,ref.id]);
+   if(shared.rowCount)continue;
+   await c.query('DELETE FROM whatsapp_media WHERE group_id=$1 AND message_id=$2',[ref.group,ref.id]);
+   await c.query('DELETE FROM whatsapp_messages WHERE group_id=$1 AND message_id=$2',[ref.group,ref.id]);
+  }
+  await c.query('COMMIT');
+  res.set('Cache-Control','no-store');
+  return res.json({ok:true,deleted_week:id,affected_captains:phones.length,deleted_claims:claimIds.length});
+ }catch(e){
+  try{await c.query('ROLLBACK')}catch(_){}
+  console.error('PERMANENT WEEK PURGE ERROR',e);
+  return res.status(500).json({ok:false,error:'PERMANENT_WEEK_PURGE_FAILED',message:e.message});
+ }finally{c.release()}
+});
 app.post('/api/admin/weekly/:id/restore',auth,async(req,res)=>{
   try{
     const q=await pool.query(`UPDATE accounting_weeks SET trashed_at=NULL WHERE id=$1 AND status='closed' AND trashed_at IS NOT NULL RETURNING id`,[req.params.id]);
