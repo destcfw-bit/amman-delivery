@@ -356,7 +356,7 @@ async function loadAll(){
  const failed=[['الأسبوع',w],['الكباتن',c],['القروبات',g],['المخولين',a],['التعديلات',ad],['الحركات',mm],['التصحيحات',bc],['الأرشيف',ar],['الاعتراضات',ob],['التسجيلات',rr],['غير المسجلين',un],['المكررين',du],['إعدادات التحويل',st],['الأرصدة القديمة',oldb],['جرد اليوم',dl]].filter(x=>!x[1]?.ok).map(x=>x[0]);if(failed.length)tell('⚠️ تعذر تحديث: '+failed.join('، '));
 }
 function renderAll(){
- weekLabel.textContent=state.week?`الأسبوع الحالي #${state.week.id} — بدأ ${dt(state.week.starts_at)}${state.week.floor_applied_at?' — الأرضية مضافة ✅':' — الأرضية لم تضف بعد'}`:'—';
+ weekLabel.textContent=state.week?`الأسبوع الحالي #${state.week.display_week_no??state.week.id} — بدأ ${dt(state.week.starts_at)}${state.week.floor_applied_at?' — الأرضية مضافة ✅':' — الأرضية لم تضف بعد'}`:'—';
  ovActive.textContent=state.captains.filter(x=>x.active).length;ovStopped.textContent=state.captains.filter(x=>!x.active).length;ovProd.textContent=money(state.totals.production);ovCons.textContent=money(state.totals.consumption);ovFloor.textContent=money(state.totals.floor);
  overviewSettlement.innerHTML=`<div class="row"><span>💰 مطلوب تحويله للكباتن — هذا الأسبوع فقط</span><b class="money plus">${money(state.totals.currentToCaptains??state.totals.toCaptains)} د.أ</b></div><div class="row"><span>💳 مطلوب تحصيله من الكباتن — هذا الأسبوع فقط</span><b class="money minus">${money(state.totals.currentFromCaptains??state.totals.fromCaptains)} د.أ</b></div><div class="row"><span>🧾 إجمالي الأرضيات</span><b class="money floor">${money(state.totals.floor)} د.أ</b></div><div class="muted" style="margin-top:8px;font-size:11px">🔄 الأرصدة القديمة مفصولة بالكامل بالجدول الموجود تحت هذا الملخص.</div>`;
  renderOldBalances();renderDailyLedger();
@@ -427,7 +427,7 @@ async function loadNegativeCarryCandidates(){
   const j=await api('/api/admin/negative-carry-candidates?_='+Date.now());
   if(!j.ok){tell('❌ تعذر تحميل أصحاب الرصيد السالب');return}
   negativeCarryCandidates=j.rows||[];
-  if(window.negativeCarryWeek)negativeCarryWeek.textContent='الأسبوع #'+(j.week?.id||'—');
+  if(window.negativeCarryWeek)negativeCarryWeek.textContent='الأسبوع #'+(j.week?.display_week_no??j.week?.id??'—');
   renderNegativeCarryCandidates();
 }
 
@@ -556,11 +556,11 @@ function renderOldBalances(){
  if(window.oldBalanceCount)oldBalanceCount.textContent=Number(d.count||rows.length);
  if(window.oldBalanceCaptains)oldBalanceCaptains.textContent=Number(d.captains||new Set(rows.map(x=>x.captain_phone)).size);
  if(window.oldBalanceCountBadge)oldBalanceCountBadge.textContent=`${Number(d.count||rows.length)} رصيد`;
- if(window.oldBalancesBody)oldBalancesBody.innerHTML=rows.map(x=>`<tr><td><span class="badge info">الأسبوع #${Number(x.week_id||0)}</span></td><td><b>${esc(x.captain_name||'—')}</b></td><td dir="ltr">${esc(x.captain_phone||'')}</td><td class="money minus"><b>${money(x.amount||Math.abs(Number(x.net||0)))} د.أ</b></td><td><span class="badge wait">غير مسدد</span></td></tr>`).join('')||'<tr><td colspan="5" class="empty">✅ لا توجد أرصدة قديمة غير مسددة</td></tr>';
+ if(window.oldBalancesBody)oldBalancesBody.innerHTML=rows.map(x=>`<tr><td><span class="badge info">الأسبوع #${Number(x.display_week_no??x.week_id??0)}</span></td><td><b>${esc(x.captain_name||'—')}</b></td><td dir="ltr">${esc(x.captain_phone||'')}</td><td class="money minus"><b>${money(x.amount||Math.abs(Number(x.net||0)))} د.أ</b></td><td><span class="badge wait">غير مسدد</span></td></tr>`).join('')||'<tr><td colspan="5" class="empty">✅ لا توجد أرصدة قديمة غير مسددة</td></tr>';
 }
 async function loadOldBalances(){const j=await api('/api/admin/weekly/old-balances');if(j.ok){state.oldBalances={rows:j.rows||[],total:Number(j.total||0),count:Number(j.count||0),captains:Number(j.captains||0)};renderOldBalances();tell(j.count?`🔄 ${j.count} رصيد قديم — ${money(j.total)} د.أ`:'✅ لا توجد أرصدة قديمة')}else tell('❌ تعذر تحميل الأرصدة القديمة')}
 
-function renderArchive(){archiveBody.innerHTML=state.archive.map(w=>`<tr><td><b>#${w.id}</b></td><td>${dt(w.starts_at)}</td><td>${dt(w.closed_at)}</td><td>${money(w.floor_total)}</td><td class="money plus">${money(w.to_captains)}</td><td class="money minus">${money(w.from_captains)}</td><td>${w.pending?`<span class="badge wait">${w.pending}</span>`:'<span class="badge ok">0</span>'}</td><td><button class="btn" onclick="openWeek(${Number(w.id)})">فتح</button> <button class="btn btn-danger" onclick="trashWeek(${Number(w.id)})">🗑️ للسلة</button> <button class="btn btn-danger" style="background:#ad0000!important;color:#fff!important" onclick="permanentlyDeleteWeek(${Number(w.id)})">⛔ حذف نهائي</button></td></tr>`).join('')||'<tr><td colspan="8" class="empty">لا يوجد أسابيع مقفلة بعد</td></tr>'}
+function renderArchive(){archiveBody.innerHTML=state.archive.map(w=>`<tr><td><b>#${w.display_week_no??w.id}</b></td><td>${dt(w.starts_at)}</td><td>${dt(w.closed_at)}</td><td>${money(w.floor_total)}</td><td class="money plus">${money(w.to_captains)}</td><td class="money minus">${money(w.from_captains)}</td><td>${w.pending?`<span class="badge wait">${w.pending}</span>`:'<span class="badge ok">0</span>'}</td><td><button class="btn" onclick="openWeek(${Number(w.id)})">فتح</button> <button class="btn btn-danger" onclick="trashWeek(${Number(w.id)})">🗑️ للسلة</button> <button class="btn btn-danger" style="background:#ad0000!important;color:#fff!important" onclick="permanentlyDeleteWeek(${Number(w.id)})">⛔ حذف نهائي</button></td></tr>`).join('')||'<tr><td colspan="8" class="empty">لا يوجد أسابيع مقفلة بعد</td></tr>'}
 async function loadTrash(){const j=await api('/api/admin/weekly/trash');if(j.ok){trashBody.innerHTML=(j.rows||[]).map(w=>`<tr><td><b>#${Number(w.id)}</b></td><td>${dt(w.starts_at)}</td><td>${dt(w.closed_at)}</td><td>${dt(w.trashed_at)}</td><td><button class="btn btn-primary" onclick="restoreWeek(${Number(w.id)})">♻️ استرجاع</button> <button class="btn btn-danger" style="background:#ad0000!important;color:#fff!important" onclick="permanentlyDeleteWeek(${Number(w.id)})">⛔ حذف نهائي</button></td></tr>`).join('')||'<tr><td colspan="5" class="empty">السلة فارغة</td></tr>'}else tell('❌ تعذر تحميل السلة')}
 async function trashWeek(id){if(!confirm(`نقل الأسبوع #${id} إلى سلة المحذوفات؟\\nلن تُحذف أي أرصدة أو حوالات.`))return;const j=await api('/api/admin/weekly/'+id+'/trash',{method:'POST',body:'{}'});if(j.ok){tell('🗑️ تم النقل للسلة');await loadArchive();await loadTrash()}else tell('❌ '+(j.error||'تعذر النقل'))}
 async function permanentlyDeleteWeek(id){
@@ -922,7 +922,7 @@ ${lines.join('\n')}`;
  if(carried.length)html+=`<div style="margin-top:16px;border:1px solid #60a5fa55;border-radius:14px;overflow:hidden"><div style="padding:12px 14px;background:#60a5fa10;display:flex;justify-content:space-between;gap:10px;align-items:center"><b style="color:#bec8d8">🔄 أرصدة تم ترحيلها ودمجها بأسبوع أحدث</b><span class="badge info">${carried.length} كابتن</span></div><div class="table"><table><thead><tr><th>الكابتن</th><th>الرصيد المرحّل</th><th>الإنتاج</th><th>الاستهلاك</th><th>الأرضية</th><th>رصيد قديم داخل الأسبوع</th><th>الحالة</th></tr></thead><tbody>${carried.map(carriedRow).join('')}</tbody></table></div></div>`;
  const wk=state.archive.find(x=>Number(x.id)===Number(id));
  if(wk)html+=`<div style="margin-top:14px"><button class="btn btn-danger" onclick="reopenWeek(${id})">🔄 إعادة فتح هذا الأسبوع</button><div class="muted" style="font-size:11px;margin-top:6px">مسموح فقط لآخر أسبوع مقفل وإذا الأسبوع الجديد ما عليه أي حركة.</div></div>`;
- showModal('📚 الأسبوع #'+id,html);
+ showModal('📚 الأسبوع #'+(state.archive.find(w=>Number(w.id)===Number(id))?.display_week_no??id),html);
  await hydrateProofThumbs();
 }
 async function reopenWeek(id){if(!confirm('إعادة فتح آخر أسبوع؟ هذا الإجراء لن يعمل إذا بدأ نشاط في الأسبوع الجديد.'))return;const j=await api('/api/admin/weekly/'+id+'/reopen',{method:'POST',body:'{}'});if(j.ok){hideModal();tell('✅ تم إعادة فتح الأسبوع');loadAll()}else tell(j.error==='NEW_WEEK_HAS_ACTIVITY'?'❌ لا يمكن: الأسبوع الجديد عليه حركات.':'❌ '+(j.error||'فشل'))}
