@@ -1692,11 +1692,12 @@ app.delete('/api/admin/weekly/:id/permanent',auth,async(req,res)=>{
   // Remove WhatsApp copies of the deleted week's messages only when no other claim needs them.
   const refs=new Map();
   for(const row of claims.rows)for(const mid of [row.original_message_id,row.reply_message_id])if(mid)refs.set(row.group_id+'|'+mid,{group:row.group_id,id:mid});
-  for(const ref of refs.values()){
-   const shared=await c.query('SELECT 1 FROM claims WHERE group_id=$1 AND (original_message_id=$2 OR reply_message_id=$2) LIMIT 1',[ref.group,ref.id]);
-   if(shared.rowCount)continue;
-   await c.query('DELETE FROM whatsapp_media WHERE group_id=$1 AND message_id=$2',[ref.group,ref.id]);
-   await c.query('DELETE FROM whatsapp_messages WHERE group_id=$1 AND message_id=$2',[ref.group,ref.id]);
+  const refRows=[...refs.values()];
+  if(refRows.length){
+   const groups=refRows.map(x=>x.group),messageIds=refRows.map(x=>x.id);
+   // Delete only unshared originals/replies, as two set-based operations.
+   await c.query('DELETE FROM whatsapp_media dst USING unnest($1::text[],$2::text[]) AS refs(group_id,message_id) WHERE dst.group_id=refs.group_id AND dst.message_id=refs.message_id AND NOT EXISTS (SELECT 1 FROM claims cl WHERE cl.group_id=refs.group_id AND (cl.original_message_id=refs.message_id OR cl.reply_message_id=refs.message_id))',[groups,messageIds]);
+   await c.query('DELETE FROM whatsapp_messages dst USING unnest($1::text[],$2::text[]) AS refs(group_id,message_id) WHERE dst.group_id=refs.group_id AND dst.message_id=refs.message_id AND NOT EXISTS (SELECT 1 FROM claims cl WHERE cl.group_id=refs.group_id AND (cl.original_message_id=refs.message_id OR cl.reply_message_id=refs.message_id))',[groups,messageIds]);
   }
   await c.query('COMMIT');
   res.set('Cache-Control','no-store');
