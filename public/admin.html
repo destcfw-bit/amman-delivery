@@ -218,7 +218,7 @@
 </section>
 
 <section id="s-archive" class="section">
-<div class="panel"><div class="ph"><div><h3>📚 أرشيف الأسابيع</h3><small>كل أسبوع مقفل محفوظ كما هو</small></div><button class="btn" onclick="loadArchive()">↻</button></div><div class="table"><table><thead><tr><th>الأسبوع</th><th>من</th><th>إلى</th><th>الأرضيات</th><th>للكباتن</th><th>على الكباتن</th><th>غير مسدد</th><th></th></tr></thead><tbody id="archiveBody"></tbody></table></div></div><div class="panel"><div class="ph"><h3>سلة محذوفات الأسابيع</h3><button class="btn" onclick="loadTrash()">عرض المحذوفات</button></div><div class="table"><table><thead><tr><th>الأسبوع</th><th>من</th><th>إلى</th><th>تاريخ الحذف</th><th>استرجاع</th></tr></thead><tbody id="trashBody"></tbody></table></div></div>
+<div class="panel"><div class="ph"><div><h3>📚 أرشيف الأسابيع</h3><small>كل أسبوع مقفل محفوظ كما هو</small></div><button class="btn" onclick="loadArchive()">↻</button></div><div class="table"><table><thead><tr><th>الأسبوع</th><th>من</th><th>إلى</th><th>الأرضيات</th><th>للكباتن</th><th>على الكباتن</th><th>غير مسدد</th><th></th></tr></thead><tbody id="archiveBody"></tbody></table></div></div><div style="padding:12px 14px;border-top:1px solid var(--line,rgba(255,255,255,.12));display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between"><div><b>🧹 تصفير الأرصدة القديمة</b><div class="muted" style="font-size:12px">حذف جميع الأسابيع المغلقة نهائيًا وأرصِدتها المرحلة، مع الإبقاء على الأسبوع المفتوح وحركاته كما هي. لا يمكن التراجع.</div></div><button class="btn btn-danger" onclick="resetAllOldBalances()">🧹 تصفير الأرصدة القديمة</button></div><div class="panel"><div class="ph"><h3>سلة محذوفات الأسابيع</h3><button class="btn" onclick="loadTrash()">عرض المحذوفات</button></div><div class="table"><table><thead><tr><th>الأسبوع</th><th>من</th><th>إلى</th><th>تاريخ الحذف</th><th>استرجاع</th></tr></thead><tbody id="trashBody"></tbody></table></div></div>
 </section>
 
 
@@ -768,6 +768,21 @@ async function saveSystemTransferSettings(){
  if(j.ok){state.systemTransfer=j.data;tell('✅ تم تحديث بيانات التحويل للنظام لكل الكباتن');renderSystemTransferSettings()}else tell('❌ '+(j.error||'فشل الحفظ'));
 }
 
+async function resetAllOldBalances(){
+ const preview=await api('/api/admin/weekly/reset-old-balances/preview');
+ if(!preview.ok){tell('❌ '+(preview.error||'تعذر فحص الأسابيع القديمة'));return;}
+ const count=Number(preview.closed_weeks||0),charges=Number(preview.old_balance_rows||0);
+ if(!count&&!charges){tell('✅ لا توجد أسابيع مغلقة أو أرصدة قديمة لتصفيرها');return;}
+ const warning='تحذير: سيتم الحذف النهائي لكل الأسابيع المغلقة ('+count+' أسبوع) وحركاتها وتسوياتها، وتصفير '+charges+' رصيد مرحّل.\n\nالأسبوع المفتوح #'+(state.week?.display_week_no??state.week?.id??preview.open_week_id)+' وطلباته الحالية سيبقى كما هو.\n\nهذه العملية لا يمكن التراجع عنها. خذ نسخة احتياطية قبل المتابعة.';
+ if(!confirm(warning))return;
+ const confirmation='RESET OLD BALANCES';
+ const typed=prompt('للتأكيد النهائي، اكتب النص التالي كما هو:\n'+confirmation);
+ if(typed!==confirmation){tell('تم إلغاء العملية: التأكيد غير مطابق');return;}
+ const result=await api('/api/admin/weekly/reset-old-balances',{method:'POST',body:JSON.stringify({confirmation:typed,expected_open_week_id:preview.open_week_id})});
+ if(!result.ok){tell('❌ '+(result.message||result.error||'تعذر التصفير'));return;}
+ tell('✅ تم تصفير الأرصدة القديمة وحذف '+result.weeks_deleted+' أسبوع مغلق مع بقاء الأسبوع المفتوح');
+ await loadAll();await loadArchive();if(typeof loadTrash==='function')await loadTrash();
+}
 async function loadArchive(){const j=await api('/api/admin/weekly/archive');if(j.ok){state.archive=j.rows||[];renderArchive()}}
 let openedWeekId=null;
 const proofObjectUrls=[];
