@@ -785,6 +785,18 @@ async function resetAllOldBalances(){
 }
 async function loadArchive(){const j=await api('/api/admin/weekly/archive');if(j.ok){state.archive=j.rows||[];renderArchive()}}
 let openedWeekId=null;
+let activeSettlementTab='to';
+function switchSettlementTab(tab){
+ if(!['to','from','done'].includes(tab))return;
+ activeSettlementTab=tab;
+ for(const name of ['to','from','done']){
+  const pane=document.getElementById('archiveSettlementPane-'+name);
+  const button=document.getElementById('archiveSettlementTab-'+name);
+  if(pane)pane.hidden=name!==tab;
+  if(button){button.classList.toggle('btn-primary',name===tab);button.setAttribute('aria-selected',String(name===tab));}
+ }
+}
+
 const proofObjectUrls=[];
 function releaseProofUrls(){while(proofObjectUrls.length){try{URL.revokeObjectURL(proofObjectUrls.pop())}catch(_){}}}
 async function proofBlobUrl(id,direction){
@@ -807,6 +819,19 @@ async function uploadAdminProof(id,input){
  const j=await api('/api/admin/weekly/settlements/'+id+'/transfer-proof',{method:'POST',body:fd});
  if(j.ok){tell('✅ تم رفع صورة الحوالة للكابتن');await openWeek(openedWeekId)}else tell('❌ '+(j.error||'فشل رفع الحوالة'));
 }
+async function markTransferred(id,btn){
+ if(!confirm('✅ تأكيد أنك حوّلت المبلغ للكابتن؟\n\nسينتقل إلى قائمة «تمت التسوية».'))return;
+ if(btn){btn.disabled=true;btn.textContent='⏳ جاري التأكيد...';}
+ const j=await api('/api/admin/weekly/settlements/'+id+'/mark-transferred',{method:'POST',body:'{}'});
+ if(j.ok){
+  tell('✅ تم تأكيد التحويل ونقل الكابتن إلى المنتهية');
+  activeSettlementTab='done';
+  await loadAll();await openWeek(openedWeekId);await loadArchive();
+ }else{
+  if(btn){btn.disabled=false;btn.textContent='✅ تم التحويل';}
+  tell('❌ '+(j.message||j.error||'فشل تأكيد التحويل'));
+ }
+}
 async function markReceived(id,btn){
  if(!confirm('✅ تأكيد استلام المبلغ من الكابتن؟\n\nبعد التأكيد سيختفي من قائمة «عليهم إلنا» وينتقل فوراً إلى «التسويات المنتهية».'))return;
  if(btn){btn.disabled=true;btn.textContent='⏳ جاري النقل...'}
@@ -814,6 +839,7 @@ async function markReceived(id,btn){
  if(j.ok){
    const carryMsg=Number(j.cleared_old_balance||0)>0?` — وانشال ${money(j.cleared_old_balance)} د.أ من «الرصيد القديم» بالأسبوع الحالي`:'';
    tell((j.had_proof?'✅ تم الاستلام وحذف صورة الحوالة ونقل الكابتن للمنتهية':'✅ تم الاستلام ونقل الكابتن للمنتهية (بدون صورة حوالة)')+carryMsg);
+   activeSettlementTab='done';
    await loadAll();
    await openWeek(openedWeekId);
    await loadArchive();
@@ -822,25 +848,27 @@ async function markReceived(id,btn){
    tell('❌ '+(j.message||j.error||'فشل تأكيد الاستلام'));
  }
 }
-async function copyArchiveSettlements(type){
-  const isTo=type==='to';
-  const list=Array.isArray(isTo?window.__weeklyTo:window.__weeklyFrom)
-    ? (isTo?window.__weeklyTo:window.__weeklyFrom)
-    : [];
-  if(!list.length)return tell(isTo?'⚠️ لا يوجد كباتن إلهم علينا لنسخهم':'⚠️ لا يوجد كباتن عليهم إلنا لنسخهم');
-
-  const ordered=[...list].sort((a,b)=>tnum(a.captain_name)-tnum(b.captain_name)||String(a.captain_name||'').localeCompare(String(b.captain_name||''),'ar'));
-  const lines=ordered.map(s=>{
-    const method=String(s.payment_method||'').toLowerCase();
-    const d=s.payment_details||{};
-    if(method==='cliq')return String(d.alias||d.cliq||d.username||'').trim();
-    return '';
-  }).filter(Boolean);
-
-  if(!lines.length)return tell('⚠️ ما في معرفات CliQ مسجلة بهذه القائمة');
-  const text=lines.join('\n');
-  try{await navigator.clipboard.writeText(text);tell('📋 تم نسخ '+lines.length+' معرف CliQ')}
-  catch(_){prompt('انسخ معرفات CliQ:',text)}
+function copyPlainTextForMobile(value){
+ const area=document.createElement('textarea');area.value=value;
+ area.setAttribute('readonly','');area.style.cssText='position:fixed;top:0;left:0;width:1px;height:1px;opacity:.01;z-index:999999;font-size:16px';
+ document.body.appendChild(area);area.focus();area.select();area.setSelectionRange(0,area.value.length);
+ let copied=false;try{copied=!!document.execCommand('copy')}catch(_){}area.remove();return copied;
+}
+function showManualCliqCopy(value){
+ showModal('📋 نسخ معرفات CliQ',`<div class="callout">إذا رفض Safari النسخ، اضغط مطولًا على النص وحدد الكل ثم انسخ.</div><textarea id="manualCliqCopyField" class="input" readonly dir="ltr" style="width:100%;min-height:220px;font-size:16px;white-space:pre">${esc(value)}</textarea><button class="btn btn-primary" onclick="selectManualCliqText()">تحديد النص كاملًا</button>`);
+ selectManualCliqText();
+}
+function selectManualCliqText(){const e=document.getElementById('manualCliqCopyField');if(e){e.focus();e.select();e.setSelectionRange(0,e.value.length);}}
+function copyArchiveSettlements(type){
+ const list=type==='to'?window.__weeklyTo:window.__weeklyFrom;
+ if(!Array.isArray(list)||!list.length)return tell('⚠️ لا يوجد كباتن قيد التسوية للنسخ');
+ const ordered=[...list].sort((a,b)=>tnum(a.captain_name)-tnum(b.captain_name)||String(a.captain_name||'').localeCompare(String(b.captain_name||''),'ar'));
+ const aliases=ordered.map(s=>{const method=String(s.payment_method||'').toLowerCase(),d=s.payment_details||{};return method==='cliq'?String(d.alias||d.cliq||d.username||'').trim():''}).filter(Boolean);
+ if(!aliases.length)return tell('⚠️ لا توجد معرّفات CliQ مسجلة في هذه القائمة');
+ const value=aliases.join('\n');
+ if(copyPlainTextForMobile(value)){tell(`📋 تم نسخ ${aliases.length} معرّف CliQ`);return;}
+ if(navigator.clipboard?.writeText)navigator.clipboard.writeText(value).then(()=>tell(`📋 تم نسخ ${aliases.length} معرّف CliQ`)).catch(()=>showManualCliqCopy(value));
+ else showManualCliqCopy(value);
 }
 
 async function openWeek(id){
@@ -867,7 +895,7 @@ async function openWeek(id){
   if(st==='carried_forward')return '<span class="badge info">🔄 مرحّل للأسبوع التالي</span>';
   if(n>0){
    const proof=s.admin_proof?proofThumb(s,'admin_to_captain','صورة حوالة الإدارة للكابتن'):'';
-   return `<div style="display:grid;gap:8px">${proof}<label class="btn btn-primary">${s.admin_proof?'🔄 تغيير الحوالة':'📤 رفع حوالة له'}<input type="file" accept="image/*" hidden onchange="uploadAdminProof(${s.id},this)"></label>${s.admin_proof?'<span class="badge wait">⏳ بانتظار الكابتن يضغط تم الوصول</span>':''}</div>`;
+   return `<div style="display:grid;gap:8px">${proof}<label class="btn btn-primary">${s.admin_proof?'🔄 تغيير الحوالة':'📤 رفع حوالة له'}<input type="file" accept="image/*" hidden onchange="uploadAdminProof(${s.id},this)"></label><button class="btn btn-green" onclick="markTransferred(${s.id},this)">✅ تم التحويل</button>${s.admin_proof?'<span class="badge wait">⏳ بانتظار الكابتن يضغط تم الوصول — أو أكّد التحويل يدويًا</span>':''}</div>`;
   }
   if(n<0){
    const proof=s.captain_proof?proofThumb(s,'captain_to_admin','صورة حوالة الكابتن'):'';
@@ -930,14 +958,17 @@ ${lines.join('\n')}`;
   return `<tr><td><b>${esc(s.captain_name)}</b><div class="muted" dir="ltr">${esc(s.captain_phone)}</div></td><td><span class="badge info">عليه ${money(Math.abs(n))}</span></td><td>${money(s.production)}</td><td>${money(s.consumption)}</td><td>${money(s.floor_fee)}</td><td>${money(s.old_balance)}</td><td><span class="badge info">🔄 تم دمجه في أسبوع أحدث</span></td></tr>`;
  }
 
- let html=`<div class="callout">✅ التسويات صارت 3 قوائم: <b style="color:#22c55e">إلهم علينا</b>، <b style="color:#ef4444">عليهم إلنا</b>، و <b>منتهية</b>. عند الضغط على «تم الاستلام» أو «تم الوصول» ينتقل الاسم تلقائياً إلى المنتهية. <span class="muted">القوائم مرتبة تدريجياً حسب رقم الكابتن T1 ثم T2 ثم T3، وزر «📋 نسخ CliQ» ينسخ معرفات CliQ فقط، كل معرف بسطر مستقل.</span></div>`;
- html+=renderGroup(pendingTo,'to');
- html+=renderGroup(pendingFrom,'from');
+ let html=`<div class="callout">اختر القائمة المطلوبة. عند «تم الاستلام» أو «تم التحويل» ينتقل الكابتن فورًا إلى «تمت التسوية». زر نسخ CliQ ينسخ المعرّفات المسجلة فقط.</div><div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px" role="tablist"><button id="archiveSettlementTab-to" role="tab" class="btn" style="white-space:normal;min-height:58px;padding:8px" onclick="switchSettlementTab('to')">🟢 إلهم علينا <span class="badge">${pendingTo.length}</span></button><button id="archiveSettlementTab-from" role="tab" class="btn" style="white-space:normal;min-height:58px;padding:8px" onclick="switchSettlementTab('from')">🔴 عليهم إلنا <span class="badge">${pendingFrom.length}</span></button><button id="archiveSettlementTab-done" role="tab" class="btn" style="white-space:normal;min-height:58px;padding:8px" onclick="switchSettlementTab('done')">✅ تمت التسوية <span class="badge">${completed.length}</span></button></div>`;
+ html+='<div id="archiveSettlementPane-to" role="tabpanel">'+renderGroup(pendingTo,'to')+'</div>';
+ html+='<div id="archiveSettlementPane-from" role="tabpanel" hidden>'+renderGroup(pendingFrom,'from')+'</div>';
+ html+='<div id="archiveSettlementPane-done" role="tabpanel" hidden>';
  html+=`<div style="margin-top:16px;border:1px solid #22c55e55;border-radius:14px;overflow:hidden"><div style="padding:12px 14px;background:#22c55e10;display:flex;justify-content:space-between;gap:10px;align-items:center"><b style="color:#86efac">✅ التسويات المنتهية</b><span class="badge ok">${completed.length} كابتن</span></div><div class="table"><table><thead><tr><th>الكابتن</th><th>النتيجة</th><th>الإنتاج</th><th>الاستهلاك</th><th>الأرضية</th><th>رصيد قديم</th><th>الحالة</th></tr></thead><tbody>${completed.map(completedRow).join('')||'<tr><td colspan="7" class="empty">لا توجد تسويات منتهية بعد</td></tr>'}</tbody></table></div></div>`;
  if(carried.length)html+=`<div style="margin-top:16px;border:1px solid #60a5fa55;border-radius:14px;overflow:hidden"><div style="padding:12px 14px;background:#60a5fa10;display:flex;justify-content:space-between;gap:10px;align-items:center"><b style="color:#bec8d8">🔄 أرصدة تم ترحيلها ودمجها بأسبوع أحدث</b><span class="badge info">${carried.length} كابتن</span></div><div class="table"><table><thead><tr><th>الكابتن</th><th>الرصيد المرحّل</th><th>الإنتاج</th><th>الاستهلاك</th><th>الأرضية</th><th>رصيد قديم داخل الأسبوع</th><th>الحالة</th></tr></thead><tbody>${carried.map(carriedRow).join('')}</tbody></table></div></div>`;
+ html+='</div>';
  const wk=state.archive.find(x=>Number(x.id)===Number(id));
  if(wk)html+=`<div style="margin-top:14px"><button class="btn btn-danger" onclick="reopenWeek(${id})">🔄 إعادة فتح هذا الأسبوع</button><div class="muted" style="font-size:11px;margin-top:6px">مسموح فقط لآخر أسبوع مقفل وإذا الأسبوع الجديد ما عليه أي حركة.</div></div>`;
  showModal('📚 الأسبوع #'+(state.archive.find(w=>Number(w.id)===Number(id))?.display_week_no??id),html);
+ switchSettlementTab(activeSettlementTab);
  await hydrateProofThumbs();
 }
 async function reopenWeek(id){if(!confirm('إعادة فتح آخر أسبوع؟ هذا الإجراء لن يعمل إذا بدأ نشاط في الأسبوع الجديد.'))return;const j=await api('/api/admin/weekly/'+id+'/reopen',{method:'POST',body:'{}'});if(j.ok){hideModal();tell('✅ تم إعادة فتح الأسبوع');loadAll()}else tell(j.error==='NEW_WEEK_HAS_ACTIVITY'?'❌ لا يمكن: الأسبوع الجديد عليه حركات.':'❌ '+(j.error||'فشل'))}
