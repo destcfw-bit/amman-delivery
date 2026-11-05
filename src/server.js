@@ -1872,6 +1872,25 @@ app.post('/api/admin/weekly/settlements/:id/mark-received',auth,async(req,res)=>
   res.json({ok:true,moved_to_completed:true,had_proof:hadProof,status:'settled',row:settled,
     cleared_old_balance:clearedCarry?Number(clearedCarry.amount):0,cleared_from_week:clearedCarry?Number(clearedCarry.week_id):null});
 });
+// Administrative confirmation that a positive settlement was transferred.
+app.post('/api/admin/weekly/settlements/:id/mark-transferred',auth,async(req,res)=>{
+ const c=await pool.connect();let settled;
+ try{
+  await c.query('BEGIN');
+  const q=await c.query('SELECT * FROM weekly_settlements WHERE id=$1 FOR UPDATE',[req.params.id]);
+  if(!q.rowCount){await c.query('ROLLBACK');return res.status(404).json({ok:false,error:'NOT_FOUND'});}
+  const x=q.rows[0];
+  if(Number(x.net)<=0){await c.query('ROLLBACK');return res.status(400).json({ok:false,error:'SETTLEMENT_NOT_OWED_TO_CAPTAIN'});}
+  if(x.status==='carried_forward'){await c.query('ROLLBACK');return res.status(409).json({ok:false,error:'SETTLEMENT_CARRIED_FORWARD'});}
+  if(x.status==='settled'){await c.query('ROLLBACK');return res.json({ok:true,already:true,moved_to_completed:true,status:'settled'});}
+  const updated=await c.query("UPDATE weekly_settlements SET status='settled',admin_confirmed_at=now(),updated_at=now() WHERE id=$1 RETURNING id,week_id,captain_phone,captain_name,net,status",[x.id]);
+  settled=updated.rows[0];
+  await c.query('COMMIT');
+ }catch(e){try{await c.query('ROLLBACK')}catch(_){}return res.status(500).json({ok:false,error:'MARK_TRANSFERRED_FAILED',message:e.message});}finally{c.release();}
+ try{await notifyCaptain(pool,settled.captain_phone,'success','تم تحويل مستحقاتك','أكدت الإدارة تحويل مستحقاتك وتمت التسوية.',{settlement_id:settled.id,amount:Number(settled.net)});}catch(e){console.error('MARK TRANSFER NOTIFY ERROR',e.message)}
+ try{await audit('ADMIN_TRANSFER_CONFIRMED',{settlement_id:settled.id,phone:settled.captain_phone,amount:Number(settled.net)});}catch(e){console.error('MARK TRANSFER AUDIT ERROR',e.message)}
+ res.set('Cache-Control','no-store');res.json({ok:true,status:'settled',moved_to_completed:true,row:settled});
+});
 app.post('/api/admin/weekly/settlements/:id/transfer-proof',auth,upload.single('proof'),async(req,res)=>{
   try{
     if(!req.file)return res.status(400).json({ok:false,error:'IMAGE_REQUIRED'});
