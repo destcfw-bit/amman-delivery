@@ -904,8 +904,15 @@ async function openWeek(id){
   }
   return '<span class="badge ok">✅ مسدد</span>';
  }
- async function copySettlementTransfer(value,label){
-  try{await navigator.clipboard.writeText(String(value||''));tell(`📋 تم نسخ ${label}`)}catch(_){prompt(`انسخ ${label}:`,String(value||''))}
+ function copySettlementTransfer(value,label='CliQ'){
+  const alias=String(value||'').trim();
+  if(!alias)return tell('⚠️ معرف CliQ غير مسجل');
+  // Use a synchronous copy attempt inside the original tap on iOS Safari.
+  if(copyPlainTextForMobile(alias)){tell('📋 تم نسخ '+label+': '+alias);return;}
+  if(navigator.clipboard?.writeText){
+   navigator.clipboard.writeText(alias).then(()=>tell('📋 تم نسخ '+label+': '+alias))
+     .catch(()=>showManualCliqCopy(alias));
+  }else showManualCliqCopy(alias);
  }
  async function copyAllProducers(){
   const list=Array.isArray(window.__weeklyProducers)?window.__weeklyProducers:[];
@@ -925,8 +932,9 @@ ${lines.join('\n')}`;
  }
  function paymentCell(s){
   const d=s.payment_details||{};const method=String(s.payment_method||'');
-  const cliq=method==='cliq'?String(d.alias||'').trim():'';
-  const copyBtn=cliq?`<button class="btn" style="margin-top:7px;padding:6px 9px" onclick='copySettlementTransfer(${JSON.stringify(cliq)},"CliQ")'>📋 نسخ CliQ</button>`:'';
+  const cliq=method.toLowerCase()==='cliq'?String(d.alias||d.cliq||d.username||'').trim():'';
+  // Store the escaped alias in a data attribute to avoid broken onclick quoting.
+  const copyBtn=cliq?`<button type="button" class="btn" style="margin-top:7px;padding:6px 9px" data-cliq="${esc(cliq)}" onclick="copySettlementTransfer(this.dataset.cliq,'CliQ')">📋 نسخ CliQ</button>`:'';
   return `<b>${esc(payLabel(method))}</b><div class="muted" style="font-size:10px">${esc(Object.values(d).join(' — '))}</div>${copyBtn}`
  }
  function settleBadge(status){
