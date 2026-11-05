@@ -1635,6 +1635,66 @@ app.post('/api/admin/weekly/close',auth,async(req,res)=>{
   }catch(e){await c.query('ROLLBACK');res.status(500).json({ok:false,error:'WEEK_CLOSE_FAILED',message:e.message});}finally{c.release();}
 });
 
+// Administrative clean slate: permanently remove all CLOSED weeks and every
+// old-balance carry into the OPEN week. Never delete the open week's activity.
+app.get('/api/admin/weekly/reset-old-balances/preview',auth,async(req,res)=>{
+ try{
+  const [open,old,debt]=await Promise.all([
+   pool.query("SELECT id,starts_at FROM accounting_weeks WHERE status='open' ORDER BY id DESC LIMIT 1"),
+   pool.query("SELECT COUNT(*)::int AS weeks FROM accounting_weeks WHERE status='closed'"),
+   pool.query("SELECT COUNT(*)::int AS rows,COALESCE(SUM(amount),0) AS amount FROM weekly_charges WHERE charge_type='old_balance' AND week_id IN (SELECT id FROM accounting_weeks WHERE status='open')")
+  ]);
+  if(!open.rowCount)return res.status(409).json({ok:false,error:'NO_OPEN_WEEK'});
+  res.set('Cache-Control','no-store');res.json({ok:true,open_week_id:open.rows[0].id,closed_weeks:old.rows[0].weeks,old_balance_rows:debt.rows[0].rows,old_balance_total:debt.rows[0].amount});
+ }catch(e){console.error('OLD BALANCE PREVIEW ERROR',e);res.status(500).json({ok:false,error:'OLD_BALANCE_PREVIEW_FAILED'});}
+});
+app.post('/api/admin/weekly/reset-old-balances',auth,async(req,res)=>{
+ if(req.body?.confirmation!=='RESET OLD BALANCES')return res.status(400).json({ok:false,error:'CONFIRMATION_REQUIRED'});
+ const c=await pool.connect();
+ try{
+  await c.query('BEGIN');
+  await c.query('SELECT pg_advisory_xact_lock(250025)');
+  const open=await c.query("SELECT id FROM accounting_weeks WHERE status='open' ORDER BY id DESC LIMIT 1 FOR UPDATE");
+  if(!open.rowCount){await c.query('ROLLBACK');return res.status(409).json({ok:false,error:'NO_OPEN_WEEK'});}
+  const openId=Number(open.rows[0].id);
+  if(Number(req.body?.expected_open_week_id)!==openId){await c.query('ROLLBACK');return res.status(409).json({ok:false,error:'WEEK_CHANGED',message:'الأسبوع المفتوح تغير؛ حدّث الصفحة أولاً.'});}
+  const past=await c.query("SELECT id FROM accounting_weeks WHERE status='closed' ORDER BY id FOR UPDATE");
+  const pastIds=past.rows.map(r=>r.id);
+  const claims=await c.query('SELECT id FROM claims WHERE week_id=ANY($1::bigint[]) FOR UPDATE',[pastIds]);
+  const claimIds=claims.rows.map(r=>r.id);
+  const settlements=await c.query('SELECT id FROM weekly_settlements WHERE week_id=ANY($1::bigint[]) FOR UPDATE',[pastIds]);
+  const settlementIds=settlements.rows.map(r=>r.id);
+  // Remove only past-week debt charges from current week. Keep its floor,
+  // adjustments, manual entries, corrections, claims and original starts_at.
+  const cleared=await c.query("DELETE FROM weekly_charges WHERE week_id=$1 AND charge_type='old_balance' RETURNING amount",[openId]);
+  // Other (closed) weeks will cascade their own charges and settlements.
+  if(claimIds.length){
+   await c.query("DELETE FROM sheet_sync_queue WHERE kind='claim_update' AND payload->'claim'->>'id'=ANY($1::text[])",[claimIds.map(String)]);
+   await c.query('DELETE FROM reaction_log WHERE claim_id=ANY($1::bigint[])',[claimIds]);
+   await c.query('DELETE FROM captain_objections WHERE claim_id=ANY($1::bigint[]) OR movement_id IN (SELECT id FROM movements WHERE claim_id=ANY($1::bigint[]))',[claimIds]);
+   await c.query("DELETE FROM captain_notifications WHERE metadata->>'claim_id'=ANY($1::text[])",[claimIds.map(String)]);
+   await c.query('DELETE FROM claims WHERE id=ANY($1::bigint[])',[claimIds]);
+  }
+  if(settlementIds.length)await c.query("DELETE FROM captain_notifications WHERE metadata->>'settlement_id'=ANY($1::text[])",[settlementIds.map(String)]);
+  if(pastIds.length){
+   await c.query("DELETE FROM captain_notifications WHERE metadata->>'week_id'=ANY($1::text[])",[pastIds.map(String)]);
+   await c.query('DELETE FROM accounting_weeks WHERE id=ANY($1::bigint[])',[pastIds]);
+  }
+  // Rebuild all captains, active and suspended, from surviving active
+  // movements (the open week's movements and any independent records).
+  await c.query(`UPDATE captain_balances cb SET production=COALESCE(t.production,0),
+    consumption=COALESCE(t.consumption,0),net=COALESCE(t.production,0)-COALESCE(t.consumption,0),updated_at=now()
+    FROM (SELECT cp.captain_phone,
+      COALESCE(SUM(m.amount) FILTER(WHERE m.direction='production' AND m.status='active'),0) production,
+      COALESCE(SUM(m.amount) FILTER(WHERE m.direction='consumption' AND m.status='active'),0) consumption
+      FROM captain_balances cp LEFT JOIN movements m ON m.captain_phone=cp.captain_phone
+      GROUP BY cp.captain_phone) t WHERE cb.captain_phone=t.captain_phone`);
+  await c.query("INSERT INTO audit_log(action,details) VALUES('ALL_OLD_WEEKS_RESET',$1)",[{open_week_id:openId,weeks_deleted:pastIds.length,claims_deleted:claimIds.length,old_balance_charges_removed:cleared.rowCount}]);
+  await c.query('COMMIT');
+  res.set('Cache-Control','no-store');res.json({ok:true,open_week_id:openId,weeks_deleted:pastIds.length,claims_deleted:claimIds.length,old_balance_charges_removed:cleared.rowCount});
+ }catch(e){try{await c.query('ROLLBACK')}catch(_){}console.error('OLD BALANCE RESET ERROR',e);res.status(500).json({ok:false,error:'OLD_BALANCE_RESET_FAILED'});}finally{c.release()}
+});
+
 app.get('/api/admin/weekly/archive',auth,async(req,res)=>{
   const r=await pool.query(`SELECT w.*,(SELECT COUNT(*)::int FROM accounting_weeks aw WHERE aw.id<=w.id) AS display_week_no,COUNT(s.id)::int captains,
     COALESCE(SUM(CASE WHEN s.net>0 THEN s.net ELSE 0 END),0)::numeric to_captains,
