@@ -820,12 +820,11 @@ async function uploadAdminProof(id,input){
  if(j.ok){tell('✅ تم رفع صورة الحوالة للكابتن');await openWeek(openedWeekId)}else tell('❌ '+(j.error||'فشل رفع الحوالة'));
 }
 async function markTransferred(id,btn){
- if(!confirm('✅ تأكيد أنك حوّلت المبلغ للكابتن؟\n\nسينتقل إلى قائمة «تمت التسوية».'))return;
+ if(!confirm('✅ تأكيد أنك حوّلت المبلغ للكابتن؟\n\nسينتقل اسم الكابتن إلى قائمة «تمت التسوية»، وستبقى أنت في قائمتك الحالية.'))return;
  if(btn){btn.disabled=true;btn.textContent='⏳ جاري التأكيد...';}
  const j=await api('/api/admin/weekly/settlements/'+id+'/mark-transferred',{method:'POST',body:'{}'});
  if(j.ok){
   tell('✅ تم تأكيد التحويل ونقل الكابتن إلى المنتهية');
-  activeSettlementTab='done';
   await loadAll();await openWeek(openedWeekId);await loadArchive();
  }else{
   if(btn){btn.disabled=false;btn.textContent='✅ تم التحويل';}
@@ -833,13 +832,12 @@ async function markTransferred(id,btn){
  }
 }
 async function markReceived(id,btn){
- if(!confirm('✅ تأكيد استلام المبلغ من الكابتن؟\n\nبعد التأكيد سيختفي من قائمة «عليهم إلنا» وينتقل فوراً إلى «التسويات المنتهية».'))return;
+ if(!confirm('✅ تأكيد استلام المبلغ من الكابتن؟\n\nبعد التأكيد سيختفي من قائمة «عليهم إلنا» وينتقل اسمه إلى «التسويات المنتهية» وتبقى أنت في قائمتك الحالية.'))return;
  if(btn){btn.disabled=true;btn.textContent='⏳ جاري النقل...'}
  const j=await api('/api/admin/weekly/settlements/'+id+'/mark-received',{method:'POST',body:'{}'});
  if(j.ok){
    const carryMsg=Number(j.cleared_old_balance||0)>0?` — وانشال ${money(j.cleared_old_balance)} د.أ من «الرصيد القديم» بالأسبوع الحالي`:'';
    tell((j.had_proof?'✅ تم الاستلام وحذف صورة الحوالة ونقل الكابتن للمنتهية':'✅ تم الاستلام ونقل الكابتن للمنتهية (بدون صورة حوالة)')+carryMsg);
-   activeSettlementTab='done';
    await loadAll();
    await openWeek(openedWeekId);
    await loadArchive();
