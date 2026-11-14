@@ -2198,6 +2198,31 @@ app.post('/api/admin/refresh-whatsapp-names',auth,async(req,res)=>{
     res.json({ok:true,...data});
   }catch(e){res.status(502).json({ok:false,error:'WHATSAPP_NAMES_REFRESH_FAILED',message:e.message});}
 });
+
+app.post('/api/admin/repair-group-phones',auth,async(req,res)=>{
+  try{
+    const groupId=String(req.body?.group_id||'').trim(),apply=req.body?.apply===true;
+    if(!groupId)return res.status(400).json({ok:false,error:'GROUP_ID_REQUIRED'});
+    const group=await pool.query('SELECT group_id,name FROM groups WHERE group_id=$1 AND active=true LIMIT 1',[groupId]);
+    if(!group.rowCount)return res.status(404).json({ok:false,error:'ACTIVE_GROUP_NOT_FOUND'});
+    const cfg=wahaConfig();
+    if(!cfg.baseUrl)return res.status(400).json({ok:false,error:'WAHA_NOT_CONFIGURED'});
+    const data=await getWahaGroupParticipants(groupId,pool);
+    if(!data.total||!data.phones?.length||data.lidsUnresolved)return res.status(409).json({ok:false,error:'GROUP_PARTICIPANTS_UNAVAILABLE',unresolved:data.lidsUnresolved||0});
+    const present=new Set(data.phones.map(normalizePhone).filter(Boolean));
+    const caps=await pool.query('SELECT phone,active FROM captains');
+    const matching=caps.rows.filter(c=>present.has(normalizePhone(c.phone)));
+    const toActivate=matching.filter(c=>!c.active);
+    const missing=[...present].filter(p=>!caps.rows.some(c=>normalizePhone(c.phone)===p));
+    if(apply){
+      for(const c of toActivate)await pool.query("UPDATE captains SET active=true,status_reason='تم تأكيد الرقم من القروب المعتمد',status_checked_at=now(),last_group_seen_at=now(),updated_at=now() WHERE phone=$1",[c.phone]);
+      await audit('GROUP_PHONE_REPAIR',{group_id:groupId,activated:toActivate.length,missing:missing.length,confirmed:present.size});
+    }
+    res.set('Cache-Control','no-store');
+    res.json({ok:true,preview:!apply,group_id:groupId,group_name:group.rows[0].name,confirmed:present.size,matched:matching.length,activate:toActivate.length,not_registered:missing.length,unchanged_other_captains:true});
+  }catch(e){res.status(502).json({ok:false,error:'GROUP_PHONE_REPAIR_FAILED',message:e.message});}
+});
+
 app.post('/api/admin/check-group-members',auth,async(req,res)=>{
   try{
     const provider=String(process.env.WHATSAPP_PROVIDER||'dropcode').trim().toLowerCase();
