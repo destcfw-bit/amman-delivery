@@ -273,7 +273,7 @@
 <section id="s-groups" class="section">
 <div class="grid2">
 <div class="panel"><div class="ph"><div><h3>◎ القروبات المعتمدة</h3><small>القروب المفعّل يدخل بالحساب والفحص، و«مصدر التسجيل» فقط يسمح بإضافة كباتن تلقائياً أو من الشيت</small></div><div class="filters"><button class="btn btn-primary" onclick="openAddGroup()">➕ إضافة قروب</button><button class="btn" onclick="loadGroups()">↻</button></div></div><div class="pb" id="groupsList"></div></div>
-<div class="panel"><div class="ph"><div><h3>🔍 فحص أعضاء القروبات</h3><small>يحدّث الحالة ويضيف تلقائياً فقط من قروب مصدر التسجيل</small></div></div><div class="pb"><div class="callout">زر الفحص يقارن أرقام الكباتن مع القروبات المفعلة. الموجود يصير <b>فعال</b>، وغير الموجود يصير <b>موقوف</b>. إنشاء كابتن جديد مسموح فقط من القروب المحدد كـ <b>مصدر تسجيل</b>.</div><button class="btn btn-primary" style="width:100%;margin-top:10px" onclick="scanGroups()">🔍 ابدأ الفحص الآن</button><div id="scanResult" style="margin-top:12px"></div></div></div>
+<div class="panel"><div class="ph"><div><h3>🔍 فحص أعضاء القروبات</h3><small>يحدّث الحالة ويضيف تلقائياً فقط من قروب مصدر التسجيل</small></div></div><div class="pb"><div class="callout">زر الفحص يقارن أرقام الكباتن مع القروبات المفعلة. الموجود يصير <b>فعال</b>، وغير الموجود يصير <b>موقوف</b>. إنشاء كابتن جديد مسموح فقط من القروب المحدد كـ <b>مصدر تسجيل</b>.</div><button class="btn btn-primary" style="width:100%;margin-top:10px" onclick="scanGroups()">🔍 ابدأ الفحص الآن</button><div id="scanResult" style="margin-top:12px"></div><button class="btn" style="width:100%;margin-top:10px" onclick="repairGroupPhones()">🛠️ تصليح أرقام قروب محدد (معاينة أولاً)</button><div id="repairGroupResult" style="margin-top:10px"></div></div></div>
 </div>
 </section>
 
@@ -663,6 +663,31 @@ function linkUnknown(phone){const opts=state.captains.slice().sort(captainSort).
 async function confirmLinkUnknown(phone){const j=await api('/api/admin/unregistered/'+encodeURIComponent(phone)+'/link',{method:'POST',body:JSON.stringify({target_phone:linkTarget.value})});if(j.ok){hideModal();tell(`✅ تم الربط ومعالجة ${j.reconciled||0} حركة`);loadAll()}else tell('❌ '+(j.error||'فشل الربط'))}
 async function repairLegacyUnknown(){if(!confirm('سيتم إلغاء أثر الحركات القديمة التي انحسبت لطرف مسجل بينما الطرف الثاني غير مسجل، وتتحول لمعلقة لحين تسجيل الرقم. متابعة؟'))return;const j=await api('/api/admin/integrity/repair-unregistered',{method:'POST',body:'{}'});if(j.ok){tell(`🛡️ تم تصحيح ${j.repaired} طلب`);loadAll()}else tell('❌ '+(j.error||'فشل التصحيح'))}
 async function cleanupWaiting(){const j=await api('/api/admin/cleanup/waiting',{method:'POST',body:'{}'});if(j.ok)tell(`🧹 تم حذف ${j.deleted} طلب انتظار قديم`);else tell('❌ فشل التنظيف')}
+
+
+async function repairGroupPhones(){
+ const list=await api('/api/admin/groups-list');
+ if(!list.ok)return tell('❌ تعذر تحميل القروبات');
+ const groups=(list.rows||[]).filter(g=>g.active);
+ if(!groups.length)return tell('لا توجد قروبات مفعّلة');
+ const opts=groups.map(g=>`<option value="${esc(g.group_id)}">${esc(g.name||g.group_id)} — ${esc(g.group_id)}</option>`).join('');
+ showModal('🛠️ تصليح أرقام القروب',`<div class="form-grid"><div class="callout wide">التصليح يراجع الأرقام من القروب المحدد في هذا النظام فقط، ويعيد تفعيل المسجلين الموجودين فيه. لا يحذف أرقاماً ولا يغيّر أرصدة أو عمولات، ولا يوقف كباتن القروبات الثانية. الأرقام غير المسجلة تظهر بالمعاينة فقط.</div><select class="select wide" id="repairGroupId">${opts}</select><button class="btn btn-primary wide" onclick="previewGroupPhoneRepair()">🔍 معاينة التصليح</button><div class="wide" id="repairGroupPreview"></div></div>`);
+}
+async function previewGroupPhoneRepair(){
+ const id=document.getElementById('repairGroupId')?.value;
+ const out=document.getElementById('repairGroupPreview');
+ if(!id||!out)return;
+ out.textContent='جاري التحقق من أعضاء القروب...';
+ const j=await api('/api/admin/repair-group-phones',{method:'POST',body:JSON.stringify({group_id:id,apply:false})});
+ if(!j.ok){out.textContent='❌ '+(j.message||j.error||'تعذر الفحص');return;}
+ out.innerHTML=`<div class="callout">أعضاء مؤكدون: <b>${j.confirmed}</b> | مسجلون: <b>${j.matched}</b> | سيتم تفعيل: <b>${j.activate}</b> | غير مسجلين (لن يتم إضافتهم): <b>${j.not_registered}</b></div><button class="btn btn-primary" onclick='applyGroupPhoneRepair(${JSON.stringify(id)})'>✅ اعتماد تصليح هذا القروب</button>`;
+}
+async function applyGroupPhoneRepair(id){
+ if(!confirm('تأكيد إعادة تفعيل الكباتن المسجلين والموجودين في هذا القروب فقط؟'))return;
+ const j=await api('/api/admin/repair-group-phones',{method:'POST',body:JSON.stringify({group_id:id,apply:true})});
+ if(!j.ok)return tell('❌ '+(j.message||j.error||'فشل التصليح'));
+ hideModal();tell('✅ تم تصليح حالة '+j.activate+' كابتن بدون حذف بيانات');loadAll();
+}
 
 async function loadGroups(){const j=await api('/api/admin/detected-groups');if(j.ok){state.groups=j.rows||[];renderGroups()}}
 async function addAuthorized(){const j=await api('/api/admin/authorized-cancel',{method:'POST',body:JSON.stringify({name:aname.value.trim(),phone:aphone.value.trim(),active:true})});if(j.ok){tell('✅ تم الحفظ');const a=await api('/api/admin/authorized-list');state.authorized=a.rows||[];renderAuthorized()}else tell('❌ '+(j.error||'فشل'))}
