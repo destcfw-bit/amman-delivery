@@ -1462,6 +1462,55 @@ app.get('/api/admin/weekly/old-balances',auth,async(req,res)=>{
   }
 });
 
+// A captain is weekly-active only if they participated in a recorded order or
+// have a genuine weekly ledger movement. Merely being registered/active is not enough.
+const weeklyFloorActivity = `(
+  EXISTS (SELECT 1 FROM claims cl WHERE cl.week_id=$1
+    AND cl.status<>'cancelled'
+    AND (cl.producer_phone=cp.phone OR cl.consumer_phone=cp.phone))
+  OR EXISTS (SELECT 1 FROM manual_movements mm WHERE mm.week_id=$1 AND mm.captain_phone=cp.phone)
+  OR EXISTS (SELECT 1 FROM weekly_adjustments wa WHERE wa.week_id=$1 AND wa.captain_phone=cp.phone)
+)`;
+
+app.get('/api/admin/weekly/floor/refund-preview',auth,async(req,res)=>{
+  try{
+    const w=await getOpenWeek();
+    const q=await pool.query(`SELECT wc.captain_phone,cp.name,wc.amount
+      FROM weekly_charges wc JOIN captains cp ON cp.phone=wc.captain_phone
+      WHERE wc.week_id=$1 AND wc.charge_type='floor'
+        AND NOT ${weeklyFloorActivity}
+      ORDER BY cp.name,cp.phone`,[w.id]);
+    res.set('Cache-Control','no-store');
+    res.json({ok:true,week_id:w.id,rows:q.rows,count:q.rowCount,
+      total:q.rows.reduce((sum,r)=>sum+Number(r.amount),0)});
+  }catch(e){res.status(500).json({ok:false,error:'FLOOR_REFUND_PREVIEW_FAILED',message:e.message})}
+});
+
+app.post('/api/admin/weekly/floor/refund-inactive',auth,async(req,res)=>{
+  const c=await pool.connect();
+  try{
+    await c.query('BEGIN');
+    const wq=await c.query("SELECT id FROM accounting_weeks WHERE status='open' ORDER BY id DESC LIMIT 1 FOR UPDATE");
+    if(!wq.rowCount || Number(req.body?.expected_week_id)!==Number(wq.rows[0].id)){
+      await c.query('ROLLBACK');return res.status(409).json({ok:false,error:'WEEK_CHANGED'});
+    }
+    const w=wq.rows[0];
+    // Deleting the erroneous charge restores the exact amount automatically in
+    // weeklyRows; do not add a separate credit, which could duplicate the refund.
+    const removed=await c.query(`DELETE FROM weekly_charges wc
+      USING captains cp
+      WHERE wc.captain_phone=cp.phone AND wc.week_id=$1 AND wc.charge_type='floor'
+        AND NOT ${weeklyFloorActivity}
+      RETURNING wc.captain_phone,wc.amount`,[w.id]);
+    const total=removed.rows.reduce((sum,r)=>sum+Number(r.amount),0);
+    await c.query("INSERT INTO audit_log(action,details) VALUES('WEEKLY_FLOOR_INACTIVE_REFUNDED',$1)",
+      [{week_id:w.id,count:removed.rowCount,total,phones:removed.rows.map(r=>r.captain_phone)}]);
+    await c.query('COMMIT');
+    res.json({ok:true,week_id:w.id,count:removed.rowCount,total});
+  }catch(e){await c.query('ROLLBACK');res.status(500).json({ok:false,error:'FLOOR_REFUND_FAILED',message:e.message})}
+  finally{c.release()}
+});
+
 app.post('/api/admin/weekly/floor',auth,async(req,res)=>{
   await ensureCaptainExemptions();
   const c=await pool.connect();
@@ -1471,7 +1520,7 @@ app.post('/api/admin/weekly/floor',auth,async(req,res)=>{
     const amount=Number(req.body?.amount??0.50);
     if(!Number.isFinite(amount)||amount<=0){await c.query('ROLLBACK');return res.status(400).json({ok:false,error:'INVALID_FLOOR'});}
     const ins=await c.query(`INSERT INTO weekly_charges(week_id,captain_phone,charge_type,amount,note)
-      SELECT $1,cp.phone,'floor',$2,'أرضية أسبوعية' FROM captains cp WHERE cp.active=true AND NOT EXISTS (SELECT 1 FROM captain_charge_exemptions ex WHERE ex.captain_phone=cp.phone AND ex.floor_exempt=true)
+      SELECT $1,cp.phone,'floor',$2,'أرضية أسبوعية' FROM captains cp WHERE cp.active=true AND ${weeklyFloorActivity} AND NOT EXISTS (SELECT 1 FROM captain_charge_exemptions ex WHERE ex.captain_phone=cp.phone AND ex.floor_exempt=true)
       ON CONFLICT(week_id,captain_phone,charge_type) DO NOTHING RETURNING captain_phone`,[w.id,amount]);
     await c.query(`UPDATE accounting_weeks SET floor_amount=$2,floor_applied_at=now() WHERE id=$1`,[w.id,amount]);
     for(const r of ins.rows) await notifyCaptain(c,r.captain_phone,'info','تمت إضافة الأرضية الأسبوعية',`تم خصم أرضية ${amount.toFixed(2)} د.أ للأسبوع #${w.id}.`,{week_id:w.id,amount});
@@ -1489,12 +1538,13 @@ app.post('/api/admin/weekly/floor/complete',auth,async(req,res)=>{
     const w=await getOpenWeek(c);
     const amount=w.floor_applied_at?Number(w.floor_amount||0.50):0.50;
     if(!Number.isFinite(amount)||amount<=0){await c.query('ROLLBACK');return res.status(400).json({ok:false,error:'INVALID_FLOOR'});}
-    const eligible=await c.query(`SELECT COUNT(*)::int n FROM captains cp WHERE cp.active=true AND NOT EXISTS (SELECT 1 FROM captain_charge_exemptions ex WHERE ex.captain_phone=cp.phone AND ex.floor_exempt=true)`);
+    const eligible=await c.query(`SELECT COUNT(*)::int n FROM captains cp WHERE cp.active=true AND ${weeklyFloorActivity} AND NOT EXISTS (SELECT 1 FROM captain_charge_exemptions ex WHERE ex.captain_phone=cp.phone AND ex.floor_exempt=true)`);
     const already=await c.query(`SELECT COUNT(*)::int n FROM weekly_charges WHERE week_id=$1 AND charge_type='floor'`,[w.id]);
     const ins=await c.query(`INSERT INTO weekly_charges(week_id,captain_phone,charge_type,amount,note)
       SELECT $1,cp.phone,'floor',$2,'استكمال الأرضية الأسبوعية'
       FROM captains cp
       WHERE cp.active=true
+        AND ${weeklyFloorActivity}
         AND NOT EXISTS (SELECT 1 FROM captain_charge_exemptions ex WHERE ex.captain_phone=cp.phone AND ex.floor_exempt=true)
         AND NOT EXISTS (
           SELECT 1 FROM weekly_charges wc
