@@ -166,7 +166,7 @@ module.exports = function setupNegativeWeeklyTools({app,pool,auth,getOpenWeek,we
         SELECT s.week_id,COUNT(*)::int matches
         FROM weekly_settlements s JOIN accounting_weeks w ON w.id=s.week_id
         WHERE w.status='closed' AND w.trashed_at IS NULL
-          AND (s.captain_phone ILIKE $1 ESCAPE '\' OR s.captain_name ILIKE $1 ESCAPE '\')
+          AND (s.captain_phone ILIKE $1 OR s.captain_name ILIKE $1)
         GROUP BY s.week_id ORDER BY s.week_id DESC LIMIT 150
       `,[like]);
       res.set('Cache-Control','no-store').json({ok:true,rows:r.rows});
