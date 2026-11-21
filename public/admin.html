@@ -218,15 +218,15 @@
 </section>
 
 <section id="s-archive" class="section">
-<div class="panel"><div class="ph"><div><h3>📚 أرشيف الأسابيع</h3><small>كل أسبوع مقفل محفوظ كما هو</small></div><button class="btn" onclick="loadArchive()">↻</button></div><div class="table"><table><thead><tr><th>الأسبوع</th><th>من</th><th>إلى</th><th>الأرضيات</th><th>للكباتن</th><th>على الكباتن</th><th>غير مسدد</th><th></th></tr></thead><tbody id="archiveBody"></tbody></table></div></div><div style="padding:12px 14px;border-top:1px solid var(--line,rgba(255,255,255,.12));display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between"><div><b>🧹 تصفير الأرصدة القديمة</b><div class="muted" style="font-size:12px">حذف جميع الأسابيع المغلقة نهائيًا وأرصِدتها المرحلة، مع الإبقاء على الأسبوع المفتوح وحركاته كما هي. لا يمكن التراجع.</div></div><button class="btn btn-danger" onclick="resetAllOldBalances()">🧹 تصفير الأرصدة القديمة</button></div><div class="panel"><div class="ph"><h3>سلة محذوفات الأسابيع</h3><button class="btn" onclick="loadTrash()">عرض المحذوفات</button></div><div class="table"><table><thead><tr><th>الأسبوع</th><th>من</th><th>إلى</th><th>تاريخ الحذف</th><th>استرجاع</th></tr></thead><tbody id="trashBody"></tbody></table></div></div>
+<div class="panel"><div class="ph"><div><h3>📚 أرشيف الأسابيع</h3><small>كل أسبوع مقفل محفوظ كما هو</small></div><div class="filters" style="display:flex;align-items:center;flex-wrap:wrap;gap:8px"><input id="archiveCaptainSearch" type="search" class="input" placeholder="🔎 بحث باسم الكابتن أو رقمه بكل الأسابيع" aria-label="بحث عن كابتن في أرشيف الأسابيع" oninput="searchArchiveCaptains()" style="min-width:230px;max-width:320px"><span id="archiveCaptainSearchStatus" class="muted" style="font-size:11px"></span><button class="btn" onclick="loadArchive()">↻ تحديث</button></div></div><div class="table"><table><thead><tr><th>الأسبوع</th><th>من</th><th>إلى</th><th>الأرضيات</th><th>للكباتن</th><th>على الكباتن</th><th>غير مسدد</th><th></th></tr></thead><tbody id="archiveBody"></tbody></table></div></div><div style="padding:12px 14px;border-top:1px solid var(--line,rgba(255,255,255,.12));display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between"><div><b>🧹 تصفير الأرصدة القديمة</b><div class="muted" style="font-size:12px">حذف جميع الأسابيع المغلقة نهائيًا وأرصِدتها المرحلة، مع الإبقاء على الأسبوع المفتوح وحركاته كما هي. لا يمكن التراجع.</div></div><button class="btn btn-danger" onclick="resetAllOldBalances()">🧹 تصفير الأرصدة القديمة</button></div><div class="panel"><div class="ph"><h3>سلة محذوفات الأسابيع</h3><button class="btn" onclick="loadTrash()">عرض المحذوفات</button></div><div class="table"><table><thead><tr><th>الأسبوع</th><th>من</th><th>إلى</th><th>تاريخ الحذف</th><th>استرجاع</th></tr></thead><tbody id="trashBody"></tbody></table></div></div>
 </section>
 
 
 <section id="s-negative-remove" class="section">
 <div class="panel">
   <div class="ph">
-    <div><h3>🧹 إزالة أصحاب الرصيد السالب من القروبات</h3><small>يدوي فقط — للكباتن الذين دخلوا الأسبوع الجديد برصيد قديم وما زال صافيهم سالب</small></div>
-    <div class="filters"><button class="btn" onclick="loadNegativeRemovalSection()">↻ تحديث الكل</button><button class="btn btn-danger" onclick="removeSelectedNegativeCaptains()">إزالة المحددين من القروبات</button></div>
+    <div><h3>🧹 إزالة أصحاب الرصيد السالب من القروبات</h3><small>الأرصدة السالبة مفصولة حسب الأسبوع؛ زر الإزالة الآلية للأسبوع المفتوح والرصيد المرحّل فقط</small></div>
+    <div class="filters"><button class="btn" onclick="loadNegativeRemovalSection()">↻ تحديث الكل</button><button id="negativeBotRemoveButton" class="btn btn-danger" onclick="removeSelectedNegativeCaptains()">إزالة المحددين من القروبات</button></div>
   </div>
   <div class="pb">
     <div class="callout">
@@ -234,6 +234,7 @@
       إذا رجع DROPCODE/WhatsApp Rate Limit أو مشكلة صلاحيات، العملية تتوقف.
     </div>
     <div class="row" style="margin-top:10px;gap:8px;flex-wrap:wrap">
+      <label for="negativeWeekSelect">اختر الأسبوع</label><select id="negativeWeekSelect" class="input" onchange="changeNegativeWeek()" style="max-width:265px"></select>
       <span class="badge wait" id="negativeCarryWeek">الأسبوع: —</span>
       <span class="badge off" id="negativeCarryCount">0 كابتن</span>
       <button class="btn" onclick="toggleNegativeCarryAll(true)">تحديد أول 5</button>
@@ -241,14 +242,20 @@
     </div>
   </div>
   <div class="table"><table>
-    <thead><tr><th>اختيار</th><th>الكابتن</th><th>الرقم</th><th>الرصيد القديم</th><th>الصافي الحالي</th><th>إنتاج الأسبوع</th><th>استهلاك الأسبوع</th><th>الحالة</th></tr></thead>
-    <tbody id="negativeCarryBody"><tr><td colspan="8" class="empty">اضغط تحديث القائمة</td></tr></tbody>
+    <thead><tr><th>اختيار</th><th>الكابتن</th><th>الرقم</th><th>الرصيد القديم</th><th>الصافي الحالي</th><th>إنتاج الأسبوع</th><th>استهلاك الأسبوع</th><th>الحالة</th><th>إجراء</th></tr></thead>
+    <tbody id="negativeCarryBody"><tr><td colspan="9" class="empty">اضغط تحديث القائمة</td></tr></tbody>
   </table></div>
 </div>
 
 <div class="panel" style="margin-top:12px">
+ <div class="ph"><div><h3>✓ تم إزالتهم يدويًا — هذا الأسبوع</h3><small>علامة محاسبية فقط؛ لا تصفّر الرصيد ولا ترسل واتساب تلقائيًا</small></div><button class="btn" onclick="refreshNegativeWeekly()">↻ تحديث</button></div>
+ <div class="pb"><span class="badge info" id="negativeWeeklyManualRemovedCount">0 كابتن</span><div class="muted" style="margin-top:6px">المطالبة تظهر فقط إذا كان الرصيد الحالي سالبًا، ويمكن التراجع عن علامة الإزالة دون إعادة الكابتن إلى القروب.</div></div>
+ <div class="table"><table><thead><tr><th>الكابتن</th><th>الرقم</th><th>التاريخ</th><th>الدين عند الإزالة</th><th>المستحق الحالي</th><th>الحالة</th><th>الإجراء</th></tr></thead><tbody id="negativeWeeklyManualRemovedBody"><tr><td colspan="7" class="empty">اختر الأسبوع</td></tr></tbody></table></div>
+</div>
+
+<div class="panel" style="margin-top:12px">
   <div class="ph">
-    <div><h3>✅ تم إزالتهم</h3><small>يبقون هنا حتى ترجعهم يدويًا للقروبات</small></div>
+    <div><h3>✅ تمت إزالتهم بواسطة النظام</h3><small>يبقون هنا حتى ترجعهم يدويًا للقروبات</small></div>
     <div class="filters"><button class="btn" onclick="loadNegativeCarryRemoved()">↻ تحديث</button></div>
   </div>
   <div class="pb">
@@ -1067,4 +1074,5 @@ async function exportCaptainSheet(){
 </style>
 <script defer src="/assets/amman-admin-install.js?v=1"></script>
 <script defer src="/assets/amman-motion.js?v=2"></script>
+<script src="/assets/negative-weekly-admin.js?v=1"></script>
 </body></html>
