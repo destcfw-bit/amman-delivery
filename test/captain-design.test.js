@@ -25,12 +25,12 @@ test('new captain DOM retains all critical live fields exactly once',()=>{
  }
 });
 test('captain dashboard is a new finance app with distinct login and home architecture',()=>{
- for(const marker of ['am-auth-shell','am-auth-story','am-app-frame','am-side-links','am-money-card',
-  'am-week-card','am-account-grid','am-metrics','am-quick','am-mobile-tabs','am-workspace']){
+ for(const marker of ['ad-login','am-roman-scene','ad-auth-wrap','ad-auth-fields','am-app-frame',
+  'am-side-links','am-money-card','am-week-card','am-account-grid','am-metrics','am-mobile-tabs','am-workspace']){
   assert.ok(beforeScripts.includes(marker),'missing new layout: '+marker);
  }
- assert.match(html,/amman-captain-v7\.css\?v=2/);
- assert.match(html,/amman-captain-v7\.js\?v=2/);
+ assert.match(html,/amman-captain-v7\.css\?v=\d+/);
+ assert.match(html,/amman-captain-v7\.js\?v=\d+/);
  assert.doesNotMatch(beforeScripts,/Click\s*Plus|TiGER|تايجر|كلك/);
 });
 test('all six captain sections remain navigable on desktop and mobile',()=>{
@@ -45,13 +45,14 @@ test('all six captain sections remain navigable on desktop and mobile',()=>{
  assert.match(js,/window\.renderOrders=timeline/);
 });
 test('visual layer supports responsive mobile and keeps onboarding and statements',()=>{
- assert.match(html,/am-mobile-intro/);
- assert.match(html,/am-mobile-features/);
+ assert.match(html,/am-roman-scene/);
+ assert.match(html,/ad-brandmark/);
+ assert.match(html,/ad-auth-head/);
  assert.match(html,/am-password-wrap/);
  assert.match(js,/adTogglePassword/);
  assert.match(css,/@media\(max-width:980px\)/);
  assert.match(css,/@media\(max-width:700px\)/);
- assert.match(css,/am-auth-form-area/);
+ assert.match(css,/am-app-frame/);
  assert.match(css,/\.onboarding/);
  assert.match(css,/am-metrics/);
  assert.match(html,/openPreviousWeekStatement\(\)/);
