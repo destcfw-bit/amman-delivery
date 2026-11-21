@@ -2809,6 +2809,9 @@ app.patch('/api/admin/announcements/:id',auth,async(req,res)=>{try{const active=
 app.get('/api/admin/support',auth,async(req,res)=>{try{const r=await pool.query(`SELECT t.*,c.name captain_name FROM support_tickets t LEFT JOIN captains c ON c.phone=t.captain_phone ORDER BY CASE WHEN t.status='open' THEN 0 ELSE 1 END,t.created_at DESC LIMIT 300`);res.json({ok:true,rows:r.rows})}catch(e){res.status(500).json({ok:false,error:'ADMIN_SUPPORT_FAILED'})}});
 app.patch('/api/admin/support/:id',auth,async(req,res)=>{try{const status=String(req.body?.status||'reviewing'),note=String(req.body?.admin_note||'');if(!['open','reviewing','resolved','rejected'].includes(status))return res.status(400).json({ok:false,error:'INVALID_STATUS'});const q=await pool.query(`UPDATE support_tickets SET status=$2,admin_note=$3,updated_at=now() WHERE id=$1 RETURNING *`,[req.params.id,status,note]);if(q.rowCount)await notifyCaptain(pool,q.rows[0].captain_phone,'info','تحديث طلب الدعم',note||`الحالة: ${status}`,{ticket_id:q.rows[0].id});res.json({ok:!!q.rowCount,row:q.rows[0]})}catch(e){res.status(500).json({ok:false,error:'SUPPORT_UPDATE_FAILED'})}});
 
+const { setupNegativeWeeklyTools } = { setupNegativeWeeklyTools: require('./negative-weekly-tools') };
+setupNegativeWeeklyTools({app,pool,auth,getOpenWeek,weeklyRows,normalizePhone,audit});
+
 const port=Number(process.env.PORT||3000);
 (async()=>{
   await initDb();
