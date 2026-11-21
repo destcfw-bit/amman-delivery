@@ -6,7 +6,7 @@
   var previousRemoval=typeof window.removeSelectedNegativeCaptains==='function'?window.removeSelectedNegativeCaptains:null;
   var previousArchiveLoad=typeof window.loadArchive==='function'?window.loadArchive:null;
   function el(id){return document.getElementById(id)}
-  function html(s){return typeof esc==='function'?esc(String(s==null?'':s)):String(s==null?'':s').replace(/[&<>"']/g,function(x){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]})}
+  function html(s){return typeof esc==='function'?esc(String(s==null?'':s)):String(s==null?'':s).replace(/[&<>"']/g,function(x){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]})}
   function fmt(n){return Number(n||0).toFixed(2)}
   function announce(s){if(typeof tell==='function')tell(s);else alert(s)}
   function weekName(w){var date=w.starts_at?new Date(w.starts_at).toLocaleDateString('ar-JO',{timeZone:'Asia/Amman'}):'';return 'الأسبوع #'+w.id+(date?' — '+date:'')+(w.status==='open'?' (الحالي)':' (مقفل)')}
