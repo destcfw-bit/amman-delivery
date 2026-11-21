@@ -3,6 +3,9 @@
 // Shared weekly debt review and manual group-removal record.
 // This ledger is operational only: it never modifies accounting balances or settlements.
 module.exports = function setupNegativeWeeklyTools({app,pool,auth,getOpenWeek,weeklyRows,normalizePhone,audit}){
+  function adminOnly(req,res,next){
+    auth(req,res,()=>req.user?.role==='admin'?next():res.status(403).json({ok:false,error:'ADMIN_ONLY'}));
+  }
   async function ensureTable(){
     await pool.query(`
       CREATE TABLE IF NOT EXISTS negative_manual_removals (
@@ -17,6 +20,8 @@ module.exports = function setupNegativeWeeklyTools({app,pool,auth,getOpenWeek,we
     `);
     await pool.query('CREATE UNIQUE INDEX IF NOT EXISTS negative_manual_active_once ON negative_manual_removals(week_id,captain_phone) WHERE undone_at IS NULL');
     await pool.query('CREATE UNIQUE INDEX IF NOT EXISTS negative_manual_global_active_once ON negative_manual_removals(captain_phone) WHERE undone_at IS NULL');
+    // Purged accounting weeks must not leave permanent suppression records behind.
+    await pool.query('DELETE FROM negative_manual_removals m WHERE NOT EXISTS (SELECT 1 FROM accounting_weeks w WHERE w.id=m.week_id)');
   }
   function parseId(value){
     const n=Number(value);
@@ -56,14 +61,14 @@ module.exports = function setupNegativeWeeklyTools({app,pool,auth,getOpenWeek,we
     console.error(code,e);
     return res.status(500).json({ok:false,error:code});
   }
-  app.get('/api/admin/negative-weeks',auth,async(req,res)=>{
+  app.get('/api/admin/negative-weeks',adminOnly,async(req,res)=>{
     try{
       await ensureTable();
       const q=await pool.query("SELECT id,starts_at,closed_at,status FROM accounting_weeks WHERE trashed_at IS NULL AND status IN ('open','closed') ORDER BY id DESC LIMIT 150");
       res.set('Cache-Control','no-store').json({ok:true,rows:q.rows});
     }catch(e){routeError(res,e,'NEGATIVE_WEEKS_FAILED')}
   });
-  app.get('/api/admin/negative-week/:weekId/candidates',auth,async(req,res)=>{
+  app.get('/api/admin/negative-week/:weekId/candidates',adminOnly,async(req,res)=>{
     try{
       await ensureTable();
       const week=await getWeek(parseId(req.params.weekId));
@@ -76,7 +81,7 @@ module.exports = function setupNegativeWeeklyTools({app,pool,auth,getOpenWeek,we
       res.set('Cache-Control','no-store').json({ok:true,week,count:rows.length,rows});
     }catch(e){routeError(res,e,'NEGATIVE_WEEK_CANDIDATES_FAILED')}
   });
-  app.post('/api/admin/negative-week/:weekId/manual-remove',auth,async(req,res)=>{
+  app.post('/api/admin/negative-week/:weekId/manual-remove',adminOnly,async(req,res)=>{
     try{
       await ensureTable();
       const week=await getWeek(parseId(req.params.weekId));
@@ -92,9 +97,9 @@ module.exports = function setupNegativeWeeklyTools({app,pool,auth,getOpenWeek,we
         VALUES($1,$2,$3,$4) ON CONFLICT DO NOTHING RETURNING id
       `,[week.id,phone,r.name,Math.abs(r.current_net)]);
       if(!inserted.rowCount)return res.status(409).json({ok:false,error:'ALREADY_MARKED_REMOVED'});
-      await audit('NEGATIVE_MANUALLY_REMOVED',{week_id:week.id,phone,amount:Math.abs(r.current_net),record_id:inserted.rows[0].id});
+      try{await audit('NEGATIVE_MANUALLY_REMOVED',{week_id:week.id,phone,amount:Math.abs(r.current_net),record_id:inserted.rows[0].id})}catch(e){console.error('MANUAL REMOVAL AUDIT FAILED',e)}
       res.set('Cache-Control','no-store').json({ok:true,id:inserted.rows[0].id});
-    }catch(e){routeError(res,e,'MANUAL_REMOVE_FAILED')}
+    }catch(e){if(e.code==='23505')return res.status(409).json({ok:false,error:'ALREADY_MARKED_REMOVED'});routeError(res,e,'MANUAL_REMOVE_FAILED')}
   });
   // Current open-week net and the latest still-payable closed settlement are alternatives,
   // not amounts to add together: old debts may already have been carried forward.
@@ -119,13 +124,13 @@ module.exports = function setupNegativeWeeklyTools({app,pool,auth,getOpenWeek,we
     });
     return due;
   }
-  app.get('/api/admin/negative-outstanding',auth,async(req,res)=>{
+  app.get('/api/admin/negative-outstanding',adminOnly,async(req,res)=>{
     try{
       const due=await outstandingDebtByPhone();
       res.set('Cache-Control','no-store').json({ok:true,rows:[...due].filter(x=>x[1]>0).map(x=>({phone:x[0],due:x[1]}))});
     }catch(e){routeError(res,e,'NEGATIVE_OUTSTANDING_FAILED')}
   });
-  app.get('/api/admin/negative-week/:weekId/manual-removed',auth,async(req,res)=>{
+  app.get('/api/admin/negative-week/:weekId/manual-removed',adminOnly,async(req,res)=>{
     try{
       await ensureTable();
       const week=await getWeek(parseId(req.params.weekId));
@@ -146,18 +151,18 @@ module.exports = function setupNegativeWeeklyTools({app,pool,auth,getOpenWeek,we
       res.set('Cache-Control','no-store').json({ok:true,week,count:rows.length,rows});
     }catch(e){routeError(res,e,'NEGATIVE_MANUAL_REMOVED_FAILED')}
   });
-  app.post('/api/admin/negative-week/manual-removed/:id/undo',auth,async(req,res)=>{
+  app.post('/api/admin/negative-week/manual-removed/:id/undo',adminOnly,async(req,res)=>{
     try{
       await ensureTable();
       const id=parseId(req.params.id);
       if(!id)return res.status(400).json({ok:false,error:'INVALID_RECORD_ID'});
       const q=await pool.query('UPDATE negative_manual_removals SET undone_at=now() WHERE id=$1 AND undone_at IS NULL RETURNING week_id,captain_phone',[id]);
       if(!q.rowCount)return res.status(404).json({ok:false,error:'RECORD_NOT_FOUND'});
-      await audit('NEGATIVE_MANUAL_REMOVAL_UNDONE',{record_id:id,week_id:q.rows[0].week_id,phone:q.rows[0].captain_phone});
+      try{await audit('NEGATIVE_MANUAL_REMOVAL_UNDONE',{record_id:id,week_id:q.rows[0].week_id,phone:q.rows[0].captain_phone})}catch(e){console.error('MANUAL REMOVAL UNDO AUDIT FAILED',e)}
       res.set('Cache-Control','no-store').json({ok:true});
     }catch(e){routeError(res,e,'NEGATIVE_MANUAL_UNDO_FAILED')}
   });
-  app.get('/api/admin/weekly/archive/captain-search',auth,async(req,res)=>{
+  app.get('/api/admin/weekly/archive/captain-search',adminOnly,async(req,res)=>{
     try{
       const q=String(req.query.q||'').trim().slice(0,80);
       if(q.length<2)return res.set('Cache-Control','no-store').json({ok:true,rows:[]});
