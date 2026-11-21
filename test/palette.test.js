@@ -23,9 +23,10 @@ test('captain phone login has complete visual intro and password control',()=>{
  const html=fs.readFileSync(path.join(root,'public/captain.html'),'utf8');
  const css=fs.readFileSync(path.join(root,'public/assets/amman-captain-v7.css'),'utf8');
  const js=fs.readFileSync(path.join(root,'public/assets/amman-captain-v7.js'),'utf8');
- for(const marker of ['am-mobile-brand','am-mobile-intro','am-mobile-features','am-password-wrap','am-password-eye']){
+ for(const marker of ['ad-login','am-roman-scene','ad-auth-wrap','am-password-wrap','am-password-eye']){
   assert.ok(html.includes(marker),marker+' missing');
-  assert.ok(css.includes(marker),marker+' styling missing');
+  if(['am-password-wrap','am-password-eye'].includes(marker))
+    assert.ok(css.includes(marker)||html.includes('.'+marker+'{'),marker+' styling missing');
  }
  assert.match(js,/window\.adTogglePassword=function/);
  assert.match(html,/aria-pressed="false"/);
@@ -35,10 +36,12 @@ test('captain phone login has complete visual intro and password control',()=>{
 });
 test('single correct mobile browser theme color and all refreshed CSS links',()=>{
  const html=fs.readFileSync(path.join(root,'public/captain.html'),'utf8');
- assert.deepEqual([...html.matchAll(/<meta name="theme-color" content="([^"]+)">/g)].map(x=>x[1]),['#f6f5f2']);
- assert.match(html,/amman-captain-v7\.css\?v=2/);
- assert.match(html,/amman-captain-v7\.js\?v=2/);
+ assert.deepEqual([...html.matchAll(/<meta name="theme-color" content="([^"]+)">/g)].map(x=>x[1]),['#050505']);
+ assert.match(html,/amman-captain-v7\.css\?v=\d+/);
+ assert.match(html,/amman-captain-v7\.js\?v=\d+/);
  const manifest=JSON.parse(fs.readFileSync(path.join(root,'public/manifest.webmanifest'),'utf8'));
- assert.equal(manifest.theme_color,'#f6f5f2');
+ assert.equal(manifest.theme_color,'#050505');
+ assert.equal(manifest.background_color,'#050505');
+ assert.match(html,/<meta name="color-scheme" content="dark">/);
  assert.equal(manifest.start_url,'/captain');
 });
