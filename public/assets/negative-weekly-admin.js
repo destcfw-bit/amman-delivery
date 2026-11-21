@@ -3,6 +3,7 @@
   'use strict';
   var weeks=[],selectedWeekId=null,selectedWeekStatus='',weeklyRows=[],manualRows=[],loadSeq=0,archiveSeq=0;
   var hasLegacyRemoval=typeof window.loadNegativeCarryRemoved==='function';
+  var outstandingDue=new Map();
   var previousRemoval=typeof window.removeSelectedNegativeCaptains==='function'?window.removeSelectedNegativeCaptains:null;
   var previousArchiveLoad=typeof window.loadArchive==='function'?window.loadArchive:null;
   function el(id){return document.getElementById(id)}
@@ -72,7 +73,11 @@
       select.value=String(weeks.some(function(x){return Number(x.id)===previous})?previous:(weeks[0]?.id||''));
     }
     await loadWeek();
-    if(hasLegacyRemoval&&typeof window.loadNegativeCarryRemoved==='function')await window.loadNegativeCarryRemoved();
+    if(hasLegacyRemoval&&typeof window.loadNegativeCarryRemoved==='function'){
+      var due=await api('/api/admin/negative-outstanding?_='+Date.now());
+      if(due.ok)outstandingDue=new Map((due.rows||[]).map(function(x){return [String(x.phone),Number(x.due||0)]}));
+      await window.loadNegativeCarryRemoved();
+    }
   }
   window.loadNegativeRemovalSection=loadNegativeSection;
   window.loadNegativeCarryCandidates=loadWeek;
@@ -115,7 +120,7 @@
       var rows=typeof negativeCarryRemoved!=='undefined'?negativeCarryRemoved:[];
       if(count)count.textContent=rows.length+' كابتن';
       tbody.innerHTML=rows.map(function(x){
-        var due=Math.max(0,-Number(x.current_net||0));
+        var due=Math.max(0,-Number(x.current_net||0),outstandingDue.get(String(x.phone))||0);
         var wa=due>0.0001?'<button class="btn btn-primary" data-phone="'+html(x.phone)+'" data-name="'+html(x.name)+'" data-amount="'+due+'" onclick="openNegativeWhatsApp(this.dataset.phone,this.dataset.name,this.dataset.amount)">💬 مطالبة واتساب</button>':'';
         var groups=typeof removedGroupsHtml==='function'?removedGroupsHtml(x.groups):'—';
         return '<tr><td><b>'+html(x.name)+'</b></td><td dir="ltr">'+html(x.phone)+'</td><td>'+html(new Date(x.removed_at).toLocaleDateString('ar-JO'))+'</td>'+
