@@ -8,9 +8,10 @@ const pages=['index.html','admin.html','captain.html','register.html'];
 for(const page of pages){
   test(page+' uses AMMAN independent identity and loads the shared stylesheet',()=>{
     const html=fs.readFileSync(path.join(root,'public',page),'utf8');
-    const css='/assets/amman-standalone.css?v=2';
-    const theme=html.indexOf('/assets/amman-theme.css'),brand=html.indexOf(css);
-    assert.ok(theme!==-1&&brand>theme,'AMMAN design must override legacy style declarations');
+    const theme=html.indexOf('/assets/amman-theme.css');
+    const brandLink=html.match(/<link\b[^>]*href="\/assets\/amman-standalone\.css\?v=\d+"[^>]*>/i);
+    const brand=brandLink?html.indexOf(brandLink[0]):-1;
+    assert.ok(theme!==-1&&brand>theme,'AMMAN standalone design must override legacy style declarations');
     assert.ok(html.includes('class="amman-footer"'));
     assert.ok(html.includes('AMMAN DELIVERY'));
     const visible=html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,'')
