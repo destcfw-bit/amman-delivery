@@ -16,7 +16,7 @@ module.exports = function setupNegativeWeeklyTools({app,pool,auth,getOpenWeek,we
       )
     `);
     await pool.query('CREATE UNIQUE INDEX IF NOT EXISTS negative_manual_active_once ON negative_manual_removals(week_id,captain_phone) WHERE undone_at IS NULL');
-    await pool.query('CREATE INDEX IF NOT EXISTS negative_manual_phone_active ON negative_manual_removals(captain_phone) WHERE undone_at IS NULL');
+    await pool.query('CREATE UNIQUE INDEX IF NOT EXISTS negative_manual_global_active_once ON negative_manual_removals(captain_phone) WHERE undone_at IS NULL');
   }
   function parseId(value){
     const n=Number(value);
@@ -96,6 +96,35 @@ module.exports = function setupNegativeWeeklyTools({app,pool,auth,getOpenWeek,we
       res.set('Cache-Control','no-store').json({ok:true,id:inserted.rows[0].id});
     }catch(e){routeError(res,e,'MANUAL_REMOVE_FAILED')}
   });
+  // Current open-week net and the latest still-payable closed settlement are alternatives,
+  // not amounts to add together: old debts may already have been carried forward.
+  async function outstandingDebtByPhone(){
+    const open=await getOpenWeek();
+    const live=await weeklyRows(open.id);
+    const due=new Map();
+    live.forEach(x=>{
+      const p=normalizePhone(x.phone);
+      if(p)due.set(p,Math.max(0,-Number(x.net||0)));
+    });
+    const prior=await pool.query(`
+      SELECT DISTINCT ON (s.captain_phone) s.captain_phone,s.net
+      FROM weekly_settlements s JOIN accounting_weeks w ON w.id=s.week_id
+      WHERE w.status='closed' AND w.trashed_at IS NULL
+        AND s.net<0 AND COALESCE(s.status,'pending') NOT IN ('settled','carried_forward')
+      ORDER BY s.captain_phone,s.week_id DESC,s.id DESC
+    `);
+    prior.rows.forEach(x=>{
+      const phone=normalizePhone(x.captain_phone);
+      due.set(phone,Math.max(due.get(phone)||0,-Number(x.net||0)));
+    });
+    return due;
+  }
+  app.get('/api/admin/negative-outstanding',auth,async(req,res)=>{
+    try{
+      const due=await outstandingDebtByPhone();
+      res.set('Cache-Control','no-store').json({ok:true,rows:[...due].filter(x=>x[1]>0).map(x=>({phone:x[0],due:x[1]}))});
+    }catch(e){routeError(res,e,'NEGATIVE_OUTSTANDING_FAILED')}
+  });
   app.get('/api/admin/negative-week/:weekId/manual-removed',auth,async(req,res)=>{
     try{
       await ensureTable();
@@ -108,14 +137,12 @@ module.exports = function setupNegativeWeeklyTools({app,pool,auth,getOpenWeek,we
         WHERE m.week_id=$1 AND m.undone_at IS NULL
         ORDER BY m.removed_at DESC,m.id DESC
       `,[week.id]);
-      const open=await getOpenWeek();
-      const current=await weeklyRows(open.id);
-      const byPhone=new Map(current.map(x=>[normalizePhone(x.phone),x]));
-      const rows=q.rows.map(r=>{
-        const live=byPhone.get(r.phone);
-        const pending_due=live?Math.max(0,-Number(live.net||0)):0;
-        return {...r,recorded_debt:Number(r.recorded_debt||0),pending_due};
-      });
+      const due=await outstandingDebtByPhone();
+      const rows=q.rows.map(r=>({
+        ...r,
+        recorded_debt:Number(r.recorded_debt||0),
+        pending_due:due.get(r.phone)||0
+      }));
       res.set('Cache-Control','no-store').json({ok:true,week,count:rows.length,rows});
     }catch(e){routeError(res,e,'NEGATIVE_MANUAL_REMOVED_FAILED')}
   });
