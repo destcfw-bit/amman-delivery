@@ -34,7 +34,7 @@ module.exports = function setupNegativeWeeklyTools({app,pool,auth,getOpenWeek,we
   async function negativeRows(week){
     if(week.status==='open'){
       const live=await weeklyRows(week.id);
-      return live.filter(r=>Number(r.net||0)<-0.0001 && r.active!==false).map(r=>({
+      return live.filter(r=>Number(r.net||0)<-0.0001 && Number(r.consumption||0)-Number(r.production||0)>0.0001 && r.active!==false).map(r=>({
         phone:normalizePhone(r.phone),name:r.name||r.phone,
         old_balance:Number(r.old_balance||0),current_net:Number(r.net||0),
         current_week_production:Number(r.production||0),
@@ -47,6 +47,7 @@ module.exports = function setupNegativeWeeklyTools({app,pool,auth,getOpenWeek,we
              s.consumption current_week_consumption,s.status
       FROM weekly_settlements s
       WHERE s.week_id=$1 AND s.net < 0
+        AND COALESCE(s.consumption,0)-COALESCE(s.production,0)>0.0001
         AND COALESCE(s.status,'pending') NOT IN ('settled','carried_forward')
       ORDER BY s.captain_name,s.captain_phone
     `,[week.id]);
