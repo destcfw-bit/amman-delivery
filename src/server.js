@@ -1997,7 +1997,7 @@ app.get('/api/admin/negative-carry-candidates',auth,async(req,res)=>{
     const w=await getOpenWeek();
     const rows=await weeklyRows(w.id);
     const candidates=rows
-      .filter(x=>Number(x.old_balance||0)>0 && Number(x.net||0)<0 && Boolean(x.active))
+      .filter(x=>Number(x.old_balance||0)>0 && Number(x.net||0)<0 && Boolean(x.active) && Number(x.consumption||0)-Number(x.production||0)>0.0001)
       .map(x=>({
         name:x.name,
         phone:x.phone,
@@ -2071,7 +2071,7 @@ app.post('/api/admin/negative-carry-remove',auth,async(req,res)=>{
     const w=await getOpenWeek();
     const weekly=await weeklyRows(w.id);
     const eligible=new Map(
-      weekly.filter(x=>Number(x.old_balance||0)>0 && Number(x.net||0)<0 && Boolean(x.active)).map(x=>[x.phone,x])
+      weekly.filter(x=>Number(x.old_balance||0)>0 && Number(x.net||0)<0 && Boolean(x.active) && Number(x.consumption||0)-Number(x.production||0)>0.0001).map(x=>[x.phone,x])
     );
     const selected=phones.filter(p=>eligible.has(p));
     const noLongerEligible=phones.filter(p=>!eligible.has(p));
