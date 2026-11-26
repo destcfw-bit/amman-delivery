@@ -838,6 +838,20 @@ async function resetAllOldBalances(){
 async function loadArchive(){const j=await api('/api/admin/weekly/archive');if(j.ok){state.archive=j.rows||[];renderArchive()}}
 let openedWeekId=null;
 let activeSettlementTab='to';
+function filterArchiveSettlementCaptains(value){
+ const normalize=v=>String(v||'').normalize('NFKC').toLowerCase().replace(/[٠-٩]/g,c=>String(c.charCodeAt(0)-1632)).replace(/[۰-۹]/g,c=>String(c.charCodeAt(0)-1776)).replace(/[\u064b-\u065f\u0670]/g,'').replace(/[أإآ]/g,'ا').trim();
+ const q=normalize(value),digits=q.replace(/\D/g,'');
+ const phoneQuery=/^[+\d\s()-]+$/.test(q)&&digits.length>0;
+ const phoneVariants=v=>{const d=normalize(v).replace(/\D/g,'');return [d,d.startsWith('962')?'0'+d.slice(3):d,d.startsWith('0')?'962'+d.slice(1):d];};
+ for(const pane of document.querySelectorAll('[id^="archiveSettlementPane-"]')){
+  for(const row of pane.querySelectorAll('tbody tr')){
+   const cell=row.cells[0],name=cell?.querySelector('b'),phone=cell?.querySelector('[dir="ltr"]');
+   if(!name||!phone)continue;
+   const match=!q||normalize(name.textContent).includes(q)||normalize(phone.textContent).includes(q)||(phoneQuery&&phoneVariants(phone.textContent).some(p=>p.includes(digits)));
+   row.style.display=match?'':'none';
+  }
+ }
+}
 function switchSettlementTab(tab){
  if(!['to','from','done'].includes(tab))return;
  activeSettlementTab=tab;
@@ -1017,6 +1031,7 @@ ${lines.join('\n')}`;
  }
 
  let html=`<div class="callout">اختر القائمة المطلوبة. عند «تم الاستلام» أو «تم التحويل» ينتقل الكابتن فورًا إلى «تمت التسوية». زر نسخ CliQ ينسخ المعرّفات المسجلة فقط.</div><div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px" role="tablist"><button id="archiveSettlementTab-to" role="tab" class="btn" style="white-space:normal;min-height:58px;padding:8px" onclick="switchSettlementTab('to')">🟢 إلهم علينا <span class="badge">${pendingTo.length}</span></button><button id="archiveSettlementTab-from" role="tab" class="btn" style="white-space:normal;min-height:58px;padding:8px" onclick="switchSettlementTab('from')">🔴 عليهم إلنا <span class="badge">${pendingFrom.length}</span></button><button id="archiveSettlementTab-done" role="tab" class="btn" style="white-space:normal;min-height:58px;padding:8px" onclick="switchSettlementTab('done')">✅ تمت التسوية <span class="badge">${completed.length}</span></button></div>`;
+ html+='<div style="margin-top:12px"><input id="archiveSettlementSearch" type="search" autocomplete="off" aria-label="البحث عن كابتن" placeholder="🔍 ابحث باسم الكابتن أو رقم الهاتف" oninput="filterArchiveSettlementCaptains(this.value)" style="width:100%;box-sizing:border-box"></div>';
  html+='<div id="archiveSettlementPane-to" role="tabpanel">'+renderGroup(pendingTo,'to')+'</div>';
  html+='<div id="archiveSettlementPane-from" role="tabpanel" hidden>'+renderGroup(pendingFrom,'from')+'</div>';
  html+='<div id="archiveSettlementPane-done" role="tabpanel" hidden>';
