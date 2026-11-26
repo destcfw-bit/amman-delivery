@@ -20,11 +20,13 @@
     var hasBot=!!previousRemoval;
     tbody.innerHTML=weeklyRows.map(function(x){
       var phone=html(x.phone),canBot=hasBot&&isCurrent()&&Number(x.old_balance)>0;
+      var due=Math.max(0,-Number(x.current_net));
+      var demand=isCurrent()&&Number.isFinite(due)&&due>0?'<button class="btn" type="button" data-phone="'+phone+'" data-name="'+html(x.name)+'" data-amount="'+due+'" onclick="openNegativeWhatsApp(this.dataset.phone,this.dataset.name,this.dataset.amount)">💬 مطالبة مالية</button>':'';
       var check=canBot?'<input type="checkbox" class="neg-carry-check" value="'+phone+'">':'<span class="muted">—</span>';
       return '<tr><td>'+check+'</td><td><b>'+html(x.name)+'</b></td><td dir="ltr">'+phone+'</td>'+
         '<td class="money minus">'+fmt(x.old_balance)+'</td><td class="money minus"><b>'+fmt(x.current_net)+'</b></td>'+
         '<td class="money plus">'+fmt(x.current_week_production)+'</td><td class="money minus">'+fmt(x.current_week_consumption)+'</td>'+
-        '<td><span class="badge off">عليه مبلغ</span></td><td><button class="btn btn-primary" type="button" data-phone="'+phone+'" onclick="markNegativeManual(this.dataset.phone)">✓ تم إزالته يدويًا</button></td></tr>';
+        '<td><span class="badge off">عليه مبلغ</span></td><td><button class="btn btn-primary" type="button" data-phone="'+phone+'" onclick="markNegativeManual(this.dataset.phone)">✓ تم إزالته يدويًا</button> '+demand+'</td></tr>';
     }).join('')||'<tr><td colspan="9" class="empty">✅ لا يوجد كباتن سالب غير مسجّلين كإزالة في هذا الأسبوع</td></tr>';
     var botButton=el('negativeBotRemoveButton');
     if(botButton){botButton.disabled=!isCurrent();botButton.title=isCurrent()?'إزالة أصحاب الرصيد المرحّل من القروبات':'الإزالة الآلية متاحة للأسبوع المفتوح فقط';}
@@ -109,7 +111,8 @@
     if(!(due>0))return announce('لا يوجد مبلغ مستحق ظاهر حاليًا للمطالبة');
     var digits=String(phone||'').replace(/\D/g,'');
     if(!/^9627\d{8}$/.test(digits))return announce('رقم واتساب غير صالح');
-    var message='مرحبًا '+String(name||'')+'،\nحسب كشف حساب التوصيل يوجد مبلغ مستحق غير مسدد بقيمة '+fmt(due)+' دينار أردني.\nنرجو تسديد المبلغ وإرسال إثبات التحويل للإدارة. إذا سبق أن دفعت، يرجى إرسال الإثبات لمراجعة الحساب.\nشكرًا لتعاونك.';
+    var cleanName=String(name||'').trim();
+    var message='مرحبًا '+(/[\p{L}\p{N}]/u.test(cleanName)?cleanName:'كابتن')+'،\nمعك إدارة AMMAN DELIVERY. حسب كشف حسابك يوجد مبلغ مستحق غير مسدد بقيمة '+fmt(due)+' دينار أردني.\nنرجو تسديد المبلغ وإرسال إثبات التحويل للإدارة. إذا سبق أن دفعت، يرجى إرسال الإثبات لمراجعة الحساب.\nشكرًا لتعاونك.';
     window.open('https://wa.me/'+digits+'?text='+encodeURIComponent(message),'_blank','noopener,noreferrer');
   };
   // Preserve the legacy WhatsApp-group removal/restore history and add a manual demand link.
