@@ -942,7 +942,9 @@ async function openWeek(id){
  const rows=j.rows||[];
  const archiveSort=(a,b)=>tnum(a.captain_name)-tnum(b.captain_name)||String(a.captain_name||'').localeCompare(String(b.captain_name||''),'ar');
  const pendingTo=rows.filter(s=>Number(s.net)>0&&!['settled','carried_forward'].includes(String(s.status))).sort(archiveSort);
- const pendingFrom=rows.filter(s=>Number(s.net)<0&&!['settled','carried_forward'].includes(String(s.status))).sort(archiveSort);
+ const allPendingFrom=rows.filter(s=>Number(s.net)<0&&!['settled','carried_forward'].includes(String(s.status))).sort(archiveSort);
+ const pendingFrom=allPendingFrom.filter(s=>Number(s.consumption||0)-Number(s.production||0)>0.0001);
+ const historicalPendingFrom=allPendingFrom.filter(s=>!(Number(s.consumption||0)-Number(s.production||0)>0.0001));
  window.__weeklyTo=pendingTo;
  window.__weeklyFrom=pendingFrom;
  window.__weeklyProducers=pendingTo;
@@ -1012,7 +1014,7 @@ ${lines.join('\n')}`;
  function renderGroup(list,type){
   const isTo=type==='to';
   const title=isTo?'🟢 الكباتن إلهم علينا — قيد التسوية':'🔴 الكباتن عليهم إلنا — قيد التحصيل';
-  const total=isTo?sumTo:sumFrom;
+  const total=list.reduce((a,s)=>a+Math.abs(Number(s.net||0)),0);
   const accent=isTo?'#22c55e':'#ef4444';
   if(!list.length)return `<div class="callout" style="margin-top:12px;border-color:${accent}55"><b style="color:${accent}">${title}</b><div class="muted" style="margin-top:6px">لا يوجد كباتن قيد الانتظار في هذه القائمة.</div></div>`;
   const copyAllBtn=`<button class="btn btn-primary" onclick="copyArchiveSettlements('${isTo?'to':'from'}')">📋 نسخ CliQ</button>`;
@@ -1033,7 +1035,7 @@ ${lines.join('\n')}`;
  let html=`<div class="callout">اختر القائمة المطلوبة. عند «تم الاستلام» أو «تم التحويل» ينتقل الكابتن فورًا إلى «تمت التسوية». زر نسخ CliQ ينسخ المعرّفات المسجلة فقط.</div><div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:12px" role="tablist"><button id="archiveSettlementTab-to" role="tab" class="btn" style="white-space:normal;min-height:58px;padding:8px" onclick="switchSettlementTab('to')">🟢 إلهم علينا <span class="badge">${pendingTo.length}</span></button><button id="archiveSettlementTab-from" role="tab" class="btn" style="white-space:normal;min-height:58px;padding:8px" onclick="switchSettlementTab('from')">🔴 عليهم إلنا <span class="badge">${pendingFrom.length}</span></button><button id="archiveSettlementTab-done" role="tab" class="btn" style="white-space:normal;min-height:58px;padding:8px" onclick="switchSettlementTab('done')">✅ تمت التسوية <span class="badge">${completed.length}</span></button></div>`;
  html+='<div style="margin-top:12px"><input id="archiveSettlementSearch" type="search" autocomplete="off" aria-label="البحث عن كابتن" placeholder="🔍 ابحث باسم الكابتن أو رقم الهاتف" oninput="filterArchiveSettlementCaptains(this.value)" style="width:100%;box-sizing:border-box"></div>';
  html+='<div id="archiveSettlementPane-to" role="tabpanel">'+renderGroup(pendingTo,'to')+'</div>';
- html+='<div id="archiveSettlementPane-from" role="tabpanel" hidden>'+renderGroup(pendingFrom,'from')+'</div>';
+ html+='<div id="archiveSettlementPane-from" role="tabpanel" hidden>'+renderGroup(pendingFrom,'from')+(historicalPendingFrom.length?'<details style="margin-top:12px"><summary class="muted" style="cursor:pointer">أرصدة مرحلة أو أرضية فقط — '+historicalPendingFrom.length+' (للمراجعة المحاسبية)</summary>'+renderGroup(historicalPendingFrom,'from').replace('📋 نسخ CliQ','📋 نسخ CliQ').replace(/<button class="btn btn-primary" onclick="copyArchiveSettlements\('from'\)">[^<]*<\/button>/,'')+'</details>':'')+'</div>';
  html+='<div id="archiveSettlementPane-done" role="tabpanel" hidden>';
  html+=`<div style="margin-top:16px;border:1px solid #22c55e55;border-radius:14px;overflow:hidden"><div style="padding:12px 14px;background:#22c55e10;display:flex;justify-content:space-between;gap:10px;align-items:center"><b style="color:#86efac">✅ التسويات المنتهية</b><span class="badge ok">${completed.length} كابتن</span></div><div class="table"><table><thead><tr><th>الكابتن</th><th>النتيجة</th><th>الإنتاج</th><th>الاستهلاك</th><th>الأرضية</th><th>رصيد قديم</th><th>الحالة</th></tr></thead><tbody>${completed.map(completedRow).join('')||'<tr><td colspan="7" class="empty">لا توجد تسويات منتهية بعد</td></tr>'}</tbody></table></div></div>`;
  if(carried.length)html+=`<div style="margin-top:16px;border:1px solid #60a5fa55;border-radius:14px;overflow:hidden"><div style="padding:12px 14px;background:#60a5fa10;display:flex;justify-content:space-between;gap:10px;align-items:center"><b style="color:#bec8d8">🔄 أرصدة تم ترحيلها ودمجها بأسبوع أحدث</b><span class="badge info">${carried.length} كابتن</span></div><div class="table"><table><thead><tr><th>الكابتن</th><th>الرصيد المرحّل</th><th>الإنتاج</th><th>الاستهلاك</th><th>الأرضية</th><th>رصيد قديم داخل الأسبوع</th><th>الحالة</th></tr></thead><tbody>${carried.map(carriedRow).join('')}</tbody></table></div></div>`;
